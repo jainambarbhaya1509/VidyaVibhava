@@ -1,5 +1,6 @@
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,11 +15,14 @@ import 'package:final_project/pages/start_screen.dart';
 import 'package:final_project/pages/user_type_screen.dart';
 import 'package:final_project/style/themes.dart';
 
-
-
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ],
+  );
   final prefs = await SharedPreferences.getInstance();
   final showHome = prefs.getBool('showHome') ?? false;
   runApp(

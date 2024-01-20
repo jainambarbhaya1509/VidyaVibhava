@@ -108,7 +108,7 @@ class _StartScreenState extends State<StartScreen> {
                     },
                     child: Row(
                       children: [
-                         GeneralAppIcon(
+                        GeneralAppIcon(
                           icon: Icons.arrow_back_ios_rounded,
                           color: Colors.orange,
                           size: 20,
