@@ -1,7 +1,7 @@
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 
-Widget buildPage({
+Widget buildOnboardingPage({
   required String image,
   required String title,
   required String content,

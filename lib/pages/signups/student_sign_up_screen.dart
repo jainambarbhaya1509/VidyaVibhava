@@ -1,3 +1,4 @@
+import 'package:final_project/pages/signups/student_signup_pages/address_info.dart';
 import 'package:final_project/pages/signups/student_signup_pages/confirm_info.dart';
 import 'package:final_project/pages/signups/student_signup_pages/document_upload.dart';
 import 'package:final_project/pages/signups/student_signup_pages/personal_info.dart';
@@ -5,21 +6,71 @@ import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toast/toast.dart';
 
-class StudentSignUpScreen extends StatefulWidget {
+class StudentSignUpScreen extends ConsumerStatefulWidget {
   const StudentSignUpScreen({super.key});
 
   @override
-  State<StudentSignUpScreen> createState() => _StudentSignUpScreenState();
+  ConsumerState<StudentSignUpScreen> createState() =>
+      _StudentSignUpScreenState();
 }
 
-class _StudentSignUpScreenState extends State<StudentSignUpScreen> {
-  bool isLastPage = true;
-  bool isFirstPage = true;
+class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
+  int currentPageIndex = 0;
+
+  bool checkAllPersonalInfoFields() {
+    final personalInfo = ref.read(personalInfoProvider);
+    if (personalInfo['fname'] == '' ||
+        personalInfo['lname'] == '' ||
+        personalInfo['dob'] == '' ||
+        personalInfo['gender'] == '' ||
+        personalInfo['phone'] == '' ||
+        personalInfo['username'] == '') {
+       
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  bool checkAllAddressInfoFields() {
+    final addressInfo = ref.read(addressInfoProvider);
+    if (addressInfo['address'] == '' ||
+        addressInfo['city'] == '' ||
+        addressInfo['state'] == '' ||
+        addressInfo['zipCode'] == '') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  bool checkDocumentUpload() {
+    final image = ref.read(imageProvider);
+    final aadhar = ref.read(aadharProvider);
+    final income = ref.read(incomeProvider);
+    if (image == null || aadhar == null || income == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  final signUpSections = const [
+    PersonalInformationSection(),
+    AddressInformationSection(),
+    DocumentUploadSection(),
+    ConfirmInformationSection()
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final studentPageViewController = PageController();
+    ToastContext().init(context);
+    final studentPageViewController =
+        PageController(initialPage: currentPageIndex, keepPage: true);
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).primaryColor,
@@ -36,10 +87,32 @@ class _StudentSignUpScreenState extends State<StudentSignUpScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                
-                ),
+              margin: const EdgeInsets.only(left: 10, top: 50, right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: List.generate(4, (index) => index).map((e) {
+                  Color indicatorColor;
+                  if (currentPageIndex == e) {
+                    indicatorColor = primaryColor;
+                  } else if (currentPageIndex > e) {
+                    indicatorColor = Colors.green;
+                  } else {
+                    indicatorColor = Colors.grey;
+                  }
+                  return Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: indicatorColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
             Container(
-              margin: const EdgeInsets.only(left: 30, top: 80),
+              margin: const EdgeInsets.only(left: 30, top: 60),
               child: GeneralAppText(
                 text: "Student Sign Up",
                 weight: FontWeight.bold,
@@ -49,43 +122,39 @@ class _StudentSignUpScreenState extends State<StudentSignUpScreen> {
               height: 40,
             ),
             Container(
-                height: MediaQuery.of(context).size.height * 0.69,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 1,
-                      offset: const Offset(0, -10),
-                    ),
-                  ],
+              height: MediaQuery.of(context).size.height * 0.6,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
-                child: PageView(
-                  controller: studentPageViewController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  onPageChanged: (index) {
-                    setState(() {
-                      isLastPage = index == 2;
-                      isFirstPage = index == 0;
-                    });
-                  },
-                  children: [
-                    buildPersonalInformationSection(context),
-                    buildDocumentUploadSection(context),
-                    buildConfirmInfoSection(context)
-                  ],
-                )),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 1,
+                    offset: const Offset(0, -10),
+                  ),
+                ],
+              ),
+              child: PageView(
+                controller: studentPageViewController,
+                physics: const NeverScrollableScrollPhysics(),
+                onPageChanged: (index) {
+                  setState(() {
+                    currentPageIndex = index;
+                  });
+                },
+                children: signUpSections,
+              ),
+            ),
           ],
         ),
       ),
       bottomSheet: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
         width: double.infinity,
         color: Theme.of(context).primaryColor,
         child: Row(
@@ -93,7 +162,7 @@ class _StudentSignUpScreenState extends State<StudentSignUpScreen> {
           children: [
             GestureDetector(
               onTap: () {
-                if (isFirstPage) return;
+                if (currentPageIndex == 0) return;
                 studentPageViewController.previousPage(
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,
@@ -102,13 +171,52 @@ class _StudentSignUpScreenState extends State<StudentSignUpScreen> {
               child: PrimaryAppText(
                 text: "Back",
                 size: 20,
-                color: isFirstPage ? Colors.grey : primaryColor,
+                color: currentPageIndex == 0 ? Colors.grey : primaryColor,
                 weight: FontWeight.bold,
               ),
             ),
             GestureDetector(
               onTap: () {
-                if (isLastPage) return;
+                int personalInfoIndex = signUpSections.indexWhere((widget) =>
+                    widget.runtimeType == PersonalInformationSection);
+
+                int addressInfoIndex = signUpSections.indexWhere((widget) =>
+                    widget.runtimeType == AddressInformationSection);
+
+                int documentUploadIndex = signUpSections.indexWhere(
+                    (widget) => widget.runtimeType == DocumentUploadSection);
+
+                if (currentPageIndex == personalInfoIndex &&
+                    checkAllPersonalInfoFields() == false) {
+                  Toast.show(
+                    "Please fill all the fields",
+                    duration: Toast.lengthLong,
+                    gravity: Toast.bottom,
+                  );
+                  return;
+                }
+
+                if (currentPageIndex == addressInfoIndex &&
+                    checkAllAddressInfoFields() == false) {
+                  Toast.show(
+                    "Please fill all the fields",
+                    duration: Toast.lengthLong,
+                    gravity: Toast.bottom,
+                  );
+                  return;
+                }
+
+                if (currentPageIndex == documentUploadIndex &&
+                    checkDocumentUpload() == false) {
+                  Toast.show(
+                    "Please upload all the documents",
+                    duration: Toast.lengthLong,
+                    gravity: Toast.bottom,
+                  );
+                  return;
+                }
+                if (currentPageIndex == signUpSections.length - 1) return;
+
                 studentPageViewController.nextPage(
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,
@@ -117,7 +225,9 @@ class _StudentSignUpScreenState extends State<StudentSignUpScreen> {
               child: PrimaryAppText(
                 text: "Next",
                 size: 20,
-                color: isLastPage ? Colors.grey : primaryColor,
+                color: currentPageIndex == signUpSections.length - 1
+                    ? Colors.grey
+                    : primaryColor,
                 weight: FontWeight.bold,
               ),
             )
@@ -127,9 +237,8 @@ class _StudentSignUpScreenState extends State<StudentSignUpScreen> {
     );
   }
 }
-// TODO: Step Sign Up
-// TODO: Shared Preferences
+
 // TODO: Form Validatiom
-// TODO: Document Upload
 // TODO: Navigate to login screen
 // TODO: Confirm Information
+// TODO: Custom Text Field

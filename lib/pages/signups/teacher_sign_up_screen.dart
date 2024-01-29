@@ -26,7 +26,6 @@ class _StudentSignUpScreenState extends State<TeacherSignUpScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            // TODO: Step Sign Up
           ),
           Container(
             margin: const EdgeInsets.only(left: 30, top: 100),
@@ -54,16 +53,15 @@ class _StudentSignUpScreenState extends State<TeacherSignUpScreen> {
               ],
             ),
             child: Container(
-              margin: EdgeInsets.only(left: 30, top: 30),
+              margin: const EdgeInsets.only(left: 30, top: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GeneralAppText(
-                    text: "Personal Information", // TODO: Make Dynamic
+                    text: "Personal Information",
                     size: 20,
                     weight: FontWeight.bold,
                   ),
-                  // TODO: Dynamic Fields
                 ],
               ),
             ),

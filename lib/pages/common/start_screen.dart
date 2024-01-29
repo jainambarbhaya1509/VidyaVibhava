@@ -5,7 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_text.dart';
-import 'package:final_project/widgets/build_page.dart';
+import 'package:final_project/pages/common/start_screen_page/build_page.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
@@ -40,19 +40,19 @@ class _StartScreenState extends State<StartScreen> {
             });
           },
           children: [
-            buildPage(
+            buildOnboardingPage(
               image: 'assets/img/onboarding1.png',
               title: "Inspire",
               content:
                   "Step into a world where learning isn't just about facts but a journey that ignites a true passion for knowledge, fueling your curiosity with every click.",
             ),
-            buildPage(
+            buildOnboardingPage(
               image: 'assets/img/onboarding2.png',
               title: "Transform",
               content:
                   "We're on a mission to elevate minds, offering a transformative experience with knowledge just a click away.",
             ),
-            buildPage(
+            buildOnboardingPage(
               image: 'assets/img/onboarding3.png',
               title: "Empower",
               content:

@@ -8,11 +8,11 @@ import 'package:final_project/pages/home/student_home_screen.dart';
 import 'package:final_project/pages/home/teacher_home_screen.dart';
 import 'package:final_project/pages/logins/student_login_screen.dart';
 import 'package:final_project/pages/logins/teacher_login_screen.dart';
-import 'package:final_project/pages/otp_screen.dart';
+import 'package:final_project/pages/common/otp_screen.dart';
 import 'package:final_project/pages/signups/student_sign_up_screen.dart';
 import 'package:final_project/pages/signups/teacher_sign_up_screen.dart';
-import 'package:final_project/pages/start_screen.dart';
-import 'package:final_project/pages/user_type_screen.dart';
+import 'package:final_project/pages/common/start_screen.dart';
+import 'package:final_project/pages/common/user_type_screen.dart';
 import 'package:final_project/style/themes.dart';
 
 Future main() async {

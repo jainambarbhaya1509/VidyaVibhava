@@ -42,8 +42,12 @@ dependencies:
   google_fonts: ^4.0.4
   http: ^0.13.0
   translator: ^0.1.7
-  dynamic_multi_step_form: ^1.1.2
   intl: ^0.18.1
+  file_picker: ^6.1.1
+  image_picker: ^1.0.7
+  open_file: ^3.3.2
+  toast: ^0.3.0
+  confetti: ^0.7.0
 
 dev_dependencies:
   flutter_test:
