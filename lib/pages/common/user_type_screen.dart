@@ -1,17 +1,19 @@
 import 'package:final_project/models/models.dart';
+import 'package:final_project/providers/role_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserTypeScreen extends StatefulWidget {
+class UserTypeScreen extends ConsumerStatefulWidget {
   const UserTypeScreen({super.key});
 
   @override
-  State<UserTypeScreen> createState() => _UserTypeState();
+  ConsumerState<UserTypeScreen> createState() => _UserTypeState();
 }
 
-class _UserTypeState extends State<UserTypeScreen> {
+class _UserTypeState extends ConsumerState<UserTypeScreen> {
   final List<UserType> user = [
     UserType(
         'student2.png',
@@ -24,20 +26,26 @@ class _UserTypeState extends State<UserTypeScreen> {
         'Teaching is the highest form of understanding.',
         '- A.P.J. Abdul Kalam'),
   ];
-
+  // String? role;
   void onSignUp(int index) {
+    final role = ref.read(roleProvider.notifier);
     if (index == 1) {
       Navigator.pushNamed(context, 'teacherSignUp');
+      role.state = 'teacher';
     } else {
       Navigator.pushNamed(context, 'studentSignUp');
+      role.state = 'student';
     }
   }
 
   void onLogin(int index) {
+    final role = ref.read(roleProvider.notifier);
     if (index == 1) {
       Navigator.pushNamed(context, 'teacherLogin');
+      role.state = 'teacher';
     } else {
       Navigator.pushNamed(context, 'studentLogin');
+      role.state = 'student';
     }
   }
 

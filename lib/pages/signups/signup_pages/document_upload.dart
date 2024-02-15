@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:final_project/providers/signup_providers.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-final imageProvider = StateProvider<File?>((ref) => null);
-final aadharProvider = StateProvider<File?>((ref) => null);
-final incomeProvider = StateProvider<File?>((ref) => null);
+
 
 class DocumentUploadSection extends ConsumerStatefulWidget {
   const DocumentUploadSection({Key? key}) : super(key: key);

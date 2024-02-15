@@ -48,6 +48,7 @@ dependencies:
   open_file: ^3.3.2
   toast: ^0.3.0
   confetti: ^0.7.0
+  multi_select_flutter: ^4.1.3
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +82,14 @@ flutter:
     - assets/img/onboarding1.png
     - assets/img/onboarding2.png
     - assets/img/onboarding3.png
+    - assets/img/phy.png
+    - assets/img/chem.png
+    - assets/img/bio.png
+    - assets/img/maths.png
+    - assets/img/lang.png
+    - assets/img/hist.png
+    - assets/img/geo.png
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

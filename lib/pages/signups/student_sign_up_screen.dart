@@ -1,7 +1,8 @@
-import 'package:final_project/pages/signups/student_signup_pages/address_info.dart';
-import 'package:final_project/pages/signups/student_signup_pages/confirm_info.dart';
-import 'package:final_project/pages/signups/student_signup_pages/document_upload.dart';
-import 'package:final_project/pages/signups/student_signup_pages/personal_info.dart';
+import 'package:final_project/pages/signups/signup_pages/address_info.dart';
+import 'package:final_project/pages/signups/signup_pages/confirm_info.dart';
+import 'package:final_project/pages/signups/signup_pages/document_upload.dart';
+import 'package:final_project/pages/signups/signup_pages/personal_info.dart';
+import 'package:final_project/providers/signup_providers.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_text.dart';
@@ -237,8 +238,3 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
     );
   }
 }
-
-// TODO: Form Validatiom
-// TODO: Navigate to login screen
-// TODO: Confirm Information
-// TODO: Custom Text Field

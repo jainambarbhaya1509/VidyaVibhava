@@ -1,9 +1,4 @@
-import 'dart:math';
-
-import 'package:confetti/confetti.dart';
-import 'package:final_project/pages/signups/student_signup_pages/address_info.dart';
-import 'package:final_project/pages/signups/student_signup_pages/document_upload.dart';
-import 'package:final_project/pages/signups/student_signup_pages/personal_info.dart';
+import 'package:final_project/providers/signup_providers.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,49 +14,7 @@ class ConfirmInformationSection extends StatefulWidget {
 }
 
 class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
-  late ConfettiController controller;
-
-  void showOverlay(BuildContext context) {
-    OverlayState? overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        top: 0.0,
-        right: 0.0,
-        left: 0.0,
-        child: ConfettiWidget(
-          confettiController: controller,
-          blastDirection: pi / 2,
-          particleDrag: 0.05,
-          emissionFrequency: 0.1,
-          numberOfParticles: 2,
-          maxBlastForce: 20,
-          minBlastForce: 10,
-          gravity: 0.05,
-          shouldLoop: false,
-          colors: const [
-            Colors.green,
-            Colors.blue,
-            Colors.orange,
-            Colors.white,
-          ],
-        ),
-      ),
-    );
-    overlayState.insert(overlayEntry);
-    controller.play();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    controller = ConfettiController(duration: const Duration(seconds: 1));
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +140,8 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                 alignment: Alignment.bottomCenter,
                 child: GestureDetector(
                   onTap: () {
-                    showOverlay(context);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, 'studentLogin', (route) => false);
                   },
                   child: Container(
                     alignment: Alignment.center,

@@ -1,4 +1,7 @@
 import 'dart:math';
+import 'package:confetti/confetti.dart';
+import 'package:final_project/providers/appbar_provider.dart';
+import 'package:final_project/style/confetti.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:flutter/material.dart';
@@ -31,18 +34,27 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
   late int userType;
   String currentFact = '';
 
+  late ConfettiController controller;
+
   @override
   void initState() {
     super.initState();
+    controller = ConfettiController(duration: const Duration(seconds: 1));
     final random = Random();
     currentFact = facts[random.nextInt(facts.length)];
     userType = 0;
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final int args = ModalRoute.of(context)!.settings.arguments as int? ?? 0;
-    final theme = ref.watch(appBarProvider.notifier).isLightMode;
+    final theme = ref.watch(settingsProvider.notifier).isLightMode;
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       resizeToAvoidBottomInset: false,
@@ -99,8 +111,10 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () => Navigator.pushNamed(
-                          context, args == 0 ? 'studentLogin' : 'teacherLogin'),
+                      onTap: () => Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          args == 0 ? 'studentLogin' : 'teacherLogin',
+                          (route) => false),
                       child: FittedBox(
                         child: SizedBox(
                           height: 20,
@@ -131,8 +145,13 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
               ),
               const SizedBox(height: 30),
               GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                    context, args == 0 ? 'studentHome' : 'teacherHome'),
+                onTap: () {
+                  showConfetti(context);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      args == 0 ? 'studentHome' : 'teacherHome',
+                      (route) => false);
+                },
                 child: Container(
                   height: 50,
                   width: 120,
@@ -147,14 +166,14 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                       children: [
                         PrimaryAppText(
                           text: 'Proceed',
-                          size: 15,
+                          size: 10,
                           weight: FontWeight.bold,
                           color: Colors.green,
                         ),
                         const SizedBox(width: 5),
                         GeneralAppIcon(
                           icon: Icons.arrow_forward_ios_rounded,
-                          size: 15,
+                          size: 10,
                           color: Colors.green,
                         )
                       ],

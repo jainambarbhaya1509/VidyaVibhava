@@ -1,3 +1,4 @@
+import 'package:final_project/providers/signup_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/services.dart';
@@ -25,14 +26,7 @@ TextEditingController stateController = TextEditingController();
 TextEditingController zipCodeController = TextEditingController();
 TextEditingController countryController = TextEditingController();
 
-final addressInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
-  return {
-    'address': addressController.text,
-    'zipCode': zipCodeController.text,
-    'city': cityController.text,
-    'state': stateController.text,
-  };
-});
+
 
 Widget buildAddressInformationSection(BuildContext context) {
   return Consumer(

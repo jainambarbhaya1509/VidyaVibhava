@@ -6,3 +6,10 @@ class UserType {
 
   UserType(this.img, this.user, this.quote, this.speaker);
 }
+
+class Subject {
+  final String name;
+  final String imageUrl;
+
+  Subject({required this.name, required this.imageUrl});
+}
