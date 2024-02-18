@@ -71,7 +71,7 @@ class _OrganizatonInformationSection
               ),
               onChanged: (value) {
                 ref
-                    .read(organizationInfoProvider.notifier)
+                    .read(teacherOganizationInfoProvider.notifier)
                     .state['organization'] = value;
               },
             ),
@@ -90,7 +90,7 @@ class _OrganizatonInformationSection
                 });
 
                 ref
-                    .read(organizationInfoProvider.notifier)
+                    .read(teacherOganizationInfoProvider.notifier)
                     .state['cddaAffiliated'] = value;
               },
               activeColor: primaryColor,
@@ -132,7 +132,7 @@ class _OrganizatonInformationSection
                   setState(() {
                     selectedSubjects = values;
                     ref
-                        .read(organizationInfoProvider.notifier)
+                        .read(teacherOganizationInfoProvider.notifier)
                         .state['subjects'] = values;
                   });
                 },
@@ -151,7 +151,7 @@ class _OrganizatonInformationSection
                 setState(() {
                   isMentor = value;
                   ref
-                      .read(organizationInfoProvider.notifier)
+                      .read(teacherOganizationInfoProvider.notifier)
                       .state['isMentor'] = value;
                 });
               },

@@ -22,14 +22,13 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
   int currentPageIndex = 0;
 
   bool checkAllPersonalInfoFields() {
-    final personalInfo = ref.read(personalInfoProvider);
+    final personalInfo = ref.read(stuentPersonalInfoProvider);
     if (personalInfo['fname'] == '' ||
         personalInfo['lname'] == '' ||
         personalInfo['dob'] == '' ||
         personalInfo['gender'] == '' ||
         personalInfo['phone'] == '' ||
         personalInfo['username'] == '') {
-       
       return false;
     } else {
       return true;
@@ -37,7 +36,7 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
   }
 
   bool checkAllAddressInfoFields() {
-    final addressInfo = ref.read(addressInfoProvider);
+    final addressInfo = ref.read(studentAddressInfoProvider);
     if (addressInfo['address'] == '' ||
         addressInfo['city'] == '' ||
         addressInfo['state'] == '' ||
@@ -49,10 +48,10 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
   }
 
   bool checkDocumentUpload() {
-    final image = ref.read(imageProvider);
-    final aadhar = ref.read(aadharProvider);
-    final income = ref.read(incomeProvider);
-    if (image == null || aadhar == null || income == null) {
+    final studentImage = ref.read(studentImageProvider);
+    final studentAadhar = ref.read(studentAadharProvider);
+    final studentIncome = ref.read(studentImageProvider);
+    if (studentImage == null || studentAadhar == null || studentIncome == null) {
       return false;
     } else {
       return true;

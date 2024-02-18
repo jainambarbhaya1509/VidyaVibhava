@@ -20,7 +20,7 @@ class _BooksCardState extends ConsumerState<BooksCard> {
           color: Colors.grey.shade600,
         ),
       ),
-      child: Text(
+      child: const Text(
         "Books Card"
       ),
     );

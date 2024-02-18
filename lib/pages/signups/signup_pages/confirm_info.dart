@@ -1,4 +1,6 @@
+import 'package:final_project/providers/role_provider.dart';
 import 'package:final_project/providers/signup_providers.dart';
+import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,19 +15,35 @@ class ConfirmInformationSection extends StatefulWidget {
       _ConfirmInformationSectionState();
 }
 
-class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
-  
+String calculateAge(String dob) {
+  try {
+    
+    List<String> dobParts = dob.split("-");
+    if (dobParts.length >= 3) {
+      
+      int birthYear = int.parse(dobParts[2]);
+      int age = now.year - birthYear;
+      return age.toString(); 
+    }
+  } catch (e) {
+    rethrow;
+  }
+  return ''; 
+}
 
+class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        final personalInfo = ref.watch(personalInfoProvider);
-        final addressInfo = ref.watch(addressInfoProvider);
-        final image = ref.watch(imageProvider);
+        final role = ref.watch(roleProvider);
+        final studentPersonalInfo = ref.watch(stuentPersonalInfoProvider);
+        final studentAddressInfo = ref.watch(studentAddressInfoProvider);
+        final studentImage = ref.watch(studentImageProvider);
 
-        String year = (now.year - int.parse(personalInfo["dob"].split("-")[2]))
-            .toString();
+        final teacherPersonalInfo = ref.watch(teacherPersonalInfoProvider);
+        final teacherAddressInfo = ref.watch(teacherAddressInfoProvider);
+        final teacherImage = ref.watch(teacherImageProvider);
 
         return Container(
           margin: const EdgeInsets.only(left: 30),
@@ -44,104 +62,234 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                 margin: const EdgeInsets.only(top: 30),
                 child: Row(
                   children: [
-                    Container(
-                      height: 120,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                          image: image == null
-                              ? const AssetImage('assets/images/user.png')
-                              : FileImage(image) as ImageProvider,
-                          fit: BoxFit.cover,
+                    if (role == 'student') ...[
+                      Container(
+                        height: 120,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: studentImage == null
+                                ? const AssetImage('assets/images/user.png')
+                                : FileImage(studentImage) as ImageProvider,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
+                    ] else ...[
+                      Container(
+                        height: 120,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: teacherImage == null
+                                ? const AssetImage('assets/images/user.png')
+                                : FileImage(teacherImage) as ImageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
                     const SizedBox(
                       width: 10,
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          GeneralAppText(
-                            text: personalInfo["fname"] +
-                                " " +
-                                personalInfo["lname"],
-                            size: 20,
-                            weight: FontWeight.bold,
-                          ),
-                          Row(
+                    if (role == 'student') ...[
+                      FittedBox(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               GeneralAppText(
-                                text: personalInfo["gender"],
-                                size: 15,
-                                weight: FontWeight.normal,
+                                text: studentPersonalInfo["fname"] +
+                                    " " +
+                                    studentPersonalInfo["lname"],
+                                size: 20,
+                                weight: FontWeight.bold,
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              const Icon(
-                                Icons.brightness_1,
-                                size: 5,
-                                color: Colors.grey,
-                              ),
-                              const SizedBox(
-                                width: 10,
+                              Row(
+                                children: [
+                                  GeneralAppText(
+                                    text: studentPersonalInfo["gender"],
+                                    size: 15,
+                                    weight: FontWeight.normal,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  const Icon(
+                                    Icons.brightness_1,
+                                    size: 5,
+                                    color: Colors.grey,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GeneralAppText(
+                                    text: studentPersonalInfo.containsKey("dob")
+                                        ? '${studentPersonalInfo["dob"]} (${calculateAge(studentPersonalInfo["dob"])})'
+                                        : 'DOB not available',
+                                    size: 15,
+                                    weight: FontWeight.normal,
+                                  ),
+                                ],
                               ),
                               GeneralAppText(
-                                text: personalInfo["dob"] + " (" + year + ")",
+                                text: studentPersonalInfo["phone"],
                                 size: 15,
-                                weight: FontWeight.normal,
+                              ),
+                              GeneralAppText(
+                                text: studentPersonalInfo["username"],
+                                size: 15,
+                                weight: FontWeight.w500,
+                              ),
+                              const SizedBox(
+                                height: 5,
                               ),
                             ],
                           ),
-                          GeneralAppText(
-                            text: personalInfo["phone"],
-                            size: 15,
-                          ),
-                          GeneralAppText(
-                            text: personalInfo["username"],
-                            size: 15,
-                            weight: FontWeight.w500,
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ] else ...[
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 20,),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GeneralAppText(
+                                text: teacherPersonalInfo["fname"] +
+                                    " " +
+                                    teacherPersonalInfo["lname"],
+                                size: 20,
+                                weight: FontWeight.bold,
+                              ),
+                              Row(
+                                children: [
+                                  GeneralAppText(
+                                    text: teacherPersonalInfo["gender"],
+                                    size: 13,
+                                    weight: FontWeight.normal,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  const Icon(
+                                    Icons.brightness_1,
+                                    size: 5,
+                                    color: Colors.grey,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GeneralAppText(
+                                    text: teacherPersonalInfo.containsKey("dob")
+                                        ? '${teacherPersonalInfo["dob"]} (${calculateAge(teacherPersonalInfo["dob"])})'
+                                        : 'DOB not available',
+                                    size: 13,
+                                    weight: FontWeight.normal,
+                                  ),
+                                ],
+                              ),
+                              GeneralAppText(
+                                text: teacherPersonalInfo["phone"],
+                                size: 13,
+                              ),
+                              GeneralAppText(
+                                text: teacherPersonalInfo["email"],
+                                size: 13,
+                                weight: FontWeight.w500,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ]
                   ],
                 ),
               ),
               const SizedBox(
                 height: 10,
               ),
-              GeneralAppText(
-                text: addressInfo["address"],
-                size: 15,
-                weight: FontWeight.normal,
-              ),
-              GeneralAppText(
-                text: addressInfo["city"] +
-                    " " +
-                    addressInfo["zipCode"] +
-                    ", " +
-                    addressInfo["state"],
-                size: 15,
-                weight: FontWeight.normal,
-              ),
+              if (role == 'student') ...[
+                GeneralAppText(
+                  text: studentAddressInfo["address"],
+                  size: 15,
+                  weight: FontWeight.normal,
+                ),
+                GeneralAppText(
+                  text: studentAddressInfo["city"] +
+                      " " +
+                      studentAddressInfo["zipCode"] +
+                      ", " +
+                      studentAddressInfo["state"],
+                  size: 15,
+                  weight: FontWeight.normal,
+                ),
+              ] else ...[
+                GeneralAppText(
+                  text: teacherAddressInfo["address"],
+                  size: 13,
+                  weight: FontWeight.normal,
+                ),
+                GeneralAppText(
+                  text: teacherAddressInfo["city"] +
+                      " " +
+                      teacherAddressInfo["zipCode"] +
+                      ", " +
+                      teacherAddressInfo["state"],
+                  size: 13,
+                  weight: FontWeight.normal,
+                ),
+              ],
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
+              if (role == 'teacher') ...[
+                GeneralAppText(
+                  text:
+                      '${ref.read(teacherOganizationInfoProvider)['organization']} ${ref.read(teacherOganizationInfoProvider)['cddaAffiliated'] == true ? " (CDDA Affiliated)" : ""}',
+                  size: 12,
+                  weight: FontWeight.normal,
+                ),
+                GeneralAppText(
+                  
+                  text: ref
+                      .read(teacherOganizationInfoProvider)['subjects']
+                      .join(", "),
+                  size: 12,
+                  weight: FontWeight.normal,
+                ),
+                PrimaryAppText(
+                  text: ref.read(teacherOganizationInfoProvider)['isMentor']
+                      ? "(Mentor)"
+                      : '',
+                  size: 15,
+                  weight: FontWeight.bold,
+                  color: primaryColor,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
               Align(
                 alignment: Alignment.bottomCenter,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, 'studentLogin', (route) => false);
+                    if (role == 'student') {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, 'studentLogin', (route) => false);
+                    } else {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, 'teacherLogin', (route) => false);
+                    }
                   },
                   child: Container(
                     alignment: Alignment.center,

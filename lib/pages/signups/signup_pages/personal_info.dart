@@ -6,15 +6,27 @@ import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-DateTime selectedDate = DateTime.now();
+// Stuent Text Controllers
+DateTime studentSelectedDate = DateTime.now();
 
-TextEditingController dobController = TextEditingController();
-TextEditingController fnameController = TextEditingController();
-TextEditingController lnameController = TextEditingController();
-TextEditingController genderController = TextEditingController();
-TextEditingController phoneController = TextEditingController();
-TextEditingController usernameController = TextEditingController();
-TextEditingController emailController = TextEditingController();
+TextEditingController studentDobController = TextEditingController();
+TextEditingController studentFnameController = TextEditingController();
+TextEditingController studentLnameController = TextEditingController();
+TextEditingController studentGenderController = TextEditingController();
+TextEditingController studentPhoneController = TextEditingController();
+TextEditingController studentUsernameController = TextEditingController();
+TextEditingController studentEmailController = TextEditingController();
+
+// Teacher Text Controllers
+DateTime teacherSelectedDate = DateTime.now();
+
+TextEditingController teacherDobController = TextEditingController();
+TextEditingController teacherFnameController = TextEditingController();
+TextEditingController teacherLnameController = TextEditingController();
+TextEditingController teacherGenderController = TextEditingController();
+TextEditingController teacherPhoneController = TextEditingController();
+TextEditingController teacherUsernameController = TextEditingController();
+TextEditingController teacherEmailController = TextEditingController();
 
 class PersonalInformationSection extends ConsumerStatefulWidget {
   const PersonalInformationSection({super.key});
@@ -27,19 +39,43 @@ class PersonalInformationSection extends ConsumerStatefulWidget {
 class _PersonalInformationSectionState
     extends ConsumerState<PersonalInformationSection> {
   Future<void> selectDate(BuildContext context) async {
+    final role = ref.read(roleProvider);
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate:
+          role == 'student' ? studentSelectedDate : teacherSelectedDate,
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
 
-    if (picked != null && picked != selectedDate) {
-      selectedDate = picked;
-      String formattedDate = DateFormat('dd-MM-yyyy').format(selectedDate);
+    if (picked != null &&
+        picked !=
+            (role == 'student' ? studentSelectedDate : teacherSelectedDate)) {
+      if (role == 'student') {
+        studentSelectedDate = picked;
+      } else {
+        teacherSelectedDate = picked;
+      }
+      if (role == 'student') {
+        studentDobController.text =
+            DateFormat('dd-MM-yyyy').format(studentSelectedDate);
+      } else {
+        teacherDobController.text =
+            DateFormat('dd-MM-yyyy').format(teacherSelectedDate);
+      }
 
-      dobController.text = formattedDate;
-      ref.read(personalInfoProvider)['dob'] = formattedDate;
+      if (role == 'student') {
+        ref.read(stuentPersonalInfoProvider)['dob'] = studentDobController.text;
+      } else {
+        ref.read(teacherPersonalInfoProvider)['dob'] =
+            teacherDobController.text;
+      }
+      if (role == 'student') {
+        ref.read(stuentPersonalInfoProvider)['dob'] = studentDobController.text;
+      } else {
+        ref.read(teacherPersonalInfoProvider)['dob'] =
+            teacherDobController.text;
+      }
     }
   }
 
@@ -75,9 +111,15 @@ class _PersonalInformationSectionState
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   child: TextField(
                     onChanged: (value) {
-                      ref.read(personalInfoProvider)['fname'] = value;
+                      if (role == 'student') {
+                        ref.read(stuentPersonalInfoProvider)['fname'] = value;
+                      } else {
+                        ref.read(teacherPersonalInfoProvider)['fname'] = value;
+                      }
                     },
-                    controller: fnameController,
+                    controller: role == 'student'
+                        ? studentFnameController
+                        : teacherFnameController,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -92,9 +134,15 @@ class _PersonalInformationSectionState
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   child: TextField(
                     onChanged: (value) {
-                      ref.read(personalInfoProvider)['lname'] = value;
+                      if (role == 'student') {
+                        ref.read(stuentPersonalInfoProvider)['lname'] = value;
+                      } else {
+                        ref.read(teacherPersonalInfoProvider)['lname'] = value;
+                      }
                     },
-                    controller: lnameController,
+                    controller: role == 'student'
+                        ? studentLnameController
+                        : teacherLnameController,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -117,7 +165,11 @@ class _PersonalInformationSectionState
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   child: TextFormField(
                     onChanged: (value) {
-                      ref.read(personalInfoProvider)['dob'] = value;
+                      if (role == 'student') {
+                        ref.read(stuentPersonalInfoProvider)['dob'] = value;
+                      } else {
+                        ref.read(teacherPersonalInfoProvider)['dob'] = value;
+                      }
                     },
                     keyboardType: TextInputType.datetime,
                     readOnly: true,
@@ -128,17 +180,26 @@ class _PersonalInformationSectionState
                       ),
                       labelText: 'Date of Birth',
                     ),
-                    controller: dobController,
+                    controller: role == 'student'
+                        ? studentDobController
+                        : teacherDobController,
                   ),
                 ),
                 Container(
                   width: 160.0,
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   child: DropdownButtonFormField<String>(
-                    value: ref.watch(selectedGenderProvider),
+                    value: role == 'student'
+                        ? ref.watch(studentSelectedGenderProvider)
+                        : ref.watch(teacherSelectedGenderProvider),
                     onChanged: (String? value) {
-                      ref.read(selectedGenderProvider.notifier).state = value;
-                      ref.read(personalInfoProvider)['gender'] = value;
+                      if (role == 'student') {
+                        ref.read(studentSelectedGenderProvider.notifier).state = value;
+                        ref.read(stuentPersonalInfoProvider)['gender'] = value;
+                      } else {
+                        ref.read(teacherSelectedGenderProvider.notifier).state = value;
+                        ref.read(teacherPersonalInfoProvider)['gender'] = value;
+                      }
                     },
                     items: genderOptions
                         .map<DropdownMenuItem<String>>((String gender) {
@@ -162,9 +223,15 @@ class _PersonalInformationSectionState
             ),
             TextField(
               onChanged: (value) {
-                ref.read(personalInfoProvider)['phone'] = value;
+                if (role == 'student') {
+                  ref.read(stuentPersonalInfoProvider)['phone'] = value;
+                } else {
+                  ref.read(teacherPersonalInfoProvider)['phone'] = value;
+                }
               },
-              controller: phoneController,
+              controller: role == 'student'
+                  ? studentPhoneController
+                  : teacherPhoneController,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -191,9 +258,9 @@ class _PersonalInformationSectionState
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
-                  controller: emailController,
+                  controller: teacherEmailController,
                   onChanged: (value) {
-                    ref.read(personalInfoProvider)['email'] = value;
+                    ref.read(teacherPersonalInfoProvider)['email'] = value;
                   },
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
@@ -216,9 +283,9 @@ class _PersonalInformationSectionState
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
                   onChanged: (value) {
-                    ref.read(personalInfoProvider)['username'] = value;
+                    ref.read(stuentPersonalInfoProvider)['username'] = value;
                   },
-                  controller: usernameController,
+                  controller: studentUsernameController,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(

@@ -1,3 +1,4 @@
+import 'package:final_project/providers/role_provider.dart';
 import 'package:final_project/providers/signup_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/widgets/app_text.dart';
@@ -20,17 +21,24 @@ class _AddressInformationSectionState
   }
 }
 
-TextEditingController addressController = TextEditingController();
-TextEditingController cityController = TextEditingController();
-TextEditingController stateController = TextEditingController();
-TextEditingController zipCodeController = TextEditingController();
-TextEditingController countryController = TextEditingController();
+// Stuent Address Information
+TextEditingController studentAddressController = TextEditingController();
+TextEditingController studentCityController = TextEditingController();
+TextEditingController studentStateController = TextEditingController();
+TextEditingController studentZipCodeController = TextEditingController();
+TextEditingController studentCountryController = TextEditingController();
 
-
+// Teacher Address Information
+TextEditingController teacherAddressController = TextEditingController();
+TextEditingController teacherCityController = TextEditingController();
+TextEditingController teacherStateController = TextEditingController();
+TextEditingController teacherZipCodeController = TextEditingController();
+TextEditingController teacherCountryController = TextEditingController();
 
 Widget buildAddressInformationSection(BuildContext context) {
   return Consumer(
     builder: (context, ref, child) {
+      final role = ref.watch(roleProvider);
       return Container(
         margin: const EdgeInsets.only(left: 30, top: 30, right: 30),
         child: Column(
@@ -45,7 +53,9 @@ Widget buildAddressInformationSection(BuildContext context) {
               height: 10,
             ),
             TextFormField(
-              controller: addressController,
+              controller: role == 'student'
+                  ? studentAddressController
+                  : teacherAddressController,
               decoration: InputDecoration(
                 labelText: "Address",
                 border: OutlineInputBorder(
@@ -53,14 +63,20 @@ Widget buildAddressInformationSection(BuildContext context) {
                 ),
               ),
               onChanged: (value) {
-                ref.read(addressInfoProvider)['address'] = value;
+                if (role == 'student') {
+                  ref.read(studentAddressInfoProvider)['address'] = value;
+                } else {
+                  ref.read(teacherAddressInfoProvider)['address'] = value;
+                }
               },
             ),
             const SizedBox(
               height: 10,
             ),
             TextFormField(
-              controller: zipCodeController,
+              controller: role == 'student'
+                  ? studentZipCodeController
+                  : teacherZipCodeController,
               decoration: InputDecoration(
                 labelText: "Zip Code",
                 border: OutlineInputBorder(
@@ -68,18 +84,24 @@ Widget buildAddressInformationSection(BuildContext context) {
                 ),
               ),
               onChanged: (value) {
-                ref.read(addressInfoProvider)['zipCode'] = value;
+                if (role == 'student') {
+                  ref.read(studentAddressInfoProvider)['zipCode'] = value;
+                } else {
+                  ref.read(teacherAddressInfoProvider)['zipCode'] = value;
+                }
               },
               inputFormatters: [
-                    LengthLimitingTextInputFormatter(6),
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                LengthLimitingTextInputFormatter(6),
+                FilteringTextInputFormatter.digitsOnly
+              ],
             ),
             const SizedBox(
               height: 10,
             ),
             TextFormField(
-              controller: cityController,
+              controller: role == 'student'
+                  ? studentCityController
+                  : teacherCityController,
               decoration: InputDecoration(
                 labelText: "City",
                 border: OutlineInputBorder(
@@ -87,14 +109,20 @@ Widget buildAddressInformationSection(BuildContext context) {
                 ),
               ),
               onChanged: (value) {
-                ref.read(addressInfoProvider)['city'] = value;
+                if (role == 'student') {
+                  ref.read(studentAddressInfoProvider)['city'] = value;
+                } else {
+                  ref.read(teacherAddressInfoProvider)['city'] = value;
+                }
               },
             ),
             const SizedBox(
               height: 10,
             ),
             TextFormField(
-              controller: stateController,
+              controller: role == 'student'
+                  ? studentStateController
+                  : teacherStateController,
               decoration: InputDecoration(
                 labelText: "State",
                 border: OutlineInputBorder(
@@ -102,7 +130,11 @@ Widget buildAddressInformationSection(BuildContext context) {
                 ),
               ),
               onChanged: (value) {
-                ref.read(addressInfoProvider)['state'] = value;
+                if (role == 'student') {
+                  ref.read(studentAddressInfoProvider)['state'] = value;
+                } else {
+                  ref.read(teacherAddressInfoProvider)['state'] = value;
+                }
               },
             ),
           ],

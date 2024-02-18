@@ -5,34 +5,61 @@ import 'package:final_project/pages/signups/signup_pages/organization_info.dart'
 import 'package:final_project/pages/signups/signup_pages/personal_info.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final personalInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
+// Stuent Providers
+final stuentPersonalInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
-    'fname': fnameController.text,
-    'lname': lnameController.text,
-    'dob': dobController.text,
-    'gender': genderController.text,
-    'phone': phoneController.text,
-    'username': usernameController.text,
-    'email': emailController.text,
+    'fname': studentFnameController.text,
+    'lname': studentLnameController.text,
+    'dob': studentDobController.text,
+    'gender': studentGenderController.text,
+    'phone': studentPhoneController.text,
+    'username': studentUsernameController.text,
   };
 });
-final selectedGenderProvider = StateProvider<String?>((ref) => null);
+final studentSelectedGenderProvider = StateProvider<String?>((ref) => null);
 
-final addressInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
+final studentAddressInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
-    'address': addressController.text,
-    'zipCode': zipCodeController.text,
-    'city': cityController.text,
-    'state': stateController.text,
+    'address': studentAddressController.text,
+    'zipCode': studentZipCodeController.text,
+    'city': studentCityController.text,
+    'state': studentStateController.text,
   };
 });
 
-final imageProvider = StateProvider<File?>((ref) => null);
-final aadharProvider = StateProvider<File?>((ref) => null);
-final incomeProvider = StateProvider<File?>((ref) => null);
+final studentImageProvider = StateProvider<File?>((ref) => null);
+final studentAadharProvider = StateProvider<File?>((ref) => null);
+final studentIncomeProvider = StateProvider<File?>((ref) => null);
 
 
-final organizationInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
+// Teacher Providers
+final teacherPersonalInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
+  return {
+    'fname': teacherFnameController.text,
+    'lname': teacherLnameController.text,
+    'dob': teacherDobController.text,
+    'gender': teacherGenderController.text,
+    'phone': teacherPhoneController.text,
+    'email': teacherEmailController.text,
+  };
+});
+final teacherSelectedGenderProvider = StateProvider<String?>((ref) => null);
+
+final teacherAddressInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
+  return {
+    'address': teacherAddressController.text,
+    'zipCode': teacherZipCodeController.text,
+    'city': teacherCityController.text,
+    'state': teacherStateController.text,
+  };
+});
+
+final teacherImageProvider = StateProvider<File?>((ref) => null);
+final teacherAadharProvider = StateProvider<File?>((ref) => null);
+final teacherCertificateProvider = StateProvider<File?>((ref) => null);
+
+
+final teacherOganizationInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'organization': organizationController.text,
     'cddaAffiliated': false,

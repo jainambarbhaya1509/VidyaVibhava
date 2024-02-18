@@ -370,7 +370,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                               },
                             );
                           },
-                          child: BooksCard(),
+                          child: const BooksCard(),
                         );
                       },
                     ),

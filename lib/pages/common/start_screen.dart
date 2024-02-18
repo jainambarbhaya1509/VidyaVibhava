@@ -101,31 +101,25 @@ class _StartScreenState extends State<StartScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      controller.previousPage(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeInOut,
-                      );
+                      controller.jumpToPage(2);
                     },
-                    child: Row(
-                      children: [
-                        GeneralAppIcon(
-                          icon: Icons.arrow_back_ios_rounded,
-                          color: Colors.orange,
-                          size: 20,
-                        ),
+                    child:
+                        // GeneralAppIcon(
+                        //   icon: Icons.arrow_back_ios_rounded,
+                        //   color: Colors.orange,
+                        //   size: 20,
+                        // ),
                         SizedBox(
-                          width: 90,
-                          height: 30,
-                          child: FittedBox(
-                            child: GeneralAppText(
-                              text: "Back",
-                              color: Theme.of(context).primaryColor,
-                              size: 20,
-                              weight: FontWeight.bold,
-                            ),
-                          ),
+                      width: 90,
+                      height: 30,
+                      child: FittedBox(
+                        child: GeneralAppText(
+                          text: "Skip",
+                          color: Theme.of(context).primaryColor,
+                          size: 20,
+                          weight: FontWeight.bold,
                         ),
-                      ],
+                      ),
                     ),
                   ),
                   Center(

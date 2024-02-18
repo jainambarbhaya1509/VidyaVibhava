@@ -23,14 +23,13 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
   int currentPageIndex = 0;
 
   bool checkAllPersonalInfoFields() {
-    final personalInfo = ref.read(personalInfoProvider);
-    if (personalInfo['fname'] == '' ||
-        personalInfo['lname'] == '' ||
-        personalInfo['dob'] == '' ||
-        personalInfo['gender'] == '' ||
-        personalInfo['phone'] == '' ||
-        // personalInfo['username'] == '' ||
-        personalInfo['email'] == '') {
+    final teacherPersonalInfo = ref.read(teacherPersonalInfoProvider);
+    if (teacherPersonalInfo['fname'] == '' ||
+        teacherPersonalInfo['lname'] == '' ||
+        teacherPersonalInfo['dob'] == '' ||
+        teacherPersonalInfo['gender'] == '' ||
+        teacherPersonalInfo['phone'] == '' ||
+        teacherPersonalInfo['email'] == '') {
       return false;
     } else {
       return true;
@@ -38,11 +37,11 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
   }
 
   bool checkAllAddressInfoFields() {
-    final addressInfo = ref.read(addressInfoProvider);
-    if (addressInfo['address'] == '' ||
-        addressInfo['city'] == '' ||
-        addressInfo['state'] == '' ||
-        addressInfo['zipCode'] == '') {
+    final teacherAddressInfo = ref.read(teacherAddressInfoProvider);
+    if (teacherAddressInfo['address'] == '' ||
+        teacherAddressInfo['city'] == '' ||
+        teacherAddressInfo['state'] == '' ||
+        teacherAddressInfo['zipCode'] == '') {
       return false;
     } else {
       return true;
@@ -50,10 +49,12 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
   }
 
   bool checkDocumentUpload() {
-    final image = ref.read(imageProvider);
-    final aadhar = ref.read(aadharProvider);
-    final income = ref.read(incomeProvider);
-    if (image == null || aadhar == null || income == null) {
+    final teacherImage = ref.read(teacherImageProvider);
+    final teacherAadhar = ref.read(teacherAadharProvider);
+    final teacherCertificate = ref.read(teacherCertificateProvider);
+    if (teacherImage == null ||
+        teacherAadhar == null ||
+        teacherCertificate == null) {
       return false;
     } else {
       return true;
@@ -61,9 +62,9 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
   }
 
   bool checkOrganizationInfo() {
-    final organizationInfo = ref.read(organizationInfoProvider);
-    if (organizationInfo['organization'] == '' ||
-        organizationInfo['subjects'] == []) {
+    final teacherOrganizationInfo = ref.read(teacherOganizationInfoProvider);
+    if (teacherOrganizationInfo['organization'] == '' ||
+        teacherOrganizationInfo['subjects'] == []) {
       return false;
     } else {
       return true;
@@ -81,8 +82,10 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     ToastContext().init(context);
-    final signupController = PageController(
-        initialPage: currentPageIndex, keepPage: true, viewportFraction: 1.0);
+    final teacherSignupController = PageController(
+      initialPage: currentPageIndex,
+      keepPage: true,
+    );
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -160,7 +163,7 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                 ],
               ),
               child: PageView(
-                controller: signupController,
+                controller: teacherSignupController,
                 physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (index) {
                   setState(() {
@@ -183,7 +186,7 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
             GestureDetector(
               onTap: () {
                 if (currentPageIndex == 0) return;
-                signupController.previousPage(
+                teacherSignupController.previousPage(
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,
                 );
@@ -207,10 +210,12 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                     (widget) => widget.runtimeType == DocumentUploadSection);
 
                 int organizationInfoIndex = signUpSections.indexWhere(
-                    (widget) => widget.runtimeType == OrganizatonInformationSection);
+                    (widget) =>
+                        widget.runtimeType == OrganizatonInformationSection);
 
                 if (currentPageIndex == personalInfoIndex &&
                     checkAllPersonalInfoFields() == false) {
+         
                   Toast.show(
                     "Please fill all the fields",
                     duration: Toast.lengthLong,
@@ -221,6 +226,7 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
 
                 if (currentPageIndex == addressInfoIndex &&
                     checkAllAddressInfoFields() == false) {
+
                   Toast.show(
                     "Please fill all the fields",
                     duration: Toast.lengthLong,
@@ -231,6 +237,7 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
 
                 if (currentPageIndex == documentUploadIndex &&
                     checkDocumentUpload() == false) {
+                
                   Toast.show(
                     "Please upload all the documents",
                     duration: Toast.lengthLong,
@@ -238,8 +245,10 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                   );
                   return;
                 }
-                if(currentPageIndex == organizationInfoIndex &&
+                if (currentPageIndex == organizationInfoIndex &&
                     checkOrganizationInfo() == false) {
+             
+                      
                   Toast.show(
                     "Please fill all the fields",
                     duration: Toast.lengthLong,
@@ -249,7 +258,7 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                 }
                 if (currentPageIndex == signUpSections.length - 1) return;
 
-                signupController.nextPage(
+                teacherSignupController.nextPage(
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,
                 );

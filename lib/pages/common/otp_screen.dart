@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:confetti/confetti.dart';
 import 'package:final_project/providers/appbar_provider.dart';
+import 'package:final_project/providers/role_provider.dart';
 import 'package:final_project/style/confetti.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
@@ -53,7 +54,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final int args = ModalRoute.of(context)!.settings.arguments as int? ?? 0;
+    final role = ref.watch(roleProvider);
     final theme = ref.watch(settingsProvider.notifier).isLightMode;
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -111,10 +112,15 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () => Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          args == 0 ? 'studentLogin' : 'teacherLogin',
-                          (route) => false),
+                      onTap: () {
+                        if (role == 'student') {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, 'studentLogin', (route) => false);
+                        } else {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, 'teacherLogin', (route) => false);
+                        }
+                      },
                       child: FittedBox(
                         child: SizedBox(
                           height: 20,
@@ -147,10 +153,13 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
               GestureDetector(
                 onTap: () {
                   showConfetti(context);
-                  Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      args == 0 ? 'studentHome' : 'teacherHome',
-                      (route) => false);
+                  if (role == 'student') {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, 'studentHome', (route) => false);
+                  } else {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, 'teacherHome', (route) => false);
+                  }
                 },
                 child: Container(
                   height: 50,
