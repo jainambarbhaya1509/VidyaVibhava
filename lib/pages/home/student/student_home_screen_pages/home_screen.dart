@@ -29,164 +29,317 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final theme = ref.read(settingsProvider.notifier).isLightMode;
     return Scaffold(
-      
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           color: Theme.of(context).primaryColor,
-          padding: const EdgeInsets.only(left: 15, right: 15, top: 30),
+          // padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
+          padding: const EdgeInsets.only(
+            top: 30,
+          ),
           alignment: Alignment.center,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: GeneralAppText(
-                    text: "jainambarbhaya",
-                    size: 20,
-                  ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                // color: Colors.amber,
+                width: 200,
+                child: GeneralAppText(
+                  text: "jainambarbhaya",
+                  size: 20,
                 ),
-                Row(
-                  children: [
-                    GeneralAppIcon(color: primaryColor, icon: Icons.rocket_launch,),
-                    const SizedBox(width: 30,),
-                    GestureDetector(
-                      onTap: () {},
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
                       child: GeneralAppIcon(
-                        icon: Icons.chat_bubble_outline,
-                        color: theme == true ? textColor1 : textColor2,
-                        size: 20,
-                      ),
+                    color: theme == true ? textColor1 : textColor2,
+                    icon: Icons.cases_outlined,
+                  )),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  GestureDetector(
+                      child: GeneralAppIcon(
+                    color: primaryColor,
+                    icon: Icons.rocket_launch,
+                  )),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: GeneralAppIcon(
+                      icon: Icons.chat_bubble_outline,
+                      color: theme == true ? textColor1 : textColor2,
+                      size: 20,
                     ),
-                  ],
-                )
-              ],
-            ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 15),
+          // color: Colors.white,
+          padding: const EdgeInsets.only(top: 20),
 
-
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 15),
-        // color: Colors.white,
-        padding: const EdgeInsets.only(top: 20),
-
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Latest News
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GeneralAppText(
-                  text: "What's Latest?",
-                  size: 20,
-                  weight: FontWeight.bold,
-                ),
-                GeneralAppIcon(
-                  icon: Icons.navigate_next_sharp,
-                  color: primaryColor,
-                  size: 30,
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.25,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.grey)),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-
-            // Explore subjects
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: GeneralAppText(
-                    text: "Explore Subjects ",
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // Latest News
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GeneralAppText(
+                    text: "What's Latest?",
                     size: 20,
                     weight: FontWeight.bold,
                   ),
-                ),
-                GeneralAppIcon(
-                  icon: Icons.navigate_next_sharp,
-                  color: primaryColor,
-                  size: 30,
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.width * 0.23,
-              child: ListView.builder(
-              
-                scrollDirection: Axis.horizontal,
-                itemCount: subjects.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          height: MediaQuery.of(context).size.width * 0.15,
-                          width: MediaQuery.of(context).size.width * 0.15,
-                          decoration: BoxDecoration(
-                            color: theme == true ? textColor1 : textColor2,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Image(
-                            fit: BoxFit.scaleDown,
-                            image:
-                                AssetImage(subjects[index].imageUrl,),
+                  GeneralAppIcon(
+                    icon: Icons.navigate_next_sharp,
+                    color: primaryColor,
+                    size: 30,
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.25,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey)),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+
+              // Explore subjects
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: GeneralAppText(
+                      text: "Explore Subjects ",
+                      size: 20,
+                      weight: FontWeight.bold,
+                    ),
+                  ),
+                  GeneralAppIcon(
+                    icon: Icons.navigate_next_sharp,
+                    color: primaryColor,
+                    size: 30,
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.width * 0.23,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: subjects.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            height: MediaQuery.of(context).size.width * 0.15,
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            decoration: BoxDecoration(
+                              color: theme == true ? textColor1 : textColor2,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: Image(
+                              fit: BoxFit.scaleDown,
+                              image: AssetImage(
+                                subjects[index].imageUrl,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      GeneralAppText(
-                        text: subjects[index].name,
-                        color: primaryColor,
-                        size: 13,
-                      )
-                    ],
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 30,),
-            // continue learning
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GeneralAppText(
-                  text: "Continue Learning",
-                  size: 20,
-                  weight: FontWeight.bold,
+                        GeneralAppText(
+                          text: subjects[index].name,
+                          color: primaryColor,
+                          size: 13,
+                        )
+                      ],
+                    );
+                  },
                 ),
-                GeneralAppIcon(
-                  icon: Icons.navigate_next_sharp,
-                  color: primaryColor,
-                  size: 30,
-                )
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              // continue learning
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GeneralAppText(
+                    text: "Continue Learning",
+                    size: 20,
+                    weight: FontWeight.bold,
+                  ),
+                  GeneralAppIcon(
+                    icon: Icons.navigate_next_sharp,
+                    color: primaryColor,
+                    size: 30,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 100,
+                // color: Colors.amber,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        width: 180,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey)),
+                      );
+                    }),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GeneralAppText(
+                    text: "Assignments",
+                    size: 20,
+                    weight: FontWeight.bold,
+                  ),
+                  GeneralAppIcon(
+                    icon: Icons.navigate_next_sharp,
+                    color: primaryColor,
+                    size: 30,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 60,
+                // color: Colors.amber,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.only(right: 5,),
+                        // height: 10,
+                        width: 180,
+                        decoration: BoxDecoration(
+                            // color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey)),
+                        child: FittedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(left: 10, top: 10 , bottom: 10),
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                    color: Colors.amber,
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: GeneralAppText(
+                                  text: "Assignment $index",
+                                  size: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+
+              GeneralAppText(
+                text: "Your Career Path",
+                size: 20,
+                weight: FontWeight.bold,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              GeneralAppText(
+                text:
+                    "Discover your ideal career path with our quick and comprehensive career counselling quiz!",
+                size: 15,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, 'careerQuiz',);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  // margin: const EdgeInsets.only(bottom: 30),
+                  height: 50,
+                  width: MediaQuery.of(context).size.width ,
+                  padding: const EdgeInsets.symmetric(horizontal: 10,),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: primaryColor, width: 0.9),
+                  ),
+                  child: FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GeneralAppIcon(icon: Icons.workspace_premium_rounded , color: primaryColor.withOpacity(0.8)),
+                        const SizedBox(width: 10,),
+                        PrimaryAppText(
+                          text: 'Craft Your Career Journey',
+                          size: MediaQuery.of(context).size.width * 0.04,
+                          weight: FontWeight.bold,
+                          color: primaryColor.withOpacity(0.8),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

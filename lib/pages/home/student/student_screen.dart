@@ -25,7 +25,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
 
   List<IconData> iconList = [
     Icons.home_outlined,
-    Icons.newspaper_rounded,
+    Icons.group_rounded,
     Icons.menu_book_sharp,
     Icons.person_outline,
   ];
