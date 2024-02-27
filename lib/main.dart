@@ -1,3 +1,4 @@
+import 'package:final_project/pages/common/gemini.dart';
 import 'package:final_project/pages/home/student/career_quiz/career_quiz.dart';
 import 'package:final_project/pages/home/student/student_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
@@ -51,6 +52,7 @@ class MyApp extends ConsumerWidget {
         'onboardingScreen': (context) => const StartScreen(),
         'usersTypeScreen': (context) => const UserTypeScreen(),
         'getOTP': (context) => const OTPScreen(),
+        'geminiChatBot': (context) => const GeminiChatBot(),
 
         'careerQuiz': (context) => const CareerQuiz(),
 

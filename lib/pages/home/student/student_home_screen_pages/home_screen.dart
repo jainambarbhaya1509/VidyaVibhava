@@ -63,6 +63,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     width: 20,
                   ),
                   GestureDetector(
+                    onTap: (){
+                      Navigator.pushNamed(context, 'geminiChatBot');
+                    },
                       child: GeneralAppIcon(
                     color: primaryColor,
                     icon: Icons.rocket_launch,
@@ -187,6 +190,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(
                 height: 30,
               ),
+
+              
               // continue learning
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,6 +231,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(
                 height: 50,
               ),
+
+              // assignments
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -291,6 +298,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 height: 50,
               ),
 
+
+              // career path
               GeneralAppText(
                 text: "Your Career Path",
                 size: 20,

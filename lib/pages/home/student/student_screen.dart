@@ -50,7 +50,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
               offset: const Offset(0, 1),
             ),
           ],
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: BorderRadius.circular(30),
         ),
         child: ListView.builder(
           itemCount: body.length,
@@ -70,7 +70,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AnimatedContainer(
-                  curve: Curves.fastOutSlowIn,
+                  curve: Curves.easeInOutCubicEmphasized,
                   duration: const Duration(milliseconds: 300),
                   margin: EdgeInsets.only(
                     bottom: index == _currentIndex ? 0 : size.width * .029,
@@ -86,7 +86,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                 ),
                 Icon(
                   iconList[index],
-                  size: size.width * .07,
+                  size: 25,
                   color: index == _currentIndex ? primaryColor : Colors.grey,
                 ),
                 SizedBox(height: size.width * .03),

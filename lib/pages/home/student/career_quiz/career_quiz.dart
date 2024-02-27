@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CareerQuiz extends ConsumerStatefulWidget {
-  const CareerQuiz({Key? key}) : super(key: key);
+  const CareerQuiz({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CareerQuizState();
@@ -263,7 +263,7 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),
