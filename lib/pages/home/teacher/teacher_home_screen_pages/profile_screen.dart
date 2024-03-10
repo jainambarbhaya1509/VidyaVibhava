@@ -10,14 +10,14 @@ import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class StudentProfileScreen extends ConsumerStatefulWidget {
-  const StudentProfileScreen({super.key});
+class TeacherProfileScreen extends ConsumerStatefulWidget {
+  const TeacherProfileScreen({super.key});
 
   @override
-  ConsumerState<StudentProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<TeacherProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
+class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
@@ -226,99 +226,126 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(
-                    left: 20,
-                  ),
-                  height: MediaQuery.of(context).size.height * 0.12,
-                  width: MediaQuery.of(context).size.width * 0.23,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      image: const DecorationImage(
-                        image: AssetImage('assets/img/student2.png'),
-                        fit: BoxFit.fill,
+            Container(
+    
+              width: double.infinity,
+              // height: MediaQuery.of(context).size.height,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(
+                      left: 20,
+                    ),
+                    height: MediaQuery.of(context).size.height * 0.12,
+                    width: MediaQuery.of(context).size.width * 0.23,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/img/student2.png'),
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 25),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GeneralAppText(
-                      text: "Jainam Barbhaya",
-                      size: 20,
-                    ),
-                    GeneralAppText(
-                      text: "jainambarbhaya",
-                      size: 15,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 15),
-                    Row(
+                  const SizedBox(width: 10),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10, right: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            alignment: Alignment.center,
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                            child: FittedBox(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            FittedBox(
                               child: GeneralAppText(
-                                text: "Edit Profile",
-                                size: 15,
-                                color: Theme.of(context).primaryColor,
+                                text: "Jainam Barbhaya",
                                 weight: FontWeight.bold,
+                                size: 20,
                               ),
                             ),
-                          ),
+                            const SizedBox(width: 10),
+                            FittedBox(
+                                child: PrimaryAppText(
+                              text: "(Mentor)",
+                              color: primaryColor,
+                              size: 13,
+                            ))
+                          ],
                         ),
-                        const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            alignment: Alignment.center,
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.grey.shade600,
+                        GeneralAppText(
+                          text: "jainambarbhaya",
+                          size: 15,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        const SizedBox(height: 15),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                alignment: Alignment.center,
+                                height: MediaQuery.of(context).size.height * 0.04,
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                                child: FittedBox(
+                                  child: GeneralAppText(
+                                    text: "Edit Profile",
+                                    size: 15,
+                                    color: Theme.of(context).primaryColor,
+                                    weight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
-                            child: FittedBox(
-                              child: GeneralAppText(
-                                text: "Analysis",
-                                size: 15,
-                                color: Theme.of(context).primaryColor,
-                                weight: FontWeight.bold,
+                            const SizedBox(width: 10),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                alignment: Alignment.center,
+                                height: MediaQuery.of(context).size.height * 0.04,
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                                child: FittedBox(
+                                  child: GeneralAppText(
+                                    text: "Student List",
+                                    size: 15,
+                                    color: Theme.of(context).primaryColor,
+                                    weight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 20),
+
             Align(
               alignment: Alignment.center,
               child: TabBar(
@@ -352,21 +379,20 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
               child: TabBarView(
                 controller: tabController,
                 children: [
-                  
-                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      height: MediaQuery.of(context).size.height * 0.464,
-                      child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 0.4 / 0.6,
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
-                        itemCount: savedBooks["imageUrl"].length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    height: MediaQuery.of(context).size.height * 0.464,
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 0.4 / 0.6,
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                      ),
+                      itemCount: savedBooks["imageUrl"].length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
                             onTap: () {
                               showModalBottomSheet(
                                 isScrollControlled: true,
@@ -380,11 +406,12 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
                                 },
                               );
                             },
-                            child: BooksCard(imageUrl: imageUrl[index],));
-                        },
-                      ),
+                            child: BooksCard(
+                              imageUrl: imageUrl[index],
+                            ));
+                      },
                     ),
-          
+                  ),
 
                   // lectures
                   Container(
@@ -451,5 +478,6 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
     );
   }
 }
+
 
 // TODO: Fix Overflow at Name Section

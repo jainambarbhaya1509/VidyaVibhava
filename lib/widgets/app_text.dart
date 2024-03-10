@@ -83,15 +83,6 @@ class PrimaryAppText extends ConsumerStatefulWidget {
 }
 
 class _PrimaryAppTextState extends ConsumerState<PrimaryAppText> {
-  // get savePref => ref.read(settingsProvider.notifier).savePreferences();
-
-  // @override
-  // void initState() {
-  //   final loadPref = ref.read(settingsProvider.notifier);
-  //   loadPref.loadPreferences();
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final langCode = ref.watch(settingsProvider).langCode;
@@ -121,6 +112,41 @@ class _PrimaryAppTextState extends ConsumerState<PrimaryAppText> {
           );
         }
       },
+    );
+  }
+}
+
+class SecondaryAppText extends ConsumerStatefulWidget {
+  final String text;
+  final Color? color;
+  double size;
+  FontWeight? weight;
+  TextAlign? alignment;
+
+  SecondaryAppText({
+    super.key,
+    required this.text,
+    this.color,
+    this.size = 24,
+    this.weight,
+    this.alignment,
+  });
+
+  @override
+  ConsumerState<SecondaryAppText> createState() => _SecondaryAppTextState();
+}
+
+class _SecondaryAppTextState extends ConsumerState<SecondaryAppText> {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      widget.text,
+      style: GoogleFonts.lato(
+        color: widget.color,
+        fontSize: widget.size,
+        fontWeight: widget.weight,
+      ),
+      textAlign: widget.alignment,
     );
   }
 }

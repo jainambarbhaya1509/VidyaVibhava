@@ -256,7 +256,10 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                   );
                   return;
                 }
-                if (currentPageIndex == signUpSections.length - 1) return;
+                if (currentPageIndex == signUpSections.length - 1) {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, 'teacherLogin', (route) => false);
+                }
 
                 teacherSignupController.nextPage(
                   duration: const Duration(milliseconds: 500),
@@ -264,10 +267,12 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                 );
               },
               child: PrimaryAppText(
-                text: "Next",
+                text: currentPageIndex == signUpSections.length - 1
+                    ? "Proceed"
+                    : "Next",
                 size: 20,
                 color: currentPageIndex == signUpSections.length - 1
-                    ? Colors.grey
+                    ? Colors.green
                     : primaryColor,
                 weight: FontWeight.bold,
               ),

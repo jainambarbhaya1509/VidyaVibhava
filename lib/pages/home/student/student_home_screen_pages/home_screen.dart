@@ -1,4 +1,6 @@
 import 'package:final_project/models/models.dart';
+import 'package:final_project/pages/common/chat/chat_list.dart';
+import 'package:final_project/pages/common/gemini.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
@@ -6,14 +8,14 @@ import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
+class StudentHomeScreen extends ConsumerStatefulWidget {
+  const StudentHomeScreen({super.key});
 
   @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<StudentHomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
   final List<Subject> subjects = [
     Subject(name: "Language", imageUrl: 'assets/img/lang.png'),
     Subject(name: "Maths", imageUrl: 'assets/img/maths.png'),
@@ -31,7 +33,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         flexibleSpace: Container(
           color: Theme.of(context).primaryColor,
           // padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
@@ -44,7 +46,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                // color: Colors.amber,
                 width: 200,
                 child: GeneralAppText(
                   text: "jainambarbhaya",
@@ -63,18 +64,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     width: 20,
                   ),
                   GestureDetector(
-                    onTap: (){
-                      Navigator.pushNamed(context, 'geminiChatBot');
-                    },
+                      onTap: () {
+                        Navigator.push(context,
+                            _createAnimatedScreenRoute(const GeminiChatBot(),1,0));
+                      },
                       child: GeneralAppIcon(
-                    color: primaryColor,
-                    icon: Icons.rocket_launch,
-                  )),
+                        color: primaryColor,
+                        icon: Icons.rocket_launch,
+                      )),
                   const SizedBox(
                     width: 20,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context, _createAnimatedScreenRoute(const ChatScreen(),1,0));
+                      // Navigator.pushNamed(context, 'chatScreen');
+                    },
                     child: GeneralAppIcon(
                       icon: Icons.chat_bubble_outline,
                       color: theme == true ? textColor1 : textColor2,
@@ -191,7 +197,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 height: 30,
               ),
 
-              
               // continue learning
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -259,7 +264,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     itemCount: 10,
                     itemBuilder: (context, index) {
                       return Container(
-                        margin: const EdgeInsets.only(right: 5,),
+                        margin: const EdgeInsets.only(
+                          right: 5,
+                        ),
                         // height: 10,
                         width: 180,
                         decoration: BoxDecoration(
@@ -271,7 +278,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
-                                margin: const EdgeInsets.only(left: 10, top: 10 , bottom: 10),
+                                margin: const EdgeInsets.only(
+                                    left: 10, top: 10, bottom: 10),
                                 height: 50,
                                 width: 50,
                                 decoration: BoxDecoration(
@@ -298,7 +306,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 height: 50,
               ),
 
-
               // career path
               GeneralAppText(
                 text: "Your Career Path",
@@ -318,14 +325,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, 'careerQuiz',);
+                  Navigator.pushNamed(
+                    context,
+                    'careerQuiz',
+                  );
                 },
                 child: Container(
                   alignment: Alignment.center,
                   // margin: const EdgeInsets.only(bottom: 30),
                   height: 50,
-                  width: MediaQuery.of(context).size.width ,
-                  padding: const EdgeInsets.symmetric(horizontal: 10,),
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: primaryColor, width: 0.9),
@@ -334,8 +346,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GeneralAppIcon(icon: Icons.workspace_premium_rounded , color: primaryColor.withOpacity(0.8)),
-                        const SizedBox(width: 10,),
+                        GeneralAppIcon(
+                            icon: Icons.workspace_premium_rounded,
+                            color: primaryColor.withOpacity(0.8)),
+                        const SizedBox(
+                          width: 10,
+                        ),
                         PrimaryAppText(
                           text: 'Craft Your Career Journey',
                           size: MediaQuery.of(context).size.width * 0.04,
@@ -351,6 +367,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  // Animated route
+  Route _createAnimatedScreenRoute(Widget child, double startOffset, double endOffset) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => child,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin =  Offset(startOffset, endOffset);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
     );
   }
 }

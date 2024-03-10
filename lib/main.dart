@@ -46,8 +46,8 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: 'Smart Education',
       theme: theme.isLightMode == true ? lightTheme : darkTheme,
-      home: showHome ? const UserTypeScreen() : const StartScreen(),
-      // home: const CareerQuiz(),
+      // home: showHome ? const UserTypeScreen() : const StartScreen(),
+      home: const TeacherScreen(),
       routes: {
         'onboardingScreen': (context) => const StartScreen(),
         'usersTypeScreen': (context) => const UserTypeScreen(),
@@ -58,11 +58,11 @@ class MyApp extends ConsumerWidget {
 
         'studentSignUp': (context) => const StudentSignUpScreen(),
         'studentLogin': (context) => const StudentLoginScreen(),
-        'studentHome': (context) => const StudentHomeScreen(),
+        'studentHome': (context) => const StudentScreen(),
 
         'teacherLogin': (context) => const TeacherLoginScreen(),
         'teacherSignUp': (context) => const TeacherSignUpScreen(),
-        'teacherHome': (context) => const TeacherHomeScreen(),
+        'teacherHome': (context) => const TeacherScreen(),
 
       },
     );

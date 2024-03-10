@@ -215,7 +215,9 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
                   );
                   return;
                 }
-                if (currentPageIndex == signUpSections.length - 1) return;
+                if (currentPageIndex == signUpSections.length - 1) {
+                  Navigator.pushNamedAndRemoveUntil(context, 'studentLogin', (route) => false);
+                }
 
                 studentPageViewController.nextPage(
                   duration: const Duration(milliseconds: 500),
@@ -223,10 +225,10 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
                 );
               },
               child: PrimaryAppText(
-                text: "Next",
+                text: currentPageIndex == signUpSections.length - 1 ? "Submit" : "Next",
                 size: 20,
                 color: currentPageIndex == signUpSections.length - 1
-                    ? Colors.grey
+                    ? Colors.green
                     : primaryColor,
                 weight: FontWeight.bold,
               ),

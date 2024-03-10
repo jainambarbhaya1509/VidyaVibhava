@@ -5,7 +5,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_text.dart';
-import 'package:final_project/pages/common/start_screen_page/build_page.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
@@ -175,4 +174,35 @@ class _StartScreenState extends State<StartScreen> {
             ),
     );
   }
+
+  Widget buildOnboardingPage({
+    required String image,
+    required String title,
+    required String content,
+  }) =>
+      Container(
+        margin: const EdgeInsets.only(top: 100),
+        child: Column(
+          children: [
+            Image.asset(image),
+            const SizedBox(
+              height: 40,
+            ),
+            GeneralAppText(
+              text: title,
+              weight: FontWeight.bold,
+              size: 25,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            GeneralAppText(
+              text: content,
+              weight: FontWeight.normal,
+              size: 15,
+              alignment: TextAlign.center,
+            ),
+          ],
+        ),
+      );
 }

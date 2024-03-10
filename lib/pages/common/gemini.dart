@@ -87,7 +87,7 @@ class _TextOnlyState extends ConsumerState<TextOnly> {
     setState(() {
       loading = true;
       textChat.add({
-        "role": "User",
+        "role": "You",
         "text": query,
       });
       _textController.clear();
@@ -236,7 +236,7 @@ class _TextWithImageState extends ConsumerState<TextWithImage> {
     setState(() {
       loading = true;
       textAndImageChat.add({
-        "role": "User",
+        "role": "You",
         "text": query,
         "image": image,
       });

@@ -279,37 +279,37 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                   height: 20,
                 ),
               ],
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: GestureDetector(
-                  onTap: () {
-                    if (role == 'student') {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, 'studentLogin', (route) => false);
-                    } else {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, 'teacherLogin', (route) => false);
-                    }
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.only(right: 30),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.green, width: 0.9),
-                    ),
-                    child: PrimaryAppText(
-                      text: 'Proceed',
-                      size: MediaQuery.of(context).size.width * 0.04,
-                      weight: FontWeight.normal,
-                      color: Colors.green,
-                    ),
-                  ),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.bottomCenter,
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       if (role == 'student') {
+              //         Navigator.pushNamedAndRemoveUntil(
+              //             context, 'studentLogin', (route) => false);
+              //       } else {
+              //         Navigator.pushNamedAndRemoveUntil(
+              //             context, 'teacherLogin', (route) => false);
+              //       }
+              //     },
+              //     child: Container(
+              //       alignment: Alignment.center,
+              //       margin: const EdgeInsets.only(right: 30),
+              //       height: 50,
+              //       width: MediaQuery.of(context).size.width * 0.3,
+              //       padding: const EdgeInsets.symmetric(horizontal: 10),
+              //       decoration: BoxDecoration(
+              //         borderRadius: BorderRadius.circular(10),
+              //         border: Border.all(color: Colors.green, width: 0.9),
+              //       ),
+              //       child: PrimaryAppText(
+              //         text: 'Proceed',
+              //         size: MediaQuery.of(context).size.width * 0.04,
+              //         weight: FontWeight.normal,
+              //         color: Colors.green,
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         );

@@ -301,7 +301,6 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeIn,
                   );
-                  print(selectedValues);
                 }
               },
               child: PrimaryAppText(
