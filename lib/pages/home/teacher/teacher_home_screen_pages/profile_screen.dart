@@ -1,13 +1,18 @@
 import 'package:final_project/pages/home/student/cards/books_modal.dart';
 import 'package:final_project/pages/home/student/cards/saved_books_card.dart';
+import 'package:final_project/pages/signups/signup_pages/personal_info.dart';
 import 'package:final_project/providers/appbar_provider.dart';
+import 'package:final_project/providers/signup_providers.dart';
 import 'package:final_project/providers/student_screen_provider.dart';
 import 'package:final_project/style/painter.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TeacherProfileScreen extends ConsumerStatefulWidget {
@@ -229,8 +234,7 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-    
+            SizedBox(
               width: double.infinity,
               // height: MediaQuery.of(context).size.height,
               child: Row(
@@ -288,11 +292,179 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                         Row(
                           children: [
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  context: context,
+                                  builder: (builder) {
+                                    return Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, top: 30, right: 20),
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10)),
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              GeneralAppText(
+                                                text: "Edit Profile",
+                                                size: 20,
+                                              ),
+                                              GeneralAppIcon(
+                                                  icon: Icons.close,
+                                                  color: theme.isLightMode
+                                                      ? textColor1
+                                                      : textColor2)
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 50,
+                                          ),
+                                          Container(
+                                            alignment: Alignment.center,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Material(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                  elevation: 5,
+                                                  child: SizedBox(
+                                                    height: 120,
+                                                    width: 120,
+                                                    child: Container(
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image:
+                                                              NetworkImage(""),
+                                                          fit: BoxFit.fill,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                PrimaryAppText(
+                                                  text: "Change Picture",
+                                                  size: 15,
+                                                  color: theme.isLightMode
+                                                      ? bgColor2
+                                                      : bgColor1,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: TextField(
+                                              controller:
+                                                  teacherEmailController,
+                                              onChanged: (value) {
+                                                ref.read(
+                                                        teacherPersonalInfoProvider)[
+                                                    'email'] = value;
+                                              },
+                                              keyboardType:
+                                                  TextInputType.emailAddress,
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                ),
+                                                labelText: 'Email Address',
+                                              ),
+                                              inputFormatters: [
+                                                LengthLimitingTextInputFormatter(
+                                                    100),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          TextField(
+                                            onChanged: (value) {
+                                              ref.read(
+                                                      teacherPersonalInfoProvider)[
+                                                  'phone'] = value;
+                                            },
+                                            controller: teacherPhoneController,
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              labelText: 'Phone Number',
+                                              prefixIcon: const Padding(
+                                                padding: EdgeInsets.all(15),
+                                                child: Text(
+                                                  '+91 |',
+                                                  style:
+                                                      TextStyle(fontSize: 17),
+                                                ),
+                                              ),
+                                            ),
+                                            inputFormatters: [
+                                              LengthLimitingTextInputFormatter(
+                                                  10),
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 50,
+                                          ),
+                                          Container(
+                                            alignment: Alignment.center,
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              width: 100,
+                                              padding: const EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.green),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: PrimaryAppText(
+                                                text: "Update",
+                                                size: 15,
+                                                color: Colors.green,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
                               child: Container(
                                 padding: const EdgeInsets.all(5),
                                 alignment: Alignment.center,
-                                height: MediaQuery.of(context).size.height * 0.04,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
                                 width: MediaQuery.of(context).size.width * 0.3,
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,
@@ -313,11 +485,104 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                             ),
                             const SizedBox(width: 10),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  context: context,
+                                  builder: (builder) {
+                                    return Container(
+                                      padding: const EdgeInsets.only(
+                                          top: 50, left: 10, right: 10),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).primaryColor,
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10)),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(left: 10, bottom: 20, right: 20),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              
+                                              children: [
+                                                GeneralAppText(
+                                                  text: "Student List",
+                                                  size: 20,
+                                                  weight: FontWeight.bold,
+                                                  color:
+                                                      theme.isLightMode == true
+                                                          ? textColor1
+                                                          : textColor2,
+                                                ),
+                                                
+                                                GeneralAppIcon(
+                                                  icon: Icons.close,
+                                                  color: theme.isLightMode
+                                                      ? textColor1
+                                                      : textColor2,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              itemCount: 3,
+                                              itemBuilder: (index, context) {
+                                                return Container(
+                                                  margin: const EdgeInsets.only(
+                                                      bottom: 10),
+                                                  height: 60,
+                                                  width: 10,
+                                                  decoration: BoxDecoration(
+                                                    color: const Color.fromARGB(
+                                                        255, 62, 62, 62),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        margin: const EdgeInsets
+                                                            .only(left: 10),
+                                                        height: 50,
+                                                        width: 50,
+                                                        decoration: BoxDecoration(
+                                                            color: primaryColor,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50)),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 20,
+                                                      ),
+                                                      PrimaryAppText(
+                                                        text: "jainambarbhaya",
+                                                        size: 16,
+                                                      )
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
                               child: Container(
                                 padding: const EdgeInsets.all(5),
                                 alignment: Alignment.center,
-                                height: MediaQuery.of(context).size.height * 0.04,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
                                 width: MediaQuery.of(context).size.width * 0.3,
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,

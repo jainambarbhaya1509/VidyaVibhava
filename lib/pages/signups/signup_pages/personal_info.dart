@@ -15,7 +15,6 @@ TextEditingController studentLnameController = TextEditingController();
 TextEditingController studentGenderController = TextEditingController();
 TextEditingController studentPhoneController = TextEditingController();
 TextEditingController studentUsernameController = TextEditingController();
-TextEditingController studentEmailController = TextEditingController();
 
 // Teacher Text Controllers
 DateTime teacherSelectedDate = DateTime.now();

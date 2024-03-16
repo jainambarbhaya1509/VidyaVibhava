@@ -140,7 +140,7 @@ class _BooksModalState extends ConsumerState<BooksModal> {
                                         icon: savedBooks["bookTitle"]
                                                 .contains(widget.bookTitle)
                                             ? Icons.check
-                                            : Icons.save_alt_outlined,
+                                            : Icons.add_circle_outline,
                                         color: appBarState.isLightMode
                                             ? textColor1
                                             : textColor2,
@@ -188,7 +188,7 @@ class _BooksModalState extends ConsumerState<BooksModal> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       GeneralAppIcon(
-                                        icon: Icons.chrome_reader_mode_outlined,
+                                        icon: Icons.save_alt_outlined,
                                         color: appBarState.isLightMode
                                             ? textColor1
                                             : textColor2,
@@ -198,7 +198,7 @@ class _BooksModalState extends ConsumerState<BooksModal> {
                                         width: 10,
                                       ),
                                       GeneralAppText(
-                                        text: "Read",
+                                        text: "Download",
                                         size: 17,
                                         color: Theme.of(context).primaryColor,
                                         weight: FontWeight.normal,

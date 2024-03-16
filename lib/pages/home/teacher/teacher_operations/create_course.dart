@@ -5,10 +5,8 @@ import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
