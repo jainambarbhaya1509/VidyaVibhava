@@ -5,7 +5,9 @@ import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class StudentHomeScreen extends ConsumerStatefulWidget {
@@ -27,6 +29,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
 
     // Add more subjects here if needed
   ];
+
   @override
   Widget build(BuildContext context) {
     final theme = ref.read(settingsProvider.notifier).isLightMode;
@@ -37,20 +40,17 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
         flexibleSpace: Container(
           color: Theme.of(context).primaryColor,
           // padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
-          padding: const EdgeInsets.only(
-            top: 30,
-          ),
+          padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
           alignment: Alignment.center,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 200,
-                child: GeneralAppText(
-                  text: "jainambarbhaya",
-                  size: 20,
-                ),
+              SecondaryAppText(
+                text: "Hi, Jainam",
+                size: 20,
+                weight: FontWeight.bold,
+                color: theme == true ? textColor1 : textColor2,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -65,8 +65,10 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                   ),
                   GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            _createAnimatedScreenRoute(const GeminiChatBot(),1,0));
+                        Navigator.push(
+                            context,
+                            _createAnimatedScreenRoute(
+                                const GeminiChatBot(), 1, 0));
                       },
                       child: GeneralAppIcon(
                         color: primaryColor,
@@ -77,8 +79,8 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context, _createAnimatedScreenRoute(const ChatScreen(),1,0));
+                      Navigator.push(context,
+                          _createAnimatedScreenRoute(const ChatScreen(), 1, 0));
                       // Navigator.pushNamed(context, 'chatScreen');
                     },
                     child: GeneralAppIcon(
@@ -197,6 +199,469 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                 height: 30,
               ),
 
+              // courses
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GeneralAppText(
+                    text: "Explore Courses",
+                    size: 20,
+                    weight: FontWeight.bold,
+                  ),
+                  GeneralAppIcon(
+                    icon: Icons.navigate_next_sharp,
+                    color: primaryColor,
+                    size: 30,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 100,
+                // color: Colors.amber,
+                child: ListView.builder(
+                  
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          isDismissible: true,
+                          context: context,
+                          builder: (builder) {
+                            return Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Container(
+                                      height: 5,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Container(
+                                      height: 190,
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.9,
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 60,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2),
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: GeneralAppIcon(
+                                              icon: Icons.bookmark_border,
+                                              color: theme == true
+                                                  ? textColor1
+                                                  : textColor2,
+                                              size: 30,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 60,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2),
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  GeneralAppIcon(
+                                                    icon: Icons
+                                                        .play_arrow_rounded,
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2,
+                                                    size: 30,
+                                                  ),
+                                                  PrimaryAppText(
+                                                    text: "Start Learning",
+                                                    size: 20,
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10.0, left: 10),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: GeneralAppText(
+                                                text: "Description",
+                                                size: 20,
+                                                weight: FontWeight.bold,
+                                              )),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          GeneralAppText(
+                                            text:
+                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
+                                            size: 15,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: GeneralAppText(
+                                            text: "Lectures",
+                                            size: 20,
+                                            weight: FontWeight.bold,
+                                          )),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: ListView.builder(
+                                          controller: ScrollController(),
+                                          itemCount: 10,
+                                          itemBuilder: (context , lectureIndex) {
+                                            return Container(
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 10),
+                                              height: 60,
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    color: Colors.grey),
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                      left: 10,
+                                                    ),
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.amber,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                    ),
+                                                    child: SecondaryAppText(
+                                                      text: "$lectureIndex",
+                                                      size: 20,
+                                                      color: theme == true
+                                                          ? textColor1
+                                                          : textColor2,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 10),
+                                                    child: SecondaryAppText(
+                                                      text:
+                                                          "Lecture Title $lectureIndex",
+                                                      size: 14,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        width: 180,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey)),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+
+              // popular lectures
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GeneralAppText(
+                    text: "Popular Lectures",
+                    size: 20,
+                    weight: FontWeight.bold,
+                  ),
+                  GeneralAppIcon(
+                    icon: Icons.navigate_next_sharp,
+                    color: primaryColor,
+                    size: 30,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 100,
+                // color: Colors.amber,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          isDismissible: true,
+                          context: context,
+                          builder: (builder) {
+                            return Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Container(
+                                      height: 5,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Container(
+                                      height: 190,
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.9,
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 60,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2),
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: GeneralAppIcon(
+                                              icon: Icons.bookmark_border,
+                                              color: theme == true
+                                                  ? textColor1
+                                                  : textColor2,
+                                              size: 30,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 60,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2),
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  GeneralAppIcon(
+                                                    icon: Icons
+                                                        .play_arrow_rounded,
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2,
+                                                    size: 30,
+                                                  ),
+                                                  PrimaryAppText(
+                                                    text: "Start Learning",
+                                                    size: 20,
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10.0, left: 10),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: GeneralAppText(
+                                                text: "Description",
+                                                size: 20,
+                                                weight: FontWeight.bold,
+                                              )),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          GeneralAppText(
+                                            text:
+                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
+                                            size: 15,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        width: 180,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey)),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+
               // continue learning
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -220,18 +685,166 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                 height: 100,
                 // color: Colors.amber,
                 child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Container(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          isDismissible: true,
+                          context: context,
+                          builder: (builder) {
+                            return Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Container(
+                                      height: 5,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Container(
+                                      height: 190,
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.9,
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 60,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2),
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: GeneralAppIcon(
+                                              icon: Icons.bookmark_border,
+                                              color: theme == true
+                                                  ? textColor1
+                                                  : textColor2,
+                                              size: 30,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 60,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2),
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  GeneralAppIcon(
+                                                    icon: Icons
+                                                        .play_arrow_rounded,
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2,
+                                                    size: 30,
+                                                  ),
+                                                  PrimaryAppText(
+                                                    text: "Start Learning",
+                                                    size: 20,
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10.0, left: 10),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: GeneralAppText(
+                                                text: "Description",
+                                                size: 20,
+                                                weight: FontWeight.bold,
+                                              )),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          GeneralAppText(
+                                            text:
+                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
+                                            size: 15,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
                         margin: const EdgeInsets.only(right: 10),
                         width: 180,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.grey)),
-                      );
-                    }),
+                      ),
+                    );
+                  },
+                ),
               ),
               const SizedBox(
                 height: 50,
@@ -371,11 +984,12 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
   }
 
   // Animated route
-  Route _createAnimatedScreenRoute(Widget child, double startOffset, double endOffset) {
+  Route _createAnimatedScreenRoute(
+      Widget child, double startOffset, double endOffset) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => child,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin =  Offset(startOffset, endOffset);
+        var begin = Offset(startOffset, endOffset);
         var end = Offset.zero;
         var curve = Curves.ease;
         var tween =

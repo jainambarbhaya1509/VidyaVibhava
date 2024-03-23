@@ -47,7 +47,7 @@ class MyApp extends ConsumerWidget {
       title: 'Smart Education',
       theme: theme.isLightMode == true ? lightTheme : darkTheme,
       // home: showHome ? const UserTypeScreen() : const StartScreen(),
-      home: const TeacherScreen(),
+      home: const StudentScreen(),
       routes: {
         'onboardingScreen': (context) => const StartScreen(),
         'usersTypeScreen': (context) => const UserTypeScreen(),

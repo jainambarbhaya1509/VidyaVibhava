@@ -19,12 +19,12 @@ class CommunityScreen extends StatelessWidget {
             children: [
               GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const StudentHomeScreen(),
-                      ),
-                    );
+                    // Navigator.pushReplacement(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const StudentHomeScreen(),
+                    //   ),
+                    // );
                   },
                   child: GeneralAppIcon(
                     icon: Icons.arrow_back_ios_rounded,

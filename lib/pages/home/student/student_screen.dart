@@ -36,9 +36,7 @@ class _StudentHomeScreenState extends State<StudentScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       resizeToAvoidBottomInset: true,
       body: body[_currentIndex],
-      bottomNavigationBar: _currentIndex == 1
-          ? null
-          : Container(
+      bottomNavigationBar: Container(
               margin: const EdgeInsets.all(20),
               height: size.width * .155,
               decoration: BoxDecoration(

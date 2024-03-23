@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:final_project/pages/home/student/cards/books_modal.dart';
 import 'package:final_project/widgets/app_text.dart';
@@ -15,7 +16,7 @@ class _EbooksScreenState extends State<EbooksScreen> {
   List<dynamic> _bookCoverPage = [];
   List<dynamic> _bookTitle = [];
 
-  Future<Set> fetchBookData() async {
+  Future<List<dynamic>> fetchBookData() async {
     List<String> imageUrls = [];
     List<String> bookTitles = [];
 
@@ -28,7 +29,6 @@ class _EbooksScreenState extends State<EbooksScreen> {
 
       for (var item in results) {
         if (item['formats'] != null && item['formats']['image/jpeg'] != null) {
-
           String imageUrl = item['formats']['image/jpeg'];
           imageUrls.add(imageUrl);
 
@@ -40,19 +40,26 @@ class _EbooksScreenState extends State<EbooksScreen> {
       throw Exception('Failed to load data');
     }
 
-    return {imageUrls, bookTitles};
+    return [imageUrls, bookTitles];
   }
 
   @override
   void initState() {
     super.initState();
     fetchBookData().then((data) {
-      setState(() {
-        _bookCoverPage = data.elementAt(0) as List<String>;
-        _bookTitle = data.elementAt(1) as List<String>;
-      });
+      if (mounted) {
+        setState(() {
+          _bookCoverPage = data.elementAt(0) as List<String>;
+          _bookTitle = data.elementAt(1) as List<String>;
+        });
+      }
     }).catchError((error) {
-      return error;
+      if (!mounted) {
+        setState(() {
+          _bookCoverPage = [];
+          _bookTitle = [];
+        });
+      }
     });
   }
 
@@ -96,9 +103,7 @@ class _EbooksScreenState extends State<EbooksScreen> {
               height: 20,
             ),
             _bookCoverPage.isEmpty
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? const CircularProgressIndicator()
                 : Expanded(
                     child: GridView.builder(
                       // physics: const NeverScrollableScrollPhysics(),
@@ -170,7 +175,7 @@ class _EbooksScreenState extends State<EbooksScreen> {
                         );
                       },
                     ),
-                  ),
+                  )
           ],
         ),
       ),

@@ -232,6 +232,32 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
                             ),
                           ),
                           const SizedBox(height: 20),
+                         
+                          GeneralAppText(
+                            text: "Add Tags",
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: TextField(
+                              controller: null,
+                              maxLines: 1,
+                              onChanged: (value) {},
+                              decoration: InputDecoration(
+                                hintMaxLines: 1,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                labelText: 'Tags',
+                              ),
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(100),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
                           GeneralAppText(
                             text: "Lecture Level",
                             size: 18,
