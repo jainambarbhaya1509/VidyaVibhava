@@ -1,18 +1,20 @@
-import 'package:final_project/pages/common/ebooks_screen.dart';
+import 'package:final_project/pages/common/books/ebooks_screen.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/home_screen.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/community_screen.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/profile_screen.dart';
-import 'package:final_project/style/themes.dart';
+import 'package:final_project/providers/appbar_provider.dart';
+import 'package:final_project/widgets/app_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class StudentScreen extends StatefulWidget {
+class StudentScreen extends ConsumerStatefulWidget {
   const StudentScreen({super.key});
 
   @override
-  State<StudentScreen> createState() => _StudentHomeScreenState();
+  ConsumerState<StudentScreen> createState() => _StudentHomeScreenState();
 }
 
-class _StudentHomeScreenState extends State<StudentScreen> {
+class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
   int _currentIndex = 0;
 
   final List<Widget> body = [
@@ -21,80 +23,86 @@ class _StudentHomeScreenState extends State<StudentScreen> {
     const EbooksScreen(),
     const StudentProfileScreen(),
   ];
-
-  List<IconData> iconList = [
-    Icons.home_outlined,
-    Icons.group_rounded,
-    Icons.menu_book_sharp,
-    Icons.person_outline,
-  ];
-
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final theme = ref.watch(settingsProvider.notifier).isLightMode;
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       resizeToAvoidBottomInset: true,
       body: body[_currentIndex],
-      bottomNavigationBar: Container(
-              margin: const EdgeInsets.all(20),
-              height: size.width * .155,
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        iconSize: 26,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Theme.of(context).primaryColor,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            activeIcon: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade800,
-                    blurRadius: 5,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
-                borderRadius: BorderRadius.circular(30),
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(100),
               ),
-              child: ListView.builder(
-                itemCount: body.length,
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: size.width * .024),
-                itemBuilder: (context, index) => InkWell(
-                  onTap: () {
-                    setState(
-                      () {
-                        _currentIndex = index;
-                      },
-                    );
-                  },
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AnimatedContainer(
-                        curve: Curves.easeInOutCubicEmphasized,
-                        duration: const Duration(milliseconds: 300),
-                        margin: EdgeInsets.only(
-                          bottom:
-                              index == _currentIndex ? 0 : size.width * .029,
-                          right: size.width * .0422,
-                          left: size.width * .0422,
-                        ),
-                        width: size.width * .128,
-                        height: index == _currentIndex ? size.width * .012 : 0,
-                        decoration: BoxDecoration(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                      Icon(
-                        iconList[index],
-                        size: 25,
-                        color:
-                            index == _currentIndex ? primaryColor : Colors.grey,
-                      ),
-                      SizedBox(height: size.width * .03),
-                    ],
-                  ),
-                ),
-              ),
+              child: GeneralAppIcon(
+                  icon: Icons.home_rounded,
+                  color: theme ? Colors.white : Colors.white),
             ),
+            icon: const Icon(Icons.home_rounded),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: GeneralAppIcon(
+                  icon: Icons.group_rounded,
+                  color: theme ? Colors.white : Colors.white),
+            ),
+            icon: const Icon(Icons.group_rounded),
+            label: 'Community',
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: GeneralAppIcon(
+                  icon: Icons.menu_book_sharp,
+                  color: theme ? Colors.white : Colors.white),
+            ),
+            icon: const Icon(Icons.menu_book_sharp),
+            label: 'EBooks',
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: GeneralAppIcon(
+                  icon: Icons.person,
+                  color: theme ? Colors.white : Colors.white),
+            ),
+            icon: const Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
     );
   }
 }

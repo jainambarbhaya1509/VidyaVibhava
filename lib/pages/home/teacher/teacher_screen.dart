@@ -1,4 +1,4 @@
-import 'package:final_project/pages/common/ebooks_screen.dart';
+import 'package:final_project/pages/common/books/ebooks_screen.dart';
 import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/home_screen.dart';
 import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/profile_screen.dart';
 import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/teacher_stats.dart';

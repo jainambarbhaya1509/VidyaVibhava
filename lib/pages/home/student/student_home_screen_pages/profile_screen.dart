@@ -1,4 +1,4 @@
-import 'package:final_project/pages/home/student/cards/books_modal.dart';
+import 'package:final_project/pages/common/books/books_modal.dart';
 import 'package:final_project/pages/home/student/cards/saved_books_card.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/providers/student_screen_provider.dart';

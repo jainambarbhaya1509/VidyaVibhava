@@ -1,4 +1,4 @@
-import 'package:final_project/pages/home/student/cards/books_modal.dart';
+import 'package:final_project/pages/common/books/books_modal.dart';
 import 'package:final_project/pages/home/student/cards/saved_books_card.dart';
 import 'package:final_project/pages/signups/signup_pages/personal_info.dart';
 import 'package:final_project/providers/appbar_provider.dart';
@@ -9,10 +9,8 @@ import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TeacherProfileScreen extends ConsumerStatefulWidget {
