@@ -13,8 +13,8 @@ class TeacherLoginScreen extends StatefulWidget {
 }
 
 class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   String? errorMessage1;
   String? errorMessage2;
 
@@ -27,22 +27,22 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
   Future<void> loadSavedData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _usernameController.text = prefs.getString('teacherUsername') ?? '';
-      _phoneNumberController.text = prefs.getString('teacherPhoneNumber') ?? '';
+      _emailController.text = prefs.getString('teacherEmail') ?? '';
+      _passwordController.text = prefs.getString('teacherPassword') ?? '';
     });
   }
 
   Future<void> saveData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    prefs.setString('teacherUsername', _usernameController.text);
-    prefs.setString('teacherPhoneNumber', _phoneNumberController.text);
+    prefs.setString('teacherEmail', _emailController.text);
+    prefs.setString('teacherPassword', _passwordController.text);
   }
 
   void validatePhoneNumber() {
     setState(() {
-      if (_phoneNumberController.text.length < 10) {
-        errorMessage1 = "Invalid Phone Number";
+      if (_passwordController.text.isEmpty) {
+        errorMessage1 = "Invalid Password";
       } else {
         errorMessage1 = null;
         Navigator.pushNamed(context, 'getOTP', arguments: 1);
@@ -52,8 +52,8 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
 
   void validateUsername() {
     setState(() {
-      if (_usernameController.text.isEmpty) {
-        errorMessage2 = "Invalid Username";
+      if (_emailController.text.isEmpty) {
+        errorMessage2 = "Invalid Email";
       } else {
         errorMessage2 = null;
       }
@@ -124,13 +124,18 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                 child: Column(
                   children: [
                     TextField(
-                      controller: _usernameController,
+                      controller: _emailController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
+                          prefixIcon: GeneralAppIcon(
+                            icon: Icons.email,
+                            size: 20,
+                            color: Colors.grey,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          hintText: 'Enter Username',
+                          hintText: 'Enter your email',
                           errorText: errorMessage2),
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(10),
@@ -140,25 +145,20 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                       height: 10,
                     ),
                     TextField(
-                      controller: _phoneNumberController,
-                      keyboardType: TextInputType.phone,
+                      obscureText: true,
+                      controller: _passwordController,
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
+                          prefixIcon: GeneralAppIcon(
+                            icon: Icons.password,
+                            size: 20,
+                            color: Colors.grey,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          hintText: 'Enter your phone number',
-                          prefixIcon: const Padding(
-                            padding: EdgeInsets.all(15),
-                            child: Text(
-                              '+91 |',
-                              style: TextStyle(fontSize: 17),
-                            ),
-                          ),
+                          hintText: 'Enter your password',
                           errorText: errorMessage1),
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(10),
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
                     ),
                   ],
                 ),
@@ -182,7 +182,7 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                   width: 200,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.green, width: 2),
+                    border: Border.all(color: Colors.green, width: 1),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -232,6 +232,6 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.remove('teacherUsername');
-    prefs.remove('teacherPhoneNumber');
+    prefs.remove('teacherPassword');
   }
 }

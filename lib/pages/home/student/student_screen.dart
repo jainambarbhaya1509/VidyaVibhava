@@ -46,7 +46,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
         },
         items: [
           BottomNavigationBarItem(
+            tooltip: "Home",
             activeIcon: Container(
+              
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
                 color: Colors.grey,
@@ -60,6 +62,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            tooltip: "Community",
             activeIcon: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
@@ -74,6 +77,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
             label: 'Community',
           ),
           BottomNavigationBarItem(
+            tooltip: "eLibrary",
             activeIcon: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
@@ -88,6 +92,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
             label: 'EBooks',
           ),
           BottomNavigationBarItem(
+            tooltip: "Profile",
             activeIcon: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(

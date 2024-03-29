@@ -193,10 +193,12 @@ class _PersonalInformationSectionState
                         : ref.watch(teacherSelectedGenderProvider),
                     onChanged: (String? value) {
                       if (role == 'student') {
-                        ref.read(studentSelectedGenderProvider.notifier).state = value;
+                        ref.read(studentSelectedGenderProvider.notifier).state =
+                            value;
                         ref.read(stuentPersonalInfoProvider)['gender'] = value;
                       } else {
-                        ref.read(teacherSelectedGenderProvider.notifier).state = value;
+                        ref.read(teacherSelectedGenderProvider.notifier).state =
+                            value;
                         ref.read(teacherPersonalInfoProvider)['gender'] = value;
                       }
                     },
@@ -217,61 +219,33 @@ class _PersonalInformationSectionState
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
-              onChanged: (value) {
-                if (role == 'student') {
-                  ref.read(stuentPersonalInfoProvider)['phone'] = value;
-                } else {
-                  ref.read(teacherPersonalInfoProvider)['phone'] = value;
-                }
-              },
-              controller: role == 'student'
-                  ? studentPhoneController
-                  : teacherPhoneController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                labelText: 'Phone Number',
-                prefixIcon: const Padding(
-                  padding: EdgeInsets.all(15),
-                  child: Text(
-                    '+91 |',
-                    style: TextStyle(fontSize: 17),
-                  ),
-                ),
-              ),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(10),
-                FilteringTextInputFormatter.digitsOnly
-              ],
-            ),
             if (role == 'teacher') ...[
               const SizedBox(
-                height: 10,
+                height: 15,
               ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 8.0),
-                child: TextField(
-                  controller: teacherEmailController,
-                  onChanged: (value) {
-                    ref.read(teacherPersonalInfoProvider)['email'] = value;
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    labelText: 'Email Address',
+              TextField(
+                onChanged: (value) {
+                  ref.read(teacherPersonalInfoProvider)['phone'] = value;
+                },
+                controller: teacherPhoneController,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(100),
-                  ],
+                  labelText: 'Phone Number',
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Text(
+                      '+91 |',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  ),
                 ),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(10),
+                  FilteringTextInputFormatter.digitsOnly
+                ],
               ),
             ],
             if (role == 'student') ...[

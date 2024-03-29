@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:final_project/pages/signups/signup_pages/address_info.dart';
+import 'package:final_project/pages/signups/signup_pages/create_password.dart';
 import 'package:final_project/pages/signups/signup_pages/organization_info.dart';
 import 'package:final_project/pages/signups/signup_pages/personal_info.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Stuent Providers
+// Student Providers
 final stuentPersonalInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'fname': studentFnameController.text,
@@ -31,8 +32,15 @@ final studentImageProvider = StateProvider<File?>((ref) => null);
 final studentAadharProvider = StateProvider<File?>((ref) => null);
 final studentIncomeProvider = StateProvider<File?>((ref) => null);
 
-
 // Teacher Providers
+
+final createPasswordProvider = StateProvider<Map<String, dynamic>>((ref) {
+  return {
+    'password': createPasswordController.text,
+    'confirmPassword': confirmPasswordController.text,
+  };
+});
+
 final teacherPersonalInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'fname': teacherFnameController.text,
@@ -58,8 +66,8 @@ final teacherImageProvider = StateProvider<File?>((ref) => null);
 final teacherAadharProvider = StateProvider<File?>((ref) => null);
 final teacherCertificateProvider = StateProvider<File?>((ref) => null);
 
-
-final teacherOganizationInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
+final teacherOganizationInfoProvider =
+    StateProvider<Map<String, dynamic>>((ref) {
   return {
     'organization': organizationController.text,
     'cddaAffiliated': false,

@@ -2,6 +2,7 @@ import 'package:final_project/pages/signups/signup_pages/address_info.dart';
 import 'package:final_project/pages/signups/signup_pages/confirm_info.dart';
 import 'package:final_project/pages/signups/signup_pages/document_upload.dart';
 import 'package:final_project/pages/signups/signup_pages/personal_info.dart';
+import 'package:final_project/pages/signups/signup_pages/verify_yourself.dart';
 import 'package:final_project/providers/signup_providers.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
@@ -59,6 +60,7 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
   }
 
   final signUpSections = const [
+    VerifyYourself(),
     PersonalInformationSection(),
     AddressInformationSection(),
     DocumentUploadSection(),
@@ -80,77 +82,78 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         flexibleSpace: const CustomAppBar(),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 10, top: 50, right: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: List.generate(4, (index) => index).map((e) {
-                  Color indicatorColor;
-                  if (currentPageIndex == e) {
-                    indicatorColor = primaryColor;
-                  } else if (currentPageIndex > e) {
-                    indicatorColor = Colors.green;
-                  } else {
-                    indicatorColor = Colors.grey;
-                  }
-                  return Container(
-                    margin: const EdgeInsets.only(left: 10),
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: indicatorColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 30, top: 60),
-              child: GeneralAppText(
-                text: "Student Sign Up",
-                weight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.6,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 10, top: 50, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: List.generate(5, (index) => index).map((e) {
+                    Color indicatorColor;
+                    if (currentPageIndex == e) {
+                      indicatorColor = primaryColor;
+                    } else if (currentPageIndex > e) {
+                      indicatorColor = Colors.green;
+                    } else {
+                      indicatorColor = Colors.grey;
+                    }
+                    return Container(
+                      margin: const EdgeInsets.only(left: 10),
+                      width: MediaQuery.of(context).size.width * 0.15,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: indicatorColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    );
+                  }).toList(),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: const Offset(0, -10),
+              ),
+              Container(
+                margin: const EdgeInsets.only(left: 30, top: 60),
+                child: GeneralAppText(
+                  text: "Student Sign Up",
+                  weight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.6,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
                   ),
-                ],
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(0, -10),
+                    ),
+                  ],
+                ),
+                child: PageView(
+                  controller: studentPageViewController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  onPageChanged: (index) {
+                    setState(() {
+                      currentPageIndex = index;
+                    });
+                  },
+                  children: signUpSections,
+                ),
               ),
-              child: PageView(
-                controller: studentPageViewController,
-                physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (index) {
-                  setState(() {
-                    currentPageIndex = index;
-                  });
-                },
-                children: signUpSections,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomSheet: Container(
@@ -195,6 +198,7 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
                   );
                   return;
                 }
+                
 
                 if (currentPageIndex == addressInfoIndex &&
                     checkAllAddressInfoFields() == false) {

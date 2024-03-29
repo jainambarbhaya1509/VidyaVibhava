@@ -1,8 +1,10 @@
 import 'package:final_project/pages/signups/signup_pages/address_info.dart';
 import 'package:final_project/pages/signups/signup_pages/confirm_info.dart';
+import 'package:final_project/pages/signups/signup_pages/create_password.dart';
 import 'package:final_project/pages/signups/signup_pages/document_upload.dart';
 import 'package:final_project/pages/signups/signup_pages/organization_info.dart';
 import 'package:final_project/pages/signups/signup_pages/personal_info.dart';
+import 'package:final_project/pages/signups/signup_pages/verify_yourself.dart';
 import 'package:final_project/providers/signup_providers.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
@@ -21,6 +23,17 @@ class TeacherSignUpScreen extends ConsumerStatefulWidget {
 
 class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
   int currentPageIndex = 0;
+
+  bool checkMatchPassword(){
+    final teacherPassword = ref.read(createPasswordProvider);
+    if(teacherPassword['password'] != teacherPassword['confirmPassword']){
+      print(teacherPassword['password']);
+      return false;
+    }else{
+      print(teacherPassword['password']);
+      return true;
+    }
+  }
 
   bool checkAllPersonalInfoFields() {
     final teacherPersonalInfo = ref.read(teacherPersonalInfoProvider);
@@ -72,6 +85,8 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
   }
 
   final signUpSections = const [
+    VerifyYourself(),
+    CreatePassword(),
     PersonalInformationSection(),
     AddressInformationSection(),
     DocumentUploadSection(),
@@ -122,7 +137,7 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                   }
                   return Container(
                     margin: const EdgeInsets.only(left: 10),
-                    width: MediaQuery.of(context).size.width * 0.15,
+                    width: MediaQuery.of(context).size.width * 0.1,
                     height: 5,
                     decoration: BoxDecoration(
                       color: indicatorColor,
@@ -212,12 +227,27 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                 int organizationInfoIndex = signUpSections.indexWhere(
                     (widget) =>
                         widget.runtimeType == OrganizatonInformationSection);
+                
+                int createPassword = signUpSections.indexWhere(
+                    (widget) =>
+                        widget.runtimeType == CreatePassword);
+                      
 
                 if (currentPageIndex == personalInfoIndex &&
                     checkAllPersonalInfoFields() == false) {
          
                   Toast.show(
                     "Please fill all the fields",
+                    duration: Toast.lengthLong,
+                    gravity: Toast.bottom,
+                  );
+                  return;
+                }
+
+                if (currentPageIndex == createPassword &&
+                    checkMatchPassword() == false) {
+                  Toast.show(
+                    "Password does not match",
                     duration: Toast.lengthLong,
                     gravity: Toast.bottom,
                   );
