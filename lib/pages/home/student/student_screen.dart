@@ -2,6 +2,7 @@ import 'package:final_project/pages/common/books/ebooks_screen.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/home_screen.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/community_screen.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/profile_screen.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/search_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
   final List<Widget> body = [
     const StudentHomeScreen(),
     const CommunityScreen(),
+    const SearchScreen(),
     const EbooksScreen(),
     const StudentProfileScreen(),
   ];
@@ -75,6 +77,21 @@ class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
             ),
             icon: const Icon(Icons.group_rounded),
             label: 'Community',
+          ),
+          BottomNavigationBarItem(
+            tooltip: "Search",
+            activeIcon: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: GeneralAppIcon(
+                  icon: Icons.search_rounded,
+                  color: theme ? Colors.white : Colors.white),
+            ),
+            icon: const Icon(Icons.search_rounded),
+            label: 'Search',
           ),
           BottomNavigationBarItem(
             tooltip: "eLibrary",

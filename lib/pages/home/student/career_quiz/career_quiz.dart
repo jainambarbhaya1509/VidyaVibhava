@@ -179,9 +179,10 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(left: 20, bottom: 10),
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(bottom: 10),
                     child: GeneralAppText(
-                      text: 'Page ${index + 1}/7',
+                      text: '${index + 1}/7',
                       size: 20,
                       weight: FontWeight.bold,
                     ),
@@ -191,7 +192,7 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
                     final options = entry.value.values.first;
                     final questionIndex = startIndex + entry.key;
                     return Container(
-                      height: 150,
+                      height: 190,
                       margin: const EdgeInsets.only(
                         left: 10,
                         right: 10,
@@ -217,7 +218,7 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
                               weight: FontWeight.bold,
                             ),
                           ),
-                          Row(
+                          Column(
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -238,7 +239,7 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(width: 20),
+                              // const SizedBox(he: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [

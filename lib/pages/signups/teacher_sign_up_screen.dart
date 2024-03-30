@@ -27,10 +27,8 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
   bool checkMatchPassword(){
     final teacherPassword = ref.read(createPasswordProvider);
     if(teacherPassword['password'] != teacherPassword['confirmPassword']){
-      print(teacherPassword['password']);
       return false;
     }else{
-      print(teacherPassword['password']);
       return true;
     }
   }
@@ -111,84 +109,86 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         flexibleSpace: const CustomAppBar(),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(
-                left: 10,
-                top: 50,
-                right: 10,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: List.generate(signUpSections.length, (index) => index)
-                    .map((e) {
-                  Color indicatorColor;
-                  if (currentPageIndex == e) {
-                    indicatorColor = primaryColor;
-                  } else if (currentPageIndex > e) {
-                    indicatorColor = Colors.green;
-                  } else {
-                    indicatorColor = Colors.grey;
-                  }
-                  return Container(
-                    margin: const EdgeInsets.only(left: 10),
-                    width: MediaQuery.of(context).size.width * 0.1,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: indicatorColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-            FittedBox(
-              child: Container(
-                margin: const EdgeInsets.only(left: 30, top: 60),
-                child: GeneralAppText(
-                  text: "Teacher Sign Up",
-                  weight: FontWeight.bold,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          // scrollDirection: Axis.vertical,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(
+                  left: 10,
+                  top: 50,
+                  right: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: List.generate(signUpSections.length, (index) => index)
+                      .map((e) {
+                    Color indicatorColor;
+                    if (currentPageIndex == e) {
+                      indicatorColor = primaryColor;
+                    } else if (currentPageIndex > e) {
+                      indicatorColor = Colors.green;
+                    } else {
+                      indicatorColor = Colors.grey;
+                    }
+                    return Container(
+                      margin: const EdgeInsets.only(left: 10),
+                      width: MediaQuery.of(context).size.width * 0.1,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: indicatorColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.6,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: const Offset(0, -10),
+              FittedBox(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 30, top: 60),
+                  child: GeneralAppText(
+                    text: "Teacher Sign Up",
+                    weight: FontWeight.bold,
                   ),
-                ],
+                ),
               ),
-              child: PageView(
-                controller: teacherSignupController,
-                physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (index) {
-                  setState(() {
-                    currentPageIndex = index;
-                  });
-                },
-                children: signUpSections,
+              const SizedBox(
+                height: 40,
               ),
-            ),
-          ],
+              Container(
+                height: MediaQuery.of(context).size.height * 0.6,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(0, -10),
+                    ),
+                  ],
+                ),
+                child: PageView(
+                  controller: teacherSignupController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  onPageChanged: (index) {
+                    setState(() {
+                      currentPageIndex = index;
+                    });
+                  },
+                  children: signUpSections,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomSheet: Container(

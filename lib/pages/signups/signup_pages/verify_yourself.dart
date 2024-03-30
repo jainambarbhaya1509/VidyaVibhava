@@ -1,6 +1,7 @@
 import 'package:final_project/pages/signups/signup_pages/personal_info.dart';
 import 'package:final_project/providers/role_provider.dart';
 import 'package:final_project/providers/signup_providers.dart';
+import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -104,26 +105,18 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                 const SizedBox(
                   height: 20,
                 ),
-                /* Backend Changes */
-                GestureDetector(
-                  onTap: (){
-                    AuthenticationRepository.instance.phoneAuthentication(studentPhoneController.text);
-
-                  },
-                  child: Container(
+                Container(
                   margin: const EdgeInsets.symmetric(horizontal: 100),
                   alignment: Alignment.center,
                   height: 40,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                  border: Border.all(color: Colors.green),
-                  borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.green),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: PrimaryAppText(text: "Verify", size: 17, color: Colors.green),
-
-                  ),
-    ),
-/*Backend Changes*/
+                  child: PrimaryAppText(
+                      text: "Verify", size: 17, color: Colors.green),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -152,21 +145,7 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(
-                  onTap: () async{
-                    if(await AuthenticationRepository.instance.verifyOTP(verifyOtpController.text)){
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('OTP Validated ! Please Click Next'),
-                        ),
-                      );
-                    }else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Invalid OTP'),
-                        ),
-                      );
-                    }
-                  },
+                  onTap: () {},
                   child: Container(
                       alignment: Alignment.centerRight,
                       width: double.infinity,

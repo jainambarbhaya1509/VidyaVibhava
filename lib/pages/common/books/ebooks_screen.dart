@@ -74,7 +74,7 @@ class _EbooksScreenState extends State<EbooksScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         title: GeneralAppText(
           text: 'Library',
-          size: 22,
+          size: 23,
           weight: FontWeight.bold,
         ),
       ),
@@ -93,7 +93,7 @@ class _EbooksScreenState extends State<EbooksScreen> {
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
                   prefixIcon: const Icon(Icons.search),
                   hintText: 'Search Your Books',

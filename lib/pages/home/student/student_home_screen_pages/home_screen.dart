@@ -3,6 +3,7 @@ import 'package:final_project/controllers/profile_controller.dart';
 import 'package:final_project/models/models.dart';
 import 'package:final_project/pages/common/chat/chat_list.dart';
 import 'package:final_project/pages/common/gemini.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/jobs_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/repository/authentication_repository.dart';
 import 'package:final_project/repository/user_repository.dart';
@@ -25,7 +26,6 @@ class StudentHomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
-
   final List<Subject> subjects = [
     Subject(name: "Language", imageUrl: 'assets/img/lang.png'),
     Subject(name: "Maths", imageUrl: 'assets/img/maths.png'),
@@ -55,21 +55,22 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
     final theme = ref.read(settingsProvider.notifier).isLightMode;
     return FutureBuilder(
       future: controller.getUserData(),
-      builder:(context, snapshot){
+      builder: (context, snapshot) {
         late Student student;
         try {
-          student  = snapshot.data as Student;
+          student = snapshot.data as Student;
         } on Exception catch (e) {
           return const Center(child: CircularProgressIndicator());
         }
-        if(snapshot.connectionState == ConnectionState.done){
-          if(snapshot.hasData){
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
             return Scaffold(
               backgroundColor: Theme.of(context).primaryColor,
               appBar: AppBar(
@@ -84,7 +85,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SecondaryAppText(
-                        text: "Hi, " + student.firstName,
+                        text: "Hi, Jainam",
                         size: 20,
                         weight: FontWeight.bold,
                         color: theme == true ? textColor1 : textColor2,
@@ -94,9 +95,9 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                         children: [
                           GestureDetector(
                               child: GeneralAppIcon(
-                                color: theme == true ? textColor1 : textColor2,
-                                icon: Icons.cases_outlined,
-                              )),
+                            color: theme == true ? textColor1 : textColor2,
+                            icon: Icons.cases_outlined,
+                          )),
                           const SizedBox(
                             width: 20,
                           ),
@@ -116,8 +117,10 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(context,
-                                  _createAnimatedScreenRoute(const ChatScreen(), 1, 0));
+                              Navigator.push(
+                                  context,
+                                  _createAnimatedScreenRoute(
+                                      const ChatScreen(), 1, 0));
                               // Navigator.pushNamed(context, 'chatScreen');
                             },
                             child: GeneralAppIcon(
@@ -138,7 +141,6 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                   margin: const EdgeInsets.symmetric(horizontal: 15),
                   // color: Colors.white,
                   padding: const EdgeInsets.only(top: 20),
-
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -208,10 +210,14 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                   onTap: () {},
                                   child: Container(
                                     margin: const EdgeInsets.only(right: 10),
-                                    height: MediaQuery.of(context).size.width * 0.15,
-                                    width: MediaQuery.of(context).size.width * 0.15,
+                                    height: MediaQuery.of(context).size.width *
+                                        0.15,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.15,
                                     decoration: BoxDecoration(
-                                      color: theme == true ? textColor1 : textColor2,
+                                      color: theme == true
+                                          ? textColor1
+                                          : textColor2,
                                       borderRadius: BorderRadius.circular(100),
                                     ),
                                     child: Image(
@@ -292,7 +298,8 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                               width: 120,
                                               decoration: BoxDecoration(
                                                 color: primaryColor,
-                                                borderRadius: BorderRadius.circular(20),
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
                                               ),
                                             ),
                                             const SizedBox(
@@ -300,18 +307,21 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                             ),
                                             Container(
                                               height: 190,
-                                              width: MediaQuery.sizeOf(context).width *
+                                              width: MediaQuery.sizeOf(context)
+                                                      .width *
                                                   0.9,
                                               decoration: BoxDecoration(
                                                 color: Colors.amber,
-                                                borderRadius: BorderRadius.circular(10),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
                                               ),
                                             ),
                                             const SizedBox(
                                               height: 10,
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.all(10.0),
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
                                               child: Row(
                                                 children: [
                                                   Container(
@@ -323,9 +333,11 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                                 ? textColor1
                                                                 : textColor2),
                                                         borderRadius:
-                                                        BorderRadius.circular(10)),
+                                                            BorderRadius
+                                                                .circular(10)),
                                                     child: GeneralAppIcon(
-                                                      icon: Icons.bookmark_border,
+                                                      icon:
+                                                          Icons.bookmark_border,
                                                       color: theme == true
                                                           ? textColor1
                                                           : textColor2,
@@ -337,13 +349,15 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                   ),
                                                   Expanded(
                                                     child: Container(
-                                                      width: MediaQuery.of(context)
-                                                          .size
-                                                          .width,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
                                                       height: 60,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                        BorderRadius.circular(10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                             color: theme == true
                                                                 ? textColor1
@@ -351,9 +365,11 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                       ),
                                                       child: Row(
                                                         crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
+                                                            CrossAxisAlignment
+                                                                .center,
                                                         mainAxisAlignment:
-                                                        MainAxisAlignment.center,
+                                                            MainAxisAlignment
+                                                                .center,
                                                         children: [
                                                           GeneralAppIcon(
                                                             icon: Icons
@@ -364,7 +380,8 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                             size: 30,
                                                           ),
                                                           PrimaryAppText(
-                                                            text: "Start Learning",
+                                                            text:
+                                                                "Start Learning",
                                                             size: 20,
                                                             color: theme == true
                                                                 ? textColor1
@@ -386,7 +403,8 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                               child: Column(
                                                 children: [
                                                   Container(
-                                                      alignment: Alignment.centerLeft,
+                                                      alignment:
+                                                          Alignment.centerLeft,
                                                       child: GeneralAppText(
                                                         text: "Description",
                                                         size: 20,
@@ -397,7 +415,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                   ),
                                                   GeneralAppText(
                                                     text:
-                                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
+                                                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
                                                     size: 15,
                                                   ),
                                                 ],
@@ -407,9 +425,11 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                               height: 10,
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.all(10.0),
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
                                               child: Container(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: GeneralAppText(
                                                     text: "Lectures",
                                                     size: 20,
@@ -425,46 +445,59 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                 width: double.infinity,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(10),
+                                                      BorderRadius.circular(10),
                                                 ),
                                                 child: ListView.builder(
-                                                  controller: ScrollController(),
+                                                  controller:
+                                                      ScrollController(),
                                                   itemCount: 10,
-                                                  itemBuilder: (context, lectureIndex) {
+                                                  itemBuilder:
+                                                      (context, lectureIndex) {
                                                     return Container(
-                                                      margin: const EdgeInsets.only(
-                                                          bottom: 10),
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              bottom: 10),
                                                       height: 60,
                                                       width: double.infinity,
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                        BorderRadius.circular(10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                             color: Colors.grey),
                                                       ),
                                                       child: Row(
                                                         crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
+                                                            CrossAxisAlignment
+                                                                .center,
                                                         children: [
                                                           Container(
-                                                            alignment: Alignment.center,
+                                                            alignment: Alignment
+                                                                .center,
                                                             margin:
-                                                            const EdgeInsets.only(
+                                                                const EdgeInsets
+                                                                    .only(
                                                               left: 10,
                                                             ),
                                                             height: 40,
                                                             width: 40,
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.amber,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.amber,
                                                               borderRadius:
-                                                              BorderRadius.circular(
-                                                                  50),
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50),
                                                             ),
-                                                            child: SecondaryAppText(
-                                                              text: "$lectureIndex",
+                                                            child:
+                                                                SecondaryAppText(
+                                                              text:
+                                                                  "$lectureIndex",
                                                               size: 20,
-                                                              color: theme == true
+                                                              color: theme ==
+                                                                      true
                                                                   ? textColor1
                                                                   : textColor2,
                                                             ),
@@ -474,11 +507,13 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                           ),
                                                           Container(
                                                             padding:
-                                                            const EdgeInsets.only(
-                                                                right: 10),
-                                                            child: SecondaryAppText(
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    right: 10),
+                                                            child:
+                                                                SecondaryAppText(
                                                               text:
-                                                              "Lecture Title $lectureIndex",
+                                                                  "Lecture Title $lectureIndex",
                                                               size: 14,
                                                             ),
                                                           ),
@@ -566,7 +601,8 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                               width: 120,
                                               decoration: BoxDecoration(
                                                 color: primaryColor,
-                                                borderRadius: BorderRadius.circular(20),
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
                                               ),
                                             ),
                                             const SizedBox(
@@ -574,18 +610,21 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                             ),
                                             Container(
                                               height: 190,
-                                              width: MediaQuery.sizeOf(context).width *
+                                              width: MediaQuery.sizeOf(context)
+                                                      .width *
                                                   0.9,
                                               decoration: BoxDecoration(
                                                 color: Colors.amber,
-                                                borderRadius: BorderRadius.circular(10),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
                                               ),
                                             ),
                                             const SizedBox(
                                               height: 10,
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.all(10.0),
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
                                               child: Row(
                                                 children: [
                                                   Container(
@@ -597,9 +636,11 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                                 ? textColor1
                                                                 : textColor2),
                                                         borderRadius:
-                                                        BorderRadius.circular(10)),
+                                                            BorderRadius
+                                                                .circular(10)),
                                                     child: GeneralAppIcon(
-                                                      icon: Icons.bookmark_border,
+                                                      icon:
+                                                          Icons.bookmark_border,
                                                       color: theme == true
                                                           ? textColor1
                                                           : textColor2,
@@ -611,13 +652,15 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                   ),
                                                   Expanded(
                                                     child: Container(
-                                                      width: MediaQuery.of(context)
-                                                          .size
-                                                          .width,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
                                                       height: 60,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                        BorderRadius.circular(10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         border: Border.all(
                                                             color: theme == true
                                                                 ? textColor1
@@ -625,9 +668,11 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                       ),
                                                       child: Row(
                                                         crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
+                                                            CrossAxisAlignment
+                                                                .center,
                                                         mainAxisAlignment:
-                                                        MainAxisAlignment.center,
+                                                            MainAxisAlignment
+                                                                .center,
                                                         children: [
                                                           GeneralAppIcon(
                                                             icon: Icons
@@ -638,7 +683,8 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                             size: 30,
                                                           ),
                                                           PrimaryAppText(
-                                                            text: "Start Learning",
+                                                            text:
+                                                                "Start Learning",
                                                             size: 20,
                                                             color: theme == true
                                                                 ? textColor1
@@ -660,7 +706,8 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                               child: Column(
                                                 children: [
                                                   Container(
-                                                      alignment: Alignment.centerLeft,
+                                                      alignment:
+                                                          Alignment.centerLeft,
                                                       child: GeneralAppText(
                                                         text: "Description",
                                                         size: 20,
@@ -671,7 +718,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                   ),
                                                   GeneralAppText(
                                                     text:
-                                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
+                                                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
                                                     size: 15,
                                                   ),
                                                 ],
@@ -719,186 +766,183 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      FutureBuilder<List<Video>>(
-                          future: controller.getVideoData(),
-                          builder: (context, snapshot){
-                            if(snapshot.connectionState == ConnectionState.waiting){
-                                return CircularProgressIndicator();
-                              } else if(snapshot.hasError){
-                              return Text('Error : ${snapshot.error}');
-                            }else if(snapshot.hasData){
-                              final continueWatchingVideos = snapshot.data!;
-                              return SizedBox(
-                                height: 100,
-                                // color: Colors.amber,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 10,
-                                  itemBuilder: (context, index) {
-                                    final video = continueWatchingVideos[index];
-                                    return GestureDetector(
-                                      onTap: () {
-                                        showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          isDismissible: true,
-                                          context: context,
-                                          builder: (builder) {
-                                            return Container(
-                                              width: double.infinity,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context).primaryColor,
-                                                borderRadius: const BorderRadius.only(
-                                                  topLeft: Radius.circular(10),
-                                                  topRight: Radius.circular(10),
-                                                ),
-                                              ),
-                                              child: Container(
-                                                padding: const EdgeInsets.all(10),
-                                                child: Column(
-                                                  children: [
-                                                    const SizedBox(
-                                                      height: 30,
-                                                    ),
-                                                    Container(
-                                                      height: 5,
-                                                      width: 120,
-                                                      decoration: BoxDecoration(
-                                                        color: primaryColor,
-                                                        borderRadius: BorderRadius.circular(20),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 30,
-                                                    ),
-                                                    Container(
-                                                      height: 190,
-                                                      width: MediaQuery.sizeOf(context).width *
-                                                          0.9,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.amber,
-                                                        borderRadius: BorderRadius.circular(10),
-                                                      ),
-                                                      child:Image.network(video.thumbnail, fit: BoxFit.cover,),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(10.0),
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            height: 60,
-                                                            width: 60,
-                                                            decoration: BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: theme == true
-                                                                        ? textColor1
-                                                                        : textColor2),
-                                                                borderRadius:
-                                                                BorderRadius.circular(10)),
-                                                            child: GeneralAppIcon(
-                                                              icon: Icons.bookmark_border,
-                                                              color: theme == true
-                                                                  ? textColor1
-                                                                  : textColor2,
-                                                              size: 30,
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 10,
-                                                          ),
-                                                          Expanded(
-                                                            child: Container(
-                                                              width: MediaQuery.of(context)
-                                                                  .size
-                                                                  .width,
-                                                              height: 60,
-                                                              decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                BorderRadius.circular(10),
-                                                                border: Border.all(
-                                                                    color: theme == true
-                                                                        ? textColor1
-                                                                        : textColor2),
-                                                              ),
-                                                              child: Row(
-                                                                crossAxisAlignment:
-                                                                CrossAxisAlignment.center,
-                                                                mainAxisAlignment:
-                                                                MainAxisAlignment.center,
-                                                                children: [
-                                                                  GeneralAppIcon(
-                                                                    icon: Icons
-                                                                        .play_arrow_rounded,
-                                                                    color: theme == true
-                                                                        ? textColor1
-                                                                        : textColor2,
-                                                                    size: 30,
-                                                                  ),
-                                                                  PrimaryAppText(
-                                                                    text: "Start Learning",
-                                                                    size: 20,
-                                                                    color: theme == true
-                                                                        ? textColor1
-                                                                        : textColor2,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(
-                                                          top: 10.0, left: 10),
-                                                      child: Column(
-                                                        children: [
-                                                          Container(
-                                                              alignment: Alignment.centerLeft,
-                                                              child: GeneralAppText(
-                                                                text: "Description",
-                                                                size: 20,
-                                                                weight: FontWeight.bold,
-                                                              )),
-                                                          const SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                          GeneralAppText(
-                                                            text:video.videoDescription,
-                                                            size: 15,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
+                      SizedBox(
+                        height: 100,
+                        // color: Colors.amber,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 10,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  isDismissible: true,
+                                  context: context,
+                                  builder: (builder) {
+                                    return Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).primaryColor,
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                        ),
+                                      ),
                                       child: Container(
-                                        margin: const EdgeInsets.only(right: 10),
-                                        width: 180,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                            border: Border.all(color: Colors.grey)),
+                                        padding: const EdgeInsets.all(10),
+                                        child: Column(
+                                          children: [
+                                            const SizedBox(
+                                              height: 30,
+                                            ),
+                                            Container(
+                                              height: 5,
+                                              width: 120,
+                                              decoration: BoxDecoration(
+                                                color: primaryColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 30,
+                                            ),
+                                            Container(
+                                              height: 190,
+                                              width: MediaQuery.sizeOf(context)
+                                                      .width *
+                                                  0.9,
+                                              decoration: BoxDecoration(
+                                                color: Colors.amber,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    height: 60,
+                                                    width: 60,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: theme == true
+                                                                ? textColor1
+                                                                : textColor2),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10)),
+                                                    child: GeneralAppIcon(
+                                                      icon:
+                                                          Icons.bookmark_border,
+                                                      color: theme == true
+                                                          ? textColor1
+                                                          : textColor2,
+                                                      size: 30,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Expanded(
+                                                    child: Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      height: 60,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        border: Border.all(
+                                                            color: theme == true
+                                                                ? textColor1
+                                                                : textColor2),
+                                                      ),
+                                                      child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          GeneralAppIcon(
+                                                            icon: Icons
+                                                                .play_arrow_rounded,
+                                                            color: theme == true
+                                                                ? textColor1
+                                                                : textColor2,
+                                                            size: 30,
+                                                          ),
+                                                          PrimaryAppText(
+                                                            text:
+                                                                "Start Learning",
+                                                            size: 20,
+                                                            color: theme == true
+                                                                ? textColor1
+                                                                : textColor2,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10.0, left: 10),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: GeneralAppText(
+                                                        text: "Description",
+                                                        size: 20,
+                                                        weight: FontWeight.bold,
+                                                      )),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  GeneralAppText(
+                                                    text:
+                                                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
+                                                    size: 15,
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     );
                                   },
-                                ),
-                              );
-                            }else{
-                              return Text('No videos Found');
-                            }
-                          }),
-
+                                );
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                width: 180,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: Colors.grey)),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                       const SizedBox(
                         height: 50,
                       ),
@@ -1082,12 +1126,13 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                   // height: 10,
                                   width: 180,
                                   decoration: BoxDecoration(
-                                    // color: Colors.white,
+                                      // color: Colors.white,
                                       borderRadius: BorderRadius.circular(10),
                                       border: Border.all(color: Colors.grey)),
                                   child: FittedBox(
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Container(
                                           margin: const EdgeInsets.only(
@@ -1096,13 +1141,15 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                           width: 50,
                                           decoration: BoxDecoration(
                                               color: Colors.amber,
-                                              borderRadius: BorderRadius.circular(5)),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
                                         ),
                                         const SizedBox(
                                           width: 10,
                                         ),
                                         Container(
-                                          margin: const EdgeInsets.only(right: 10),
+                                          margin:
+                                              const EdgeInsets.only(right: 10),
                                           child: GeneralAppText(
                                             text: "Assignment $index",
                                             size: 14,
@@ -1130,7 +1177,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                       ),
                       GeneralAppText(
                         text:
-                        "Discover your ideal career path with our quick and comprehensive career counselling quiz!",
+                            "Discover your ideal career path with our quick and comprehensive career counselling quiz!",
                         size: 15,
                       ),
                       const SizedBox(
@@ -1167,7 +1214,8 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                 ),
                                 PrimaryAppText(
                                   text: 'Craft Your Career Journey',
-                                  size: MediaQuery.of(context).size.width * 0.04,
+                                  size:
+                                      MediaQuery.of(context).size.width * 0.04,
                                   weight: FontWeight.bold,
                                   color: primaryColor.withOpacity(0.8),
                                 ),
@@ -1181,16 +1229,15 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                 ),
               ),
             );
-          }else if (snapshot.hasError){
+          } else if (snapshot.hasError) {
             return Center(child: Text(snapshot.error.toString()));
-          }else{
+          } else {
             return const Center(child: Text("Something went wrong"));
           }
-        }else{
+        } else {
           return const Center(child: CircularProgressIndicator());
         }
       },
-
     );
   }
 
