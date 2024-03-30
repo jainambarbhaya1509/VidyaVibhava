@@ -6,6 +6,7 @@ import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:googleapis/keep/v1.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../repository/authentication_repository.dart';
@@ -59,64 +60,91 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                   const SizedBox(
                     height: 10,
                   ),
-                  TextField(
-                    controller: teacherEmailController,
-                    onChanged: (value) {
-                      ref.read(teacherPersonalInfoProvider)['email'] = value;
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.65,
+                        child: TextField(
+                          controller: teacherEmailController,
+                          onChanged: (value) {
+                            ref.read(teacherPersonalInfoProvider)['email'] = value;
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            labelText: 'Email Address',
+                          ),
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(100),
+                          ],
+                        ),
                       ),
-                      labelText: 'Email Address',
-                    ),
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(100),
+                      Container(
+                        alignment: Alignment.center,
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.green),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: GeneralAppIcon(
+                            icon: Icons.arrow_forward_outlined,
+                            size: 20,
+                            color: Colors.green),
+                      ),
                     ],
                   ),
                 ] else ...[
-                  TextField(
-                    onChanged: (value) {
-                      ref.read(stuentPersonalInfoProvider)['phone'] = value;
-                    },
-                    controller: studentPhoneController,
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      labelText: 'Phone Number',
-                      prefixIcon: const Padding(
-                        padding: EdgeInsets.all(15),
-                        child: Text(
-                          '+91 |',
-                          style: TextStyle(fontSize: 17),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.65,
+                        child: TextField(
+                          onChanged: (value) {
+                            ref.read(stuentPersonalInfoProvider)['phone'] =
+                                value;
+                          },
+                          controller: studentPhoneController,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            labelText: 'Phone Number',
+                            prefixIcon: const Padding(
+                              padding: EdgeInsets.all(15),
+                              child: Text(
+                                '+91 |',
+                                style: TextStyle(fontSize: 17),
+                              ),
+                            ),
+                          ),
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(10),
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                         ),
                       ),
-                    ),
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(10),
-                      FilteringTextInputFormatter.digitsOnly
+                      Container(
+                        alignment: Alignment.center,
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.green),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: GeneralAppIcon(
+                            icon: Icons.arrow_forward_outlined,
+                            size: 20,
+                            color: Colors.green),
+                      ),
                     ],
                   ),
                 ],
-                // verify otp button
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 100),
-                  alignment: Alignment.center,
-                  height: 40,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: PrimaryAppText(
-                      text: "Verify", size: 17, color: Colors.green),
-                ),
                 const SizedBox(
                   height: 20,
                 ),
