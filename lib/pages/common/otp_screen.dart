@@ -11,6 +11,8 @@ import 'package:pinput/pinput.dart';
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_text.dart';
 
+import '../../repository/authentication_repository.dart';
+
 class OTPScreen extends ConsumerStatefulWidget {
   const OTPScreen({super.key});
 
@@ -56,6 +58,8 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
   Widget build(BuildContext context) {
     final role = ref.watch(roleProvider);
     final theme = ref.watch(settingsProvider.notifier).isLightMode;
+    final TextEditingController _otpController = TextEditingController();
+    String otpCode = "";
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       resizeToAvoidBottomInset: false,
@@ -103,6 +107,12 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   ),
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: false),
+                  controller: _otpController,
+                  onSubmitted: (value){
+                    setState(() {
+                      otpCode = value;
+                    });
+                  },
                 ),
               ),
               const SizedBox(height: 15),
@@ -112,7 +122,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         if (role == 'student') {
                           Navigator.pushNamedAndRemoveUntil(
                               context, 'studentLogin', (route) => false);
@@ -151,15 +161,30 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
               ),
               const SizedBox(height: 30),
               GestureDetector(
-                onTap: () {
-                  showConfetti(context);
-                  if (role == 'student') {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, 'studentHome', (route) => false);
-                  } else {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, 'teacherHome', (route) => false);
+                onTap: () async{
+
+                  if(await AuthenticationRepository.instance.verifyOTP(otpCode)){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('OTP Validated !'),
+                      ),
+                    );
+                    showConfetti(context);
+                    if (role == 'student') {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, 'studentHome', (route) => false);
+                    } else {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, 'teacherHome', (route) => false);
+                      }
+                  }else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Invalid OTP'),
+                      ),
+                    );
                   }
+
                 },
                 child: Container(
                   height: 50,

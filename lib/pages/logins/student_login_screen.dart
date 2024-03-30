@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../repository/authentication_repository.dart';
+import '../signups/signup_pages/personal_info.dart';
+
 class StudentLoginScreen extends StatefulWidget {
   const StudentLoginScreen({super.key});
 
@@ -171,6 +174,7 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
                   validateUsername();
 
                   if (errorMessage1 == null && errorMessage2 == null) {
+                    AuthenticationRepository.instance.phoneAuthentication(_phoneNumberController.text);
                     saveData();
                     Navigator.pushReplacementNamed(
                       context,

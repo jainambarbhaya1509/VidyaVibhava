@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/pages/common/chat/message_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
@@ -5,6 +6,12 @@ import 'package:final_project/widgets/app_text.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../../../controllers/profile_controller.dart';
+import '../../../models/backend_model.dart';
+import 'chintan_chat_page.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key});
@@ -20,6 +27,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     final theme = ref.watch(settingsProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -72,9 +80,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   weight: FontWeight.bold,
                 ),
               ),
+              /* Student ko display karnewali list */
+              _buildUserList(),
 
+              /* Teacher */
               // Chat List
-              ListView.builder(
+              /*ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount:items.length,
@@ -158,11 +169,63 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ),
                   );
                 },
-              ),
+              ),*/
             ],
           ),
         ),
       ),
     );
   }
+
+  Widget _buildUserList(){
+    return StreamBuilder(stream: FirebaseFirestore.instance.collection('Users').snapshots(),
+      builder: (context, snapshot){
+        if (snapshot.hasError){
+          return const Text("Error");
+        }
+        if (snapshot.connectionState == ConnectionState.waiting){
+          return const Text("Loading ......");
+        }
+        return ListView(
+          children: snapshot.data!.docs
+              .map<Widget>((doc) => _buildUserListItem(doc))
+              .toList(),
+        );
+      },
+    );
+  }
+
+  Widget _buildUserListItem(DocumentSnapshot document) {
+    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+    final controller = Get.put(ProfileController());
+        return FutureBuilder(
+          future: controller.getMentorData(), // Call getMentorByMentorId to fetch mentor data
+          builder: (context, AsyncSnapshot<Mentor> mentorSnapshot) {
+            if (mentorSnapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Show loading indicator while fetching mentor data
+            } else if (mentorSnapshot.hasError) {
+              return Text('Error fetching mentor data'); // Show error if fetching fails
+            } else {
+              Mentor mentor = mentorSnapshot.data!; // Mentor data fetched successfully
+              return ListTile(
+                title: Text(mentor.mentorName),
+
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Chat_Page(
+                        receiverUserEmail: mentor.mentorName,
+                        receiverUserID: mentor.mentorId,
+
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+          },
+        );
+      }
+
 }

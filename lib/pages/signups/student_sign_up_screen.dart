@@ -1,9 +1,11 @@
+import 'package:final_project/models/backend_model.dart';
 import 'package:final_project/pages/signups/signup_pages/address_info.dart';
 import 'package:final_project/pages/signups/signup_pages/confirm_info.dart';
 import 'package:final_project/pages/signups/signup_pages/document_upload.dart';
 import 'package:final_project/pages/signups/signup_pages/personal_info.dart';
 import 'package:final_project/pages/signups/signup_pages/verify_yourself.dart';
 import 'package:final_project/providers/signup_providers.dart';
+import 'package:final_project/repository/authentication_repository.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_text.dart';
@@ -220,7 +222,29 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
                   return;
                 }
                 if (currentPageIndex == signUpSections.length - 1) {
-                  Navigator.pushNamedAndRemoveUntil(context, 'studentLogin', (route) => false);
+                  final personalInfo = ref.read(stuentPersonalInfoProvider);
+                  final addressInfo = ref.read(studentAddressInfoProvider);
+                  final studentImage = ref.read(studentImageProvider);
+                  final studentAadhar = ref.read(studentAadharProvider);
+                  final studentIncome = ref.read(studentImageProvider);
+                  //Navigator.pushNamedAndRemoveUntil(context, 'studentLogin', (route) => false);
+
+                  Student student = Student(
+                      firstName: personalInfo['fname'],
+                      lastName: personalInfo['lname'],
+                      dateOfBirth: personalInfo['dob'],
+                      gender: personalInfo['gender'],
+                      phoneNo: personalInfo['phone'],
+                      username: personalInfo['username'],
+                      address: addressInfo['address'],
+                      zipCode: addressInfo['zipCode'],
+                      city: addressInfo['city'],
+                      state: addressInfo['state'],
+                      image: '',
+                      doc1: '',
+                      doc2: '');
+                  AuthenticationRepository.instance.createStudent(student, studentImage!, studentAadhar!, studentIncome!);
+                  Navigator.pushNamedAndRemoveUntil(context, 'studentHome', (route) => false);
                 }
 
                 studentPageViewController.nextPage(

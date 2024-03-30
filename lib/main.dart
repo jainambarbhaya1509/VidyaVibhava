@@ -2,9 +2,14 @@ import 'package:final_project/pages/common/gemini.dart';
 import 'package:final_project/pages/home/student/career_quiz/career_quiz.dart';
 import 'package:final_project/pages/home/student/student_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
+import 'package:final_project/repository/authentication_repository.dart';
+import 'package:final_project/repository/user_repository.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:final_project/pages/home/teacher/teacher_screen.dart';
 import 'package:final_project/pages/logins/student_login_screen.dart';
@@ -16,8 +21,17 @@ import 'package:final_project/pages/common/start_screen.dart';
 import 'package:final_project/pages/common/user_type_screen.dart';
 import 'package:final_project/style/themes.dart';
 
+import 'firebase_options.dart';
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Initialize AuthenticationRepository and register it with GetX
+  final authenticationRepository = AuthenticationRepository();
+  final userRepository = UserRepository();
+  Get.put(authenticationRepository);
+  Get.put(userRepository);
   SystemChrome.setPreferredOrientations(
     [
       DeviceOrientation.portraitUp,

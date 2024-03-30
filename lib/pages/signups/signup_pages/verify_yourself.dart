@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pinput/pinput.dart';
 
+import '../../../repository/authentication_repository.dart';
+
 class VerifyYourself extends ConsumerStatefulWidget {
   const VerifyYourself({super.key});
 
@@ -102,17 +104,26 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
+                /* Backend Changes */
+                GestureDetector(
+                  onTap: (){
+                    AuthenticationRepository.instance.phoneAuthentication(studentPhoneController.text);
+
+                  },
+                  child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 100),
                   alignment: Alignment.center,
                   height: 40,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green),
-                    borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.green),
+                  borderRadius: BorderRadius.circular(10),
                   ),
                   child: PrimaryAppText(text: "Verify", size: 17, color: Colors.green),
-                ),
+
+                  ),
+    ),
+/*Backend Changes*/
                 const SizedBox(
                   height: 20,
                 ),
@@ -141,7 +152,21 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () async{
+                    if(await AuthenticationRepository.instance.verifyOTP(verifyOtpController.text)){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('OTP Validated ! Please Click Next'),
+                        ),
+                      );
+                    }else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Invalid OTP'),
+                        ),
+                      );
+                    }
+                  },
                   child: Container(
                       alignment: Alignment.centerRight,
                       width: double.infinity,
