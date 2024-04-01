@@ -85,7 +85,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SecondaryAppText(
-                        text: "Hi, Jainam",
+                        text: "Hi, ${student.firstName}",
                         size: 20,
                         weight: FontWeight.bold,
                         color: theme == true ? textColor1 : textColor2,
@@ -94,10 +94,16 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    _createAnimatedScreenRoute(
+                                        const JobsScreen(), 1, 0));
+                              },
                               child: GeneralAppIcon(
-                            color: theme == true ? textColor1 : textColor2,
-                            icon: Icons.cases_outlined,
-                          )),
+                                color: theme == true ? textColor1 : textColor2,
+                                icon: Icons.cases_outlined,
+                              )),
                           const SizedBox(
                             width: 20,
                           ),

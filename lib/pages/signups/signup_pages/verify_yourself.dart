@@ -6,7 +6,6 @@ import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:googleapis/keep/v1.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../repository/authentication_repository.dart';
@@ -129,18 +128,23 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                           ],
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.green),
-                          borderRadius: BorderRadius.circular(100),
+                      GestureDetector(
+                        onTap: (){
+                           AuthenticationRepository.instance.phoneAuthentication(studentPhoneController.text);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.green),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: GeneralAppIcon(
+                              icon: Icons.arrow_forward_outlined,
+                              size: 20,
+                              color: Colors.green),
                         ),
-                        child: GeneralAppIcon(
-                            icon: Icons.arrow_forward_outlined,
-                            size: 20,
-                            color: Colors.green),
                       ),
                     ],
                   ),
@@ -173,7 +177,21 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(
-                  onTap: () {},
+                 onTap: () async{
+                    if(await AuthenticationRepository.instance.verifyOTP(verifyOtpController.text)){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('OTP Validated ! Please Click Next'),
+                        ),
+                      );
+                    }else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Invalid OTP'),
+                        ),
+                      );
+                    }
+                  },
                   child: Container(
                       alignment: Alignment.centerRight,
                       width: double.infinity,
