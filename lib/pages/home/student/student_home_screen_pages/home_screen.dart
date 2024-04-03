@@ -124,16 +124,15 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-<<<<<<< Updated upstream
-                              Navigator.push(
-                                  context,
-                                  _createAnimatedScreenRoute(
-                                      const ChatScreen(), 1, 0));
-=======
+
+>>>>>>> Stashed changes
                               /*Navigator.push(context,
                                   _createAnimatedScreenRoute(const ChatScreen(), 1, 0));*/
                               Navigator.push(context,
                                   _createAnimatedScreenRoute(const ChatActivity(), 1, 0));
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                               // Navigator.pushNamed(context, 'chatScreen');
                             },
