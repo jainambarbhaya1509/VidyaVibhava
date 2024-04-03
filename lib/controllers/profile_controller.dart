@@ -29,6 +29,7 @@ class ProfileController extends GetxController{
   getMentorData(){
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if(uid != null){
+      print("Inside Controller ${uid}");
       return _userRepo.getMentorByMentorId(uid);
     }else{
       Get.snackbar("Error", "Login to Continue");

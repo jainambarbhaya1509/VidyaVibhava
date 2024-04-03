@@ -100,14 +100,15 @@ class UserRepository extends GetxController {
   }
   Future<Mentor> getMentorByMentorId(String userId) async {
     final querySnapshot = await _db.collection('Users').where(
-        'userId', isEqualTo: userId).get();
+        'uid', isEqualTo: userId).get();
     final userDocument = querySnapshot.docs.first;
     final mentorId = userDocument.data()['mentorId'];
     final mentorSnapshot = await _db.collection('Mentors').where(
         'mentorId', isEqualTo: mentorId).get();
-    final mentorData = querySnapshot.docs
+    final mentorData = mentorSnapshot.docs
         .map((e) => Mentor.fromSnapshot(e))
         .single;
+    print("Inside the user repo : ${mentorData.mentorName}");
     return mentorData;
   }
 

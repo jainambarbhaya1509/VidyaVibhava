@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:final_project/controllers/profile_controller.dart';
 import 'package:final_project/models/models.dart';
 import 'package:final_project/pages/common/chat/chat_list.dart';
+import 'package:final_project/pages/common/chat/chintan_chat_page_2.dart';
 import 'package:final_project/pages/common/gemini.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/jobs_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
@@ -123,10 +124,17 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
+<<<<<<< Updated upstream
                               Navigator.push(
                                   context,
                                   _createAnimatedScreenRoute(
                                       const ChatScreen(), 1, 0));
+=======
+                              /*Navigator.push(context,
+                                  _createAnimatedScreenRoute(const ChatScreen(), 1, 0));*/
+                              Navigator.push(context,
+                                  _createAnimatedScreenRoute(const ChatActivity(), 1, 0));
+>>>>>>> Stashed changes
                               // Navigator.pushNamed(context, 'chatScreen');
                             },
                             child: GeneralAppIcon(

@@ -36,8 +36,10 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
 
   late int userType;
   String currentFact = '';
-
+  final otpController = TextEditingController();
   late ConfettiController controller;
+  final focusNode = FocusNode();
+  String? otpCode;
 
   @override
   void initState() {
@@ -51,15 +53,18 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
   @override
   void dispose() {
     controller.dispose();
+    otpController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
     final role = ref.watch(roleProvider);
     final theme = ref.watch(settingsProvider.notifier).isLightMode;
-    final TextEditingController _otpController = TextEditingController();
-    String otpCode = "";
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       resizeToAvoidBottomInset: false,
@@ -98,6 +103,8 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                 width: 300,
                 height: 50,
                 child: Pinput(
+                  controller: otpController,
+                  focusNode: focusNode,
                   length: 6,
                   focusedPinTheme: PinTheme(
                     decoration: BoxDecoration(
@@ -106,13 +113,34 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                     ),
                   ),
                   keyboardType:
-                      const TextInputType.numberWithOptions(decimal: false),
-                  controller: _otpController,
-                  onSubmitted: (value){
-                    setState(() {
-                      otpCode = value;
-                    });
-                  },
+                  const TextInputType.numberWithOptions(decimal: false),
+                  validator: (value){print("\n\nValue" + value!);
+                    otpCode = value;
+                    print(otpCode);},
+                  onCompleted: (code){print("\n\n\n\nThe entered otp is " + code + "\n\n\n\n");
+                  /*otpCode = code;*/} /*async {
+                    if(await AuthenticationRepository.instance.verifyOTP(code)){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                    content: Text('OTP Validated !'),
+                    ),
+                    );
+                    showConfetti(context);
+                    if (role == 'student') {
+                    Navigator.pushNamedAndRemoveUntil(
+                    context, 'studentHome', (route) => false);
+                    } else {
+                    Navigator.pushNamedAndRemoveUntil(
+                    context, 'teacherHome', (route) => false);
+                    }
+                    }else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                    content: Text('Invalid OTP'),
+                    ),
+                    );
+                    }
+                  },*/
                 ),
               ),
               const SizedBox(height: 15),
@@ -161,9 +189,11 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
               ),
               const SizedBox(height: 30),
               GestureDetector(
-                onTap: () async{
+                onTap: () async {
+                  focusNode.unfocus();
+                  print("OTP == $otpCode");
 
-                  if(await AuthenticationRepository.instance.verifyOTP(otpCode)){
+                  if(await AuthenticationRepository.instance.verifyOTP(otpCode!)){
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('OTP Validated !'),
@@ -185,8 +215,8 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                     );
                   }
 
-                },
-                child: Container(
+                }
+                ,child: Container(
                   height: 50,
                   width: 120,
                   padding: const EdgeInsets.symmetric(horizontal: 10),

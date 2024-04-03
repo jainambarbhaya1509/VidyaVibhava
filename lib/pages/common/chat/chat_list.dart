@@ -6,12 +6,6 @@ import 'package:final_project/widgets/app_text.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
-import '../../../controllers/profile_controller.dart';
-import '../../../models/backend_model.dart';
-import 'chintan_chat_page.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key});
@@ -27,13 +21,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final theme = ref.watch(settingsProvider);
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme
+          .of(context)
+          .primaryColor,
       appBar: AppBar(
         forceMaterialTransparency: true,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
         title: GeneralAppText(
           text: 'Inbox',
           size: 22,
@@ -44,11 +41,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         scrollDirection: Axis.vertical,
         child: Container(
           margin:
-              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+          const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           child: Column(
             children: [
               Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -81,18 +81,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ),
               ),
               /* Student ko display karnewali list */
-              _buildUserList(),
+              //_buildUserList(),
 
               /* Teacher */
               // Chat List
-              /*ListView.builder(
+              ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount:items.length,
+                itemCount: items.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      Navigator.push(context, MaterialPageRoute(builder: (
+                          context) {
                         return MessageScreen(
                           userName: items[index].toString(),
                         );
@@ -109,7 +110,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       ),
                       onDismissed: (direction) {
                         setState(() {
-                           items.removeAt(index); 
+                          items.removeAt(index);
                         });
                       },
                       child: Container(
@@ -126,16 +127,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             ),
                             Expanded(
                               child: Container(
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width,
                                 margin: const EdgeInsets.only(left: 20),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         SecondaryAppText(
                                           text: 'John Doe',
@@ -169,63 +173,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ),
                   );
                 },
-              ),*/
+              ),
             ],
           ),
         ),
       ),
     );
   }
-
-  Widget _buildUserList(){
-    return StreamBuilder(stream: FirebaseFirestore.instance.collection('Users').snapshots(),
-      builder: (context, snapshot){
-        if (snapshot.hasError){
-          return const Text("Error");
-        }
-        if (snapshot.connectionState == ConnectionState.waiting){
-          return const Text("Loading ......");
-        }
-        return ListView(
-          children: snapshot.data!.docs
-              .map<Widget>((doc) => _buildUserListItem(doc))
-              .toList(),
-        );
-      },
-    );
-  }
-
-  Widget _buildUserListItem(DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-    final controller = Get.put(ProfileController());
-        return FutureBuilder(
-          future: controller.getMentorData(), // Call getMentorByMentorId to fetch mentor data
-          builder: (context, AsyncSnapshot<Mentor> mentorSnapshot) {
-            if (mentorSnapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Show loading indicator while fetching mentor data
-            } else if (mentorSnapshot.hasError) {
-              return Text('Error fetching mentor data'); // Show error if fetching fails
-            } else {
-              Mentor mentor = mentorSnapshot.data!; // Mentor data fetched successfully
-              return ListTile(
-                title: Text(mentor.mentorName),
-
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Chat_Page(
-                        receiverUserEmail: mentor.mentorName,
-                        receiverUserID: mentor.mentorId,
-
-                      ),
-                    ),
-                  );
-                },
-              );
-            }
-          },
-        );
-      }
-
 }

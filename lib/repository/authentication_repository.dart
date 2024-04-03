@@ -120,5 +120,7 @@ class AuthenticationRepository extends GetxController
     await _db.collection("Users").doc(user.uid).update(updateData);
   }
 
+  void signOut() {}
+
 
 }
