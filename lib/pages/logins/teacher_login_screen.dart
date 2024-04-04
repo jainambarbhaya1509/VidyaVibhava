@@ -2,7 +2,6 @@ import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TeacherLoginScreen extends StatefulWidget {
@@ -137,9 +136,6 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                           ),
                           hintText: 'Enter your email',
                           errorText: errorMessage2),
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(10),
-                      ],
                     ),
                     const SizedBox(
                       height: 10,

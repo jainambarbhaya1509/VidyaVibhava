@@ -18,6 +18,11 @@ class TeacherHomeScreen extends ConsumerStatefulWidget {
 }
 
 class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
+  final List uploadedVideos = [
+   
+  ];
+  final List uploadedCourses = [];
+  final List scheduledVisits = [];
   @override
   Widget build(BuildContext context) {
     final theme = ref.read(settingsProvider.notifier).isLightMode;
@@ -37,9 +42,11 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
             children: [
               SizedBox(
                 width: 200,
-                child: GeneralAppText(
-                  text: "jainambarbhaya",
+                child: SecondaryAppText(
+                  text: "Hi, Jainam",
                   size: 20,
+                  color: theme == true ? textColor1 : textColor2,
+                  weight: FontWeight.bold,
                 ),
               ),
               Row(
@@ -247,9 +254,285 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
         ),
       ),
       backgroundColor: Theme.of(context).primaryColor,
-      body: Container(
-        child: Center(
-          child: Text('Teacher Home Screen'),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GeneralAppText(
+                  text: "Your Videos",
+                  size: 20,
+                  color: theme == true ? textColor1 : textColor2,
+                  weight: FontWeight.bold,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                uploadedVideos.isEmpty
+                    ? Container(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: theme == true ? textColor2 : textColor1,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GeneralAppText(
+                              text: "No Videos Found",
+                              size: 20,
+                              color: theme == true ? textColor1 : textColor2,
+                              weight: FontWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GeneralAppText(
+                              text: "You have not uploaded any videos yet",
+                              size: 16,
+                              color: theme == true ? textColor1 : textColor2,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        height: 300,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: theme == true ? textColor1 : textColor2,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListView.builder(
+                          itemCount: uploadedVideos.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.all(5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              height: 60,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: theme == true ? textColor2 : textColor1,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                        child: GeneralAppText(
+                                      text:
+                                          "${index + 1}. ${uploadedVideos[index]}",
+                                      size: 13,
+                                      color: theme == true
+                                          ? textColor2
+                                          : textColor1,
+                                    )),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GeneralAppIcon(
+                                    icon: Icons.delete,
+                                    color:
+                                        const Color.fromARGB(255, 255, 97, 85),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                const SizedBox(
+                  height: 30,
+                ),
+                GeneralAppText(
+                  text: "Your Courses",
+                  size: 20,
+                  color: theme == true ? textColor1 : textColor2,
+                  weight: FontWeight.bold,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                uploadedCourses.isEmpty
+                    ? Container(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: theme == true ? textColor2 : textColor1,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GeneralAppText(
+                              text: "No Courses Found",
+                              size: 20,
+                              color: theme == true ? textColor1 : textColor2,
+                              weight: FontWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GeneralAppText(
+                              text: "You have not uploaded any courses yet",
+                              size: 16,
+                              color: theme == true ? textColor1 : textColor2,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        height: 300,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: theme == true ? textColor1 : textColor2,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListView.builder(
+                          itemCount: uploadedVideos.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.all(5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              height: 60,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: theme == true ? textColor2 : textColor1,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                        child: GeneralAppText(
+                                      text:
+                                          "${index + 1}. ${uploadedCourses[index]}",
+                                      size: 13,
+                                      color: theme == true
+                                          ? textColor2
+                                          : textColor1,
+                                    )),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GeneralAppIcon(
+                                    icon: Icons.delete,
+                                    color:
+                                        const Color.fromARGB(255, 255, 97, 85),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                const SizedBox(
+                  height: 30,
+                ),
+                // scheduled visit
+                GeneralAppText(
+                  text: "Scheduled Visits",
+                  size: 20,
+                  color: theme == true ? textColor1 : textColor2,
+                  weight: FontWeight.bold,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                scheduledVisits.isEmpty
+                    ? Container(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: theme == true ? textColor2 : textColor1,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GeneralAppText(
+                              text: "No Visits Found",
+                              size: 20,
+                              color: theme == true ? textColor1 : textColor2,
+                              weight: FontWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GeneralAppText(
+                              text: "You have not scheduled any visits yet",
+                              size: 16,
+                              color: theme == true ? textColor1 : textColor2,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        height: 300,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: theme == true ? textColor1 : textColor2,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListView.builder(
+                          itemCount: uploadedVideos.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.all(5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              height: 60,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: theme == true ? textColor2 : textColor1,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                        child: GeneralAppText(
+                                      text:
+                                          "${index + 1}. ${scheduledVisits[index]}",
+                                      size: 13,
+                                      color: theme == true
+                                          ? textColor2
+                                          : textColor1,
+                                    )),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GeneralAppIcon(
+                                    icon: Icons.delete,
+                                    color:
+                                        const Color.fromARGB(255, 255, 97, 85),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -274,8 +557,7 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
     );
   }
 
-  Route _createUploadRouteAnimation(
-      Widget child) {
+  Route _createUploadRouteAnimation(Widget child) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => child,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {

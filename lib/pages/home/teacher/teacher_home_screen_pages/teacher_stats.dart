@@ -17,6 +17,19 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
 
   bool showAvg = false;
 
+  final videosPerSubject = {
+    "Mathematics": 10,
+    "Physics": 20,
+    "Chemistry": 30,
+    "Biology": 40,
+    "English": 50,
+    "History": 60,
+    "Geography": 70,
+    "Computer Science": 80,
+    "Economics": 90,
+    "Accounting": 100,
+  };
+
   @override
   Widget build(BuildContext context) {
     ref.watch(settingsProvider);
@@ -25,7 +38,100 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GeneralAppText(text: "Your Statistics", weight: FontWeight.bold, size: 20,),
+          GeneralAppText(
+            text: "Your Statistics",
+            weight: FontWeight.bold,
+            size: 20,
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            margin: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GeneralAppText(
+                      text: "Total Videos",
+                      size: 18,
+                      weight: FontWeight.bold,
+                    ),
+                    GeneralAppText(
+                      text: "10",
+                      size: 16,
+                      weight: FontWeight.bold,
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GeneralAppText(
+                      text: "Total Courses",
+                      size: 18,
+                      weight: FontWeight.bold,
+                    ),
+                    GeneralAppText(
+                      text: "10",
+                      size: 16,
+                      weight: FontWeight.bold,
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          Container(
+            height: MediaQuery.sizeOf(context).height * 0.3,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            margin: const EdgeInsets.all(10),
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemCount: videosPerSubject.length,
+              itemBuilder: (context, index) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GeneralAppText(
+                          text: videosPerSubject.keys.elementAt(index),
+                          size: 18,
+                          weight: FontWeight.bold,
+                        ),
+                        GeneralAppText(
+                          text: videosPerSubject.values
+                              .elementAt(index)
+                              .toString(),
+                          size: 16,
+                          weight: FontWeight.bold,
+                        )
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           Stack(
             children: <Widget>[
               AspectRatio(
@@ -52,7 +158,7 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
                     });
                   },
                   child: Text(
-                    'avg',
+                    'Video Uploaded',
                     style: TextStyle(
                       fontSize: 12,
                       color: showAvg
@@ -63,6 +169,10 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
                 ),
               ),
             ],
+          ),
+          // video per subject
+          const SizedBox(
+            height: 20,
           ),
         ],
       ),
@@ -104,13 +214,13 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '10K';
+        text = '10';
         break;
       case 3:
-        text = '30k';
+        text = '30';
         break;
       case 5:
-        text = '50k';
+        text = '50';
         break;
       default:
         return Container();

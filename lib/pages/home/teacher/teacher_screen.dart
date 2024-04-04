@@ -45,70 +45,63 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherScreen> {
         },
         items: [
           BottomNavigationBarItem(
-            
+            tooltip: "Home",
             activeIcon: Container(
-              padding: const EdgeInsets.all(10),
+              
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: primaryColor,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(100),
               ),
               child: GeneralAppIcon(
                   icon: Icons.home_rounded,
-                  color: theme ? primaryColor : Colors.white),
+                  color: theme ? Colors.white : Colors.white),
             ),
             icon: const Icon(Icons.home_rounded),
             label: 'Home',
           ),
+          
           BottomNavigationBarItem(
+            tooltip: "Search",
             activeIcon: Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: primaryColor,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(100),
               ),
               child: GeneralAppIcon(
-                  icon: Icons.search,
-                  color: theme ? primaryColor : Colors.white),
+                  icon: Icons.search_rounded,
+                  color: theme ? Colors.white : Colors.white),
             ),
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.search_rounded),
             label: 'Search',
           ),
           BottomNavigationBarItem(
+            tooltip: "eLibrary",
             activeIcon: Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: primaryColor,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(100),
               ),
               child: GeneralAppIcon(
-                  icon: Icons.analytics_rounded,
-                  color: theme ? primaryColor : Colors.white),
+                  icon: Icons.analytics_outlined,
+                  color: theme ? Colors.white : Colors.white),
             ),
-            icon: const Icon(Icons.analytics_rounded),
-            label: 'Analyze',
+            icon: const Icon(Icons.analytics_outlined),
+            label: 'EBooks',
           ),
           BottomNavigationBarItem(
+            tooltip: "Profile",
             activeIcon: Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: primaryColor,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(100),
               ),
               child: GeneralAppIcon(
                   icon: Icons.person,
-                  color: theme ? primaryColor : Colors.white),
+                  color: theme ? Colors.white : Colors.white),
             ),
             icon: const Icon(Icons.person),
             label: 'Profile',

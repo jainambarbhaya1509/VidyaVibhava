@@ -180,13 +180,13 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                  onTap: () async{
                     if(await AuthenticationRepository.instance.verifyOTP(verifyOtpController.text)){
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text('OTP Validated ! Please Click Next'),
                         ),
                       );
                     }else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text('Invalid OTP'),
                         ),
                       );

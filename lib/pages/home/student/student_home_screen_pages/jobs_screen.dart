@@ -1,9 +1,11 @@
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// Future fetchJobs() async {
+//   String url = "https://jobs.github.com/positions.json?description=python&location=new+york";
+// }
 
 class JobsScreen extends ConsumerStatefulWidget {
   const JobsScreen({super.key});
@@ -31,11 +33,11 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
           itemCount: 10,
           itemBuilder: (context, index) {
             return Container(
-              margin: const EdgeInsets.only(bottom: 10, top: 10, right: 10),
+              margin: const EdgeInsets.only(bottom: 10, top: 10,),
               width: double.infinity,
               height: 160,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: Colors.grey),
               ),
               child: Column(
@@ -47,15 +49,16 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: const EdgeInsets.only(left: 15, top: 10),
+                        margin: const EdgeInsets.only(left: 15, top: 13),
                         height: 50,
                         width: 50,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage(
-                                "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"),
-                            fit: BoxFit.fill,
-                          ),
+                              image: AssetImage(
+                                  "assets/img/teacher2.png"),
+                              // scale: 1.0
+                              fit: BoxFit.cover,
+                              ),
                         ),
                       ),
                       const SizedBox(
@@ -77,10 +80,13 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
                                 size: 15,
                                 weight: FontWeight.bold,
                               ),
+                              const SizedBox(
+                                height: 5,
+                              ),
                               GeneralAppText(
                                 text:
                                     "Thiruvananthapuram, Maharashtra, India (On-Site)",
-                                size: 15,
+                                size: 14,
                               ),
                             ],
                           ),
@@ -89,15 +95,24 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
                     ],
                   ),
                   const SizedBox(
-                    height: 25,
+                    height: 20,
                   ),
                   GestureDetector(
                     onTap: () {
-                      
+                      showModalBottomSheet(context: context, builder: (builder){
+                        return Container(
+                          
+                        );
+                      });
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      child: PrimaryAppText(text: "Check Details", size: 15, color: primaryColor,),
+                      child: PrimaryAppText(
+                        text: "Check Details",
+                        size: 15,
+                        color: primaryColor,
+                        weight: FontWeight.bold,
+                      ),
                     ),
                   )
                 ],

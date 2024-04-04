@@ -1,5 +1,7 @@
+import 'package:final_project/pages/common/chat/chat_list.dart';
 import 'package:final_project/pages/common/gemini.dart';
 import 'package:final_project/pages/home/student/career_quiz/career_quiz.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/jobs_screen.dart';
 import 'package:final_project/pages/home/student/student_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/repository/authentication_repository.dart';
@@ -61,8 +63,8 @@ class MyApp extends ConsumerWidget {
       title: 'Smart Education',
       theme: theme.isLightMode == true ? lightTheme : darkTheme,
       // home: showHome ? const UserTypeScreen() : const StartScreen(),
-      home: const StudentScreen(),
-      // home: const TeacherScreen(),
+      // home: const StudentScreen(),
+      home: const TeacherScreen(),
       routes: {
         'onboardingScreen': (context) => const StartScreen(),
         'usersTypeScreen': (context) => const UserTypeScreen(),

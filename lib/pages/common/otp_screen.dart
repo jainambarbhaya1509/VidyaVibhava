@@ -58,8 +58,6 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final role = ref.watch(roleProvider);
@@ -99,26 +97,33 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              SizedBox(
-                width: 300,
-                height: 50,
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                width: double.infinity,
+                height: 100,
                 child: Pinput(
-                  controller: otpController,
-                  focusNode: focusNode,
-                  length: 6,
-                  focusedPinTheme: PinTheme(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.green),
+                    controller: otpController,
+                    focusNode: focusNode,
+                    length: 6,
+                    focusedPinTheme: PinTheme(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.green),
+                      ),
                     ),
-                  ),
-                  keyboardType:
-                  const TextInputType.numberWithOptions(decimal: false),
-                  validator: (value){print("\n\nValue" + value!);
-                    otpCode = value;
-                    print(otpCode);},
-                  onCompleted: (code){print("\n\n\n\nThe entered otp is " + code + "\n\n\n\n");
-                  /*otpCode = code;*/} /*async {
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: false),
+                    validator: (value) {
+                      print("\n\nValue" + value!);
+                      otpCode = value;
+                      print(otpCode);
+                    },
+                    onCompleted: (code) {
+                      print("\n\n\n\nThe entered otp is " +
+                          code +
+                          "\n\n\n\n"); /*otpCode = code;*/
+                    } /*async {
                     if(await AuthenticationRepository.instance.verifyOTP(code)){
                     ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -141,11 +146,11 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                     );
                     }
                   },*/
-                ),
+                    ),
               ),
-              const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
+              Container(
+                margin: const EdgeInsets.only(left: 20),
+                // padding: const EdgeInsets.symmetric(horizontal: 10,),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -193,7 +198,8 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   focusNode.unfocus();
                   print("OTP == $otpCode");
 
-                  if(await AuthenticationRepository.instance.verifyOTP(otpCode!)){
+                  if (await AuthenticationRepository.instance
+                      .verifyOTP(otpCode!)) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('OTP Validated !'),
@@ -206,23 +212,22 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                     } else {
                       Navigator.pushNamedAndRemoveUntil(
                           context, 'teacherHome', (route) => false);
-                      }
-                  }else {
+                    }
+                  } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Invalid OTP'),
                       ),
                     );
                   }
-
-                }
-                ,child: Container(
+                },
+                child: Container(
                   height: 50,
                   width: 120,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.green, width: 2),
+                    border: Border.all(color: Colors.green, width: 1),
                   ),
                   child: FittedBox(
                     child: Row(
@@ -231,7 +236,6 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                         PrimaryAppText(
                           text: 'Proceed',
                           size: 10,
-                          weight: FontWeight.bold,
                           color: Colors.green,
                         ),
                         const SizedBox(width: 5),
