@@ -166,7 +166,8 @@ class _DocumentUploadSectionState extends ConsumerState<DocumentUploadSection>
                           studentImage == null
                               ? Icons.camera_alt_outlined
                               : Icons.check,
-                          color: studentImage == null ? Colors.grey : Colors.green,
+                          color:
+                              studentImage == null ? Colors.grey : Colors.green,
                         ),
                         const SizedBox(
                           height: 10,
@@ -207,8 +208,13 @@ class _DocumentUploadSectionState extends ConsumerState<DocumentUploadSection>
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(studentImage == null ? Icons.image_outlined : Icons.check,
-                            color: studentImage == null ? Colors.grey : Colors.green),
+                        Icon(
+                            studentImage == null
+                                ? Icons.image_outlined
+                                : Icons.check,
+                            color: studentImage == null
+                                ? Colors.grey
+                                : Colors.green),
                         const SizedBox(
                           height: 10,
                         ),
@@ -274,7 +280,9 @@ class _DocumentUploadSectionState extends ConsumerState<DocumentUploadSection>
                           studentAadhar == null
                               ? Icons.file_copy_outlined
                               : Icons.check,
-                          color: studentAadhar == null ? Colors.grey : Colors.green,
+                          color: studentAadhar == null
+                              ? Colors.grey
+                              : Colors.green,
                         ),
                         const SizedBox(
                           height: 10,
@@ -409,7 +417,8 @@ class _DocumentUploadSectionState extends ConsumerState<DocumentUploadSection>
                           teacherImage == null
                               ? Icons.camera_alt_outlined
                               : Icons.check,
-                          color: teacherImage == null ? Colors.grey : Colors.green,
+                          color:
+                              teacherImage == null ? Colors.grey : Colors.green,
                         ),
                         const SizedBox(
                           height: 10,
@@ -450,8 +459,13 @@ class _DocumentUploadSectionState extends ConsumerState<DocumentUploadSection>
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(teacherImage == null ? Icons.image_outlined : Icons.check,
-                            color: teacherImage == null ? Colors.grey : Colors.green),
+                        Icon(
+                            teacherImage == null
+                                ? Icons.image_outlined
+                                : Icons.check,
+                            color: teacherImage == null
+                                ? Colors.grey
+                                : Colors.green),
                         const SizedBox(
                           height: 10,
                         ),
@@ -517,7 +531,9 @@ class _DocumentUploadSectionState extends ConsumerState<DocumentUploadSection>
                           teacherAadhar == null
                               ? Icons.file_copy_outlined
                               : Icons.check,
-                          color: teacherAadhar == null ? Colors.grey : Colors.green,
+                          color: teacherAadhar == null
+                              ? Colors.grey
+                              : Colors.green,
                         ),
                         const SizedBox(
                           height: 10,

@@ -54,7 +54,9 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
     final studentImage = ref.read(studentImageProvider);
     final studentAadhar = ref.read(studentAadharProvider);
     final studentIncome = ref.read(studentImageProvider);
-    if (studentImage == null || studentAadhar == null || studentIncome == null) {
+    if (studentImage == null ||
+        studentAadhar == null ||
+        studentIncome == null) {
       return false;
     } else {
       return true;
@@ -200,7 +202,6 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
                   );
                   return;
                 }
-                
 
                 if (currentPageIndex == addressInfoIndex &&
                     checkAllAddressInfoFields() == false) {
@@ -243,8 +244,10 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
                       image: '',
                       doc1: '',
                       doc2: '');
-                  AuthenticationRepository.instance.createStudent(student, studentImage!, studentAadhar!, studentIncome!);
-                  Navigator.pushNamedAndRemoveUntil(context, 'studentHome', (route) => false);
+                  AuthenticationRepository.instance.createStudent(
+                      student, studentImage!, studentAadhar!, studentIncome!);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, 'studentHome', (route) => false);
                 }
 
                 studentPageViewController.nextPage(
@@ -253,7 +256,9 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
                 );
               },
               child: PrimaryAppText(
-                text: currentPageIndex == signUpSections.length - 1 ? "Submit" : "Next",
+                text: currentPageIndex == signUpSections.length - 1
+                    ? "Submit"
+                    : "Next",
                 size: 20,
                 color: currentPageIndex == signUpSections.length - 1
                     ? Colors.green

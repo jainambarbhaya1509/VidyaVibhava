@@ -19,26 +19,33 @@ class ChatActivity extends StatefulWidget {
 
 class _ChatActivityState extends State<ChatActivity> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  void signOut(){
-    final authService = Provider.of<AuthenticationRepository>(context, listen:false);
+  void signOut() {
+    final authService =
+        Provider.of<AuthenticationRepository>(context, listen: false);
     authService.signOut();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Home Page"),
-        actions: [IconButton(onPressed: signOut, icon: const Icon(Icons.logout))],),
+      appBar: AppBar(
+        title: Text("Home Page"),
+        actions: [
+          IconButton(onPressed: signOut, icon: const Icon(Icons.logout))
+        ],
+      ),
       body: _buildUserList(),
     );
   }
 
-  Widget _buildUserList(){
-    return StreamBuilder(stream: FirebaseFirestore.instance.collection('Mentors').snapshots(),
-      builder: (context, snapshot){
-        if (snapshot.hasError){
+  Widget _buildUserList() {
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('Mentors').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
           return const Text("Error");
         }
-        if (snapshot.connectionState == ConnectionState.waiting){
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Text("Loading ......");
         }
         return ListView(
@@ -54,17 +61,19 @@ class _ChatActivityState extends State<ChatActivity> {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
     final controller = Get.put(ProfileController());
     return FutureBuilder(
-      future: controller.getMentorData(), // Call getMentorByMentorId to fetch mentor data
+      future: controller
+          .getMentorData(), // Call getMentorByMentorId to fetch mentor data
       builder: (context, AsyncSnapshot<Mentor> mentorSnapshot) {
         if (mentorSnapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator(); // Show loading indicator while fetching mentor data
         } else if (mentorSnapshot.hasError) {
-          return Text('Error fetching mentor data : ${mentorSnapshot.error}'); // Show error if fetching fails
+          return Text(
+              'Error fetching mentor data : ${mentorSnapshot.error}'); // Show error if fetching fails
         } else {
-          Mentor mentor = mentorSnapshot.data!; // Mentor data fetched successfully
+          Mentor mentor =
+              mentorSnapshot.data!; // Mentor data fetched successfully
           return ListTile(
             title: Text(mentor.mentorName),
-
             onTap: () {
               Navigator.push(
                 context,
@@ -72,7 +81,6 @@ class _ChatActivityState extends State<ChatActivity> {
                   builder: (context) => Chat_Page(
                     receiverUserEmail: mentor.mentorName,
                     receiverUserID: mentor.mentorId,
-
                   ),
                 ),
               );

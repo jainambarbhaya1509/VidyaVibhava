@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/backend_model.dart';
 
-class ChatService extends ChangeNotifier{
+class ChatService extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -13,7 +13,8 @@ class ChatService extends ChangeNotifier{
     final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
     final Timestamp timestamp = Timestamp.now();
 
-    Message newMessage = Message(senderId: currentUserId,
+    Message newMessage = Message(
+        senderId: currentUserId,
         senderEmail: currentUserEmail,
         receiverId: receiverId,
         timestamp: timestamp,
@@ -23,17 +24,23 @@ class ChatService extends ChangeNotifier{
     ids.sort();
     String chatRoomId = ids.join("_");
 
-    await _firestore.collection('Chat_Room')
+    await _firestore
+        .collection('Chat_Room')
         .doc(chatRoomId)
         .collection('messages')
         .add(newMessage.toMap());
   }
 
-  Stream<QuerySnapshot> getMessages(String userid, String otherUserId){
+  Stream<QuerySnapshot> getMessages(String userid, String otherUserId) {
     List<String> ids = [userid, otherUserId];
     ids.sort();
     String chatRoomId = ids.join("_");
 
-    return _firestore.collection('Chat_Room').doc(chatRoomId).collection('messages').orderBy('timestamp', descending: false).snapshots();
+    return _firestore
+        .collection('Chat_Room')
+        .doc(chatRoomId)
+        .collection('messages')
+        .orderBy('timestamp', descending: false)
+        .snapshots();
   }
 }

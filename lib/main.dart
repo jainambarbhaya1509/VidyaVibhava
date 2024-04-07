@@ -1,6 +1,7 @@
 import 'package:final_project/pages/common/chat/chat_list.dart';
 import 'package:final_project/pages/common/gemini.dart';
 import 'package:final_project/pages/home/student/career_quiz/career_quiz.dart';
+import 'package:final_project/pages/home/student/career_quiz/career_quiz_result.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/jobs_screen.dart';
 import 'package:final_project/pages/home/student/student_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
@@ -63,24 +64,20 @@ class MyApp extends ConsumerWidget {
       title: 'Smart Education',
       theme: theme.isLightMode == true ? lightTheme : darkTheme,
       // home: showHome ? const UserTypeScreen() : const StartScreen(),
-      // home: const StudentScreen(),
-      home: const TeacherScreen(),
+      home: const CareerQuizResult(),
+      // home: const CareerQuiz(),
       routes: {
         'onboardingScreen': (context) => const StartScreen(),
         'usersTypeScreen': (context) => const UserTypeScreen(),
         'getOTP': (context) => const OTPScreen(),
         'geminiChatBot': (context) => const GeminiChatBot(),
-
         'careerQuiz': (context) => const CareerQuiz(),
-
         'studentSignUp': (context) => const StudentSignUpScreen(),
         'studentLogin': (context) => const StudentLoginScreen(),
         'studentHome': (context) => const StudentScreen(),
-
         'teacherLogin': (context) => const TeacherLoginScreen(),
         'teacherSignUp': (context) => const TeacherSignUpScreen(),
         'teacherHome': (context) => const TeacherScreen(),
-
       },
     );
   }

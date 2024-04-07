@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 
-ConfettiController controller = ConfettiController(duration: const Duration(seconds: 1));
+ConfettiController controller =
+    ConfettiController(duration: const Duration(seconds: 1));
 void showConfetti(BuildContext context) {
   OverlayState? overlayState = Overlay.of(context);
   OverlayEntry overlayEntry = OverlayEntry(

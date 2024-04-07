@@ -5,8 +5,10 @@ import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
@@ -27,6 +29,14 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
   List<VideoPlayerController>? controllers = [];
 
   final List uploadedVideos = [];
+
+  final createQuiz = [
+    {
+      "question": "",
+      "options": [],
+      "correctAnswer": "",
+    },
+  ];
 
   Future<void> uploadCourse() async {
     final result = await FilePicker.platform.pickFiles(
@@ -164,17 +174,14 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                         children: [
                                           Container(
                                             margin: const EdgeInsets.only(
-                                                top: 5,
-                                                bottom: 1,
-                                                right: 10,
-                                                left: 10),
+                                                right: 10, left: 10),
                                             height: 50,
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
                                               children: [
                                                 GeneralAppText(
-                                                  text: (index + 1).toString(),
+                                                  text: "${index + 1}. ",
                                                   size: 14,
                                                 ),
                                                 const SizedBox(width: 10),
@@ -280,16 +287,368 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                               ],
                                             ),
                                           ),
-                                          const Divider(
-                                            thickness: 0.5,
-                                            indent: 20,
-                                            endIndent: 20,
-                                            color: Colors.grey,
+                                          Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              const Divider(
+                                                thickness: 0.5,
+                                                indent: 20,
+                                                endIndent: 20,
+                                                color: Colors.grey,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  // create quiz
+
+                                                  showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    isDismissible: true,
+                                                    context: context,
+                                                    builder: (builder) {
+                                                      return Container(
+                                                        height: 700,
+                                                        width: double.infinity,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(20),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    20),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    20),
+                                                          ),
+                                                        ),
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              height: 5,
+                                                              width: 100,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color:
+                                                                    primaryColor,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                            ),
+                                                            Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                GeneralAppText(
+                                                                  text:
+                                                                      "Question ${index + 1}",
+                                                                  size: 18,
+                                                                  weight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 5),
+                                                                Container(
+                                                                  margin: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          8.0),
+                                                                  child:
+                                                                      TextField(
+                                                                    onChanged:
+                                                                        (value) {},
+                                                                    decoration:
+                                                                        InputDecoration(
+                                                                      border:
+                                                                          OutlineInputBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10.0),
+                                                                      ),
+                                                                      hintText:
+                                                                          'Question',
+                                                                    ),
+                                                                    inputFormatters: [
+                                                                      LengthLimitingTextInputFormatter(
+                                                                          100),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 20),
+                                                                GeneralAppText(
+                                                                  text:
+                                                                      "Options",
+                                                                  size: 18,
+                                                                  weight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 5),
+                                                                Column(
+                                                                  children: [
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Container(
+                                                                          width:
+                                                                              160,
+                                                                          margin: const EdgeInsets
+                                                                              .symmetric(
+                                                                              vertical: 8.0),
+                                                                          child:
+                                                                              TextField(
+                                                                            onChanged:
+                                                                                (value) {},
+                                                                            decoration:
+                                                                                InputDecoration(
+                                                                              border: OutlineInputBorder(
+                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                              ),
+                                                                              hintText: 'Option 1',
+                                                                            ),
+                                                                            inputFormatters: [
+                                                                              LengthLimitingTextInputFormatter(100),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                            width:
+                                                                                20),
+                                                                        Container(
+                                                                          width:
+                                                                              160,
+                                                                          margin: const EdgeInsets
+                                                                              .symmetric(
+                                                                              vertical: 8.0),
+                                                                          child:
+                                                                              TextField(
+                                                                            onChanged:
+                                                                                (value) {},
+                                                                            decoration:
+                                                                                InputDecoration(
+                                                                              border: OutlineInputBorder(
+                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                              ),
+                                                                              hintText: 'Option 2',
+                                                                            ),
+                                                                            inputFormatters: [
+                                                                              LengthLimitingTextInputFormatter(100),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Container(
+                                                                          width:
+                                                                              160,
+                                                                          margin: const EdgeInsets
+                                                                              .symmetric(
+                                                                              vertical: 8.0),
+                                                                          child:
+                                                                              TextField(
+                                                                            onChanged:
+                                                                                (value) {},
+                                                                            decoration:
+                                                                                InputDecoration(
+                                                                              border: OutlineInputBorder(
+                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                              ),
+                                                                              hintText: 'Option 3',
+                                                                            ),
+                                                                            inputFormatters: [
+                                                                              LengthLimitingTextInputFormatter(100),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                            width:
+                                                                                20),
+                                                                        Container(
+                                                                          width:
+                                                                              160,
+                                                                          margin: const EdgeInsets
+                                                                              .symmetric(
+                                                                              vertical: 8.0),
+                                                                          child:
+                                                                              TextField(
+                                                                            onChanged:
+                                                                                (value) {},
+                                                                            decoration:
+                                                                                InputDecoration(
+                                                                              border: OutlineInputBorder(
+                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                              ),
+                                                                              hintText: 'Option 4',
+                                                                            ),
+                                                                            inputFormatters: [
+                                                                              LengthLimitingTextInputFormatter(100),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 20),
+                                                                GeneralAppText(
+                                                                  text:
+                                                                      "Correct Answer",
+                                                                  size: 18,
+                                                                  weight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 5),
+                                                                Container(
+                                                                  margin: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          8.0),
+                                                                  child:
+                                                                      DropdownButtonFormField<
+                                                                          String>(
+                                                                    value:
+                                                                        "Option 1",
+                                                                    onChanged:
+                                                                        (String?
+                                                                            value) {},
+                                                                    items: [
+                                                                      "Option 1",
+                                                                      "Option 2",
+                                                                      "Option 3",
+                                                                      "Option 4",
+                                                                    ].map<
+                                                                        DropdownMenuItem<
+                                                                            String>>((String
+                                                                        option) {
+                                                                      return DropdownMenuItem<
+                                                                          String>(
+                                                                        value:
+                                                                            option,
+                                                                        child: Text(
+                                                                            option),
+                                                                      );
+                                                                    }).toList(),
+                                                                    decoration:
+                                                                        InputDecoration(
+                                                                      border:
+                                                                          OutlineInputBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10.0),
+                                                                      ),
+                                                                      hintText:
+                                                                          "Correct Answer",
+                                                                    ),
+                                                                  ),
+                                                                ),
+
+                                                                // CREATE QUIZ BUTTON
+                                                                const SizedBox(
+                                                                    height: 20),
+                                                                GestureDetector(
+                                                                  onTap: () {},
+                                                                  child:
+                                                                      Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            10),
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                            border:
+                                                                                Border.all(
+                                                                              color: primaryColor,
+                                                                              width: 1,
+                                                                            ),
+                                                                            borderRadius: BorderRadius.circular(10)),
+                                                                    child:
+                                                                        PrimaryAppText(
+                                                                      text:
+                                                                          "Create Quiz",
+                                                                      size: 18,
+                                                                      color:
+                                                                          primaryColor,
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: GeneralAppIcon(
+                                                  icon: Icons.add_box_rounded,
+                                                  color: theme
+                                                      ? Colors.grey
+                                                      : Colors.white,
+                                                  size: 25,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       );
                                     },
                                   ),
+                          ),
+                          const SizedBox(height: 20),
+                          GeneralAppText(
+                            text: "Subject",
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: TextField(
+                              controller: null,
+                              maxLines: 1,
+                              onChanged: (value) {},
+                              decoration: InputDecoration(
+                                hintMaxLines: 1,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                labelText: 'Subject',
+                              ),
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(100),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 20),
                           GeneralAppText(
@@ -334,6 +693,31 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 labelText: 'Course Description',
+                              ),
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(100),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          GeneralAppText(
+                            text: "Add Tags",
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: TextField(
+                              controller: null,
+                              maxLines: 1,
+                              onChanged: (value) {},
+                              decoration: InputDecoration(
+                                hintMaxLines: 1,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                labelText: 'Tags',
                               ),
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(100),

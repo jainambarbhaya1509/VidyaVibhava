@@ -140,7 +140,6 @@ class _TextOnlyState extends ConsumerState<TextOnly> {
                           ? GeneralAppIcon(
                               icon: Icons.rocket_launch_outlined,
                               color: primaryColor,
-                              
                             )
                           : null,
                     ),

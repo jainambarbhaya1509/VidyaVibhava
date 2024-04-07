@@ -18,9 +18,7 @@ class TeacherHomeScreen extends ConsumerStatefulWidget {
 }
 
 class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
-  final List uploadedVideos = [
-   
-  ];
+  final List uploadedVideos = [];
   final List uploadedCourses = [];
   final List scheduledVisits = [];
   @override

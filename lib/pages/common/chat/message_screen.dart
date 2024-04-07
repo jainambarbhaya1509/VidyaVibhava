@@ -79,7 +79,6 @@ class _MessageScreenState extends State<MessageScreen> {
                       : Alignment.topRight),
                   child: Container(
                     decoration: BoxDecoration(
-
                       borderRadius: messages[index].messageType == "receiver"
                           ? const BorderRadius.only(
                               topLeft: Radius.circular(20),

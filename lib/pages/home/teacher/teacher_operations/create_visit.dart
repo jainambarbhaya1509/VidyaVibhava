@@ -134,6 +134,10 @@ class _CreateVisitState extends ConsumerState<CreateVisit> {
                                   initialTime: selectedTime,
                                   initialEntryMode: TimePickerEntryMode.input,
                                 );
+                                setState(() {
+                                  visitTimeController.text =
+                                      '${time?.hour.toString().padLeft(2, '0')}:${time?.minute.toString().padLeft(2, '0')}';
+                                });
                               },
                               decoration: InputDecoration(
                                 suffixIcon: const Icon(Icons.access_time),
@@ -145,7 +149,6 @@ class _CreateVisitState extends ConsumerState<CreateVisit> {
                               controller: visitTimeController,
                             ),
                           ),
-
                           const SizedBox(height: 20),
                           GeneralAppText(
                             text: 'Set Location',
@@ -153,8 +156,23 @@ class _CreateVisitState extends ConsumerState<CreateVisit> {
                             color: theme ? Colors.black : Colors.white,
                           ),
                           const SizedBox(height: 10),
-                          //location picker
-
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: TextField(
+                              controller: null,
+                              onChanged: (value) {},
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                labelText: 'Set Location',
+                              ),
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(100),
+                              ],
+                            ),
+                          ),
                           const SizedBox(height: 20),
                           GeneralAppText(
                             text: "Visit Purpose",

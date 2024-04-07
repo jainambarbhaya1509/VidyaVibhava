@@ -1,3 +1,4 @@
+import 'package:final_project/pages/home/student/career_quiz/career_quiz_result.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_text.dart';
@@ -20,124 +21,124 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
       'I like to work on cars': ['Yes', 'No']
     },
     {
-      'I like to do puzzles': ['Yes', 'No']
-    },
-    {
-      'I am good at working independently': ['Yes', 'No']
-    },
-    {
-      'I like to work in teams': ['Yes', 'No']
-    },
-    {
-      'I am an ambitious person, I set goals for myself': ['Yes', 'No']
-    },
-    {
-      'I like to organize things, like files, desks, etc': ['Yes', 'No']
-    },
-    {
       'I like to build things': ['Yes', 'No']
-    },
-    {
-      'I like to do experiments': ['Yes', 'No']
-    },
-    {
-      'I like to read about art and music': ['Yes', 'No']
-    },
-    {
-      'I like to teach or train people': ['Yes', 'No']
-    },
-    {
-      'I like to try to influence or persuade people': ['Yes', 'No']
-    },
-    {
-      'I have clear instructions to follow': ['Yes', 'No']
     },
     {
       'I like to take care of animals': ['Yes', 'No']
     },
     {
-      'I enjoy science': ['Yes', 'No']
-    },
-    {
-      'I enjoy creative writing': ['Yes', 'No']
-    },
-    {
-      'I like trying to help people solve their problems': ['Yes', 'No']
-    },
-    {
-      'I like selling things': ['Yes', 'No']
-    },
-    {
-      "I wouldn't mind working 8 hours a day in an office": ['Yes', 'No']
-    },
-    {
       'I like putting things together or assembling things': ['Yes', 'No']
-    },
-    {
-      'I enjoy trying to figure out how things work': ['Yes', 'No']
-    },
-    {
-      'I am a creative person': ['Yes', 'No']
-    },
-    {
-      'I am interested in healing people': ['Yes', 'No']
-    },
-    {
-      'I am quick to take on new responsibilities': ['Yes', 'No']
-    },
-    {
-      'I pay attention to details': ['Yes', 'No']
     },
     {
       'I like to cook': ['Yes', 'No']
     },
     {
-      'I like to analyze things(problems, situations, etc)': ['Yes', 'No']
-    },
-    {
-      'I like to play instruments or sing': ['Yes', 'No']
-    },
-    {
-      'I enjoy learning about other cultures': ['Yes', 'No']
-    },
-    {
-      'I would like to start my own business': ['Yes', 'No']
-    },
-    {
-      'I like to do filing or typing': ['Yes', 'No']
-    },
-    {
       'I am a practical person': ['Yes', 'No']
-    },
-    {
-      'I like working with numbers or charts': ['Yes', 'No']
-    },
-    {
-      'I like acting in plays': ['Yes', 'No']
-    },
-    {
-      'I like to get into discussions about issues': ['Yes', 'No']
-    },
-    {
-      'I like to lead': ['Yes', 'No']
-    },
-    {
-      'I am good at keeping records of my work': ['Yes', 'No']
     },
     {
       'I like working outdoors': ['Yes', 'No']
     },
     {
-      'I am good at math': ['Yes', 'No']
+      'I like to do puzzles': ['Yes', 'No']
+    },
+    {
+      'I like to do experiments': ['Yes', 'No']
+    },
+    {
+      'I enjoy science': ['Yes', 'No']
+    },
+    {
+      'I enjoy trying to figure out how things work': ['Yes', 'No']
+    },
+    {
+      'I like to analyze things (problems/situations)': ['Yes', 'No']
+    },
+    {
+      'I like working with numbers or charts': ['Yes', 'No']
+    },
+    {
+      'I’m good at math': ['Yes', 'No']
+    },
+    {
+      'I am good at working independently': ['Yes', 'No']
+    },
+    {
+      'I like to read about art and music': ['Yes', 'No']
+    },
+    {
+      'I enjoy creative writing': ['Yes', 'No']
+    },
+    {
+      "I am a creative person": ['Yes', 'No']
+    },
+    {
+      'I like to play instruments or sing': ['Yes', 'No']
+    },
+    {
+      'I like acting in plays': ['Yes', 'No']
     },
     {
       'I like to draw': ['Yes', 'No']
     },
     {
+      'I like to work in teams': ['Yes', 'No']
+    },
+    {
+      'I like to teach or train people': ['Yes', 'No']
+    },
+    {
+      'I like trying to help people solve their problems': ['Yes', 'No']
+    },
+    {
+      'I am interested in healing people': ['Yes', 'No']
+    },
+    {
+      'I enjoy learning about other cultures': ['Yes', 'No']
+    },
+    {
+      'I like to get into discussions about issues': ['Yes', 'No']
+    },
+    {
       'I like helping people': ['Yes', 'No']
     },
     {
+      'I am an ambitious person, I set goals for myself': ['Yes', 'No']
+    },
+    {
+      'I like to try to influence or persuade people': ['Yes', 'No']
+    },
+    {
+      'I like selling things': ['Yes', 'No']
+    },
+    {
+      'I am quick to take on new responsibilities': ['Yes', 'No']
+    },
+    {
+      'I would like to start my own business': ['Yes', 'No']
+    },
+    {
+      'I like to lead': ['Yes', 'No']
+    },
+    {
       'I like to give speeches': ['Yes', 'No']
+    },
+    {
+      'I like to organize things, (files, desks/offices)': ['Yes', 'No']
+    },
+    {
+      'I like to have clear instructions to follow': ['Yes', 'No']
+    },
+    {
+      'I wouldn’t mind working 8 hours per day in an office': ['Yes', 'No']
+    },
+    {
+      'I pay attention to details': ['Yes', 'No']
+    },
+    {
+      'I like to do filing or typing': ['Yes', 'No']
+    },
+    {
+      'I am good at keeping records of my work': ['Yes', 'No']
     },
     {
       'I would like to work in an office': ['Yes', 'No']
@@ -170,7 +171,6 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
           final startIndex = index * 6;
           final pageQuestions = questions.sublist(startIndex, startIndex + 6);
           return SingleChildScrollView(
-            
             scrollDirection: Axis.vertical,
             child: Container(
               margin: const EdgeInsets.only(bottom: 10, top: 50),
@@ -303,14 +303,18 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
                     curve: Curves.easeIn,
                   );
                 }
+                if (_currentPage == 6) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CareerQuizResult()));
+                }
               },
               child: PrimaryAppText(
                 text: _currentPage == 6 ? 'Submit' : 'Next',
                 size: 20,
-                color: _currentPage == 6
-                    ? Colors.green
-                    : primaryColor,
-                    weight: FontWeight.bold,
+                color: _currentPage == 6 ? Colors.green : primaryColor,
+                weight: FontWeight.bold,
               ),
             )
           ],

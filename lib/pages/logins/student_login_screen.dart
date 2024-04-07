@@ -174,7 +174,8 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
                   validateUsername();
 
                   if (errorMessage1 == null && errorMessage2 == null) {
-                    AuthenticationRepository.instance.phoneAuthentication(_phoneNumberController.text);
+                    AuthenticationRepository.instance
+                        .phoneAuthentication(_phoneNumberController.text);
                     saveData();
                     Navigator.pushReplacementNamed(
                       context,

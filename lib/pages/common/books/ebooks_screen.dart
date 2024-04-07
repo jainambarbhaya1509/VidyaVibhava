@@ -165,7 +165,8 @@ class _EbooksScreenState extends State<EbooksScreen> {
                                           _bookCoverPage[index],
                                           loadingBuilder: (BuildContext context,
                                               Widget child,
-                                              ImageChunkEvent? loadingProgress) {
+                                              ImageChunkEvent?
+                                                  loadingProgress) {
                                             if (loadingProgress == null) {
                                               return child;
                                             }

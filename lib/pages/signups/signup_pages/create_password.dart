@@ -12,10 +12,9 @@ class CreatePassword extends ConsumerStatefulWidget {
 }
 
 TextEditingController createPasswordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+TextEditingController confirmPasswordController = TextEditingController();
 
 class _VerifyYourselfState extends ConsumerState<CreatePassword> {
-  
   @override
   Widget build(BuildContext context) {
     final password = ref.read(createPasswordProvider.notifier).state;
@@ -51,7 +50,7 @@ class _VerifyYourselfState extends ConsumerState<CreatePassword> {
                   height: 10,
                 ),
                 TextField(
-                   onChanged: (value) {
+                  onChanged: (value) {
                     password['password'] = createPasswordController.text;
                   },
                   obscureText: true,
@@ -81,7 +80,8 @@ class _VerifyYourselfState extends ConsumerState<CreatePassword> {
                 ),
                 TextField(
                   onChanged: (value) {
-                    password['confirmPassword'] = confirmPasswordController.text;
+                    password['confirmPassword'] =
+                        confirmPasswordController.text;
                   },
                   obscureText: true,
                   controller: confirmPasswordController,

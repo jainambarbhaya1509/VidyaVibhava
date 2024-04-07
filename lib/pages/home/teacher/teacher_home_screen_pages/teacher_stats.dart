@@ -2,7 +2,9 @@ import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TeacherStatsScreen extends ConsumerStatefulWidget {
@@ -18,6 +20,7 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
   bool showAvg = false;
 
   final videosPerSubject = {
+    "Language": 10,
     "Mathematics": 10,
     "Physics": 20,
     "Chemistry": 30,
@@ -25,156 +28,165 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
     "English": 50,
     "History": 60,
     "Geography": 70,
-    "Computer Science": 80,
-    "Economics": 90,
-    "Accounting": 100,
   };
 
   @override
   Widget build(BuildContext context) {
     ref.watch(settingsProvider);
-    return Container(
-      margin: const EdgeInsets.only(top: 50),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          GeneralAppText(
-            text: "Your Statistics",
-            weight: FontWeight.bold,
-            size: 20,
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GeneralAppText(
-                      text: "Total Videos",
-                      size: 18,
-                      weight: FontWeight.bold,
-                    ),
-                    GeneralAppText(
-                      text: "10",
-                      size: 16,
-                      weight: FontWeight.bold,
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GeneralAppText(
-                      text: "Total Courses",
-                      size: 18,
-                      weight: FontWeight.bold,
-                    ),
-                    GeneralAppText(
-                      text: "10",
-                      size: 16,
-                      weight: FontWeight.bold,
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-          Container(
-            height: MediaQuery.sizeOf(context).height * 0.3,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin: const EdgeInsets.all(10),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.only(top: 50),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GeneralAppText(
+                text: "Your Statistics",
+                weight: FontWeight.bold,
+                size: 20,
               ),
-              itemCount: videosPerSubject.length,
-              itemBuilder: (context, index) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                margin: const EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         GeneralAppText(
-                          text: videosPerSubject.keys.elementAt(index),
+                          text: "Total Videos",
                           size: 18,
                           weight: FontWeight.bold,
                         ),
                         GeneralAppText(
-                          text: videosPerSubject.values
-                              .elementAt(index)
-                              .toString(),
+                          text: "10",
+                          size: 16,
+                          weight: FontWeight.bold,
+                        )
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GeneralAppText(
+                          text: "Total Courses",
+                          size: 18,
+                          weight: FontWeight.bold,
+                        ),
+                        GeneralAppText(
+                          text: "10",
                           size: 16,
                           weight: FontWeight.bold,
                         )
                       ],
                     ),
                   ],
-                );
-              },
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Stack(
-            children: <Widget>[
-              AspectRatio(
-                aspectRatio: 1.70,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 18,
-                    left: 12,
-                    top: 24,
-                    bottom: 12,
-                  ),
-                  child: LineChart(
-                    showAvg ? avgData() : mainData(),
-                  ),
                 ),
               ),
-              SizedBox(
-                width: 60,
-                height: 34,
-                child: TextButton(
-                  onPressed: () {
-                    setState(() {
-                      showAvg = !showAvg;
-                    });
+
+              Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 2.2,
+                  ),
+                  itemCount: videosPerSubject.keys.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.only(left: 40),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                GeneralAppText(
+                                  text: videosPerSubject.keys.elementAt(index),
+                                  size: 18,
+                                  weight: FontWeight.bold,
+                                ),
+                                GeneralAppText(
+                                  text: videosPerSubject.values
+                                      .elementAt(index)
+                                      .toString(),
+                                  size: 16,
+                                  weight: FontWeight.bold,
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   },
-                  child: Text(
-                    'Video Uploaded',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: showAvg
-                          ? Colors.white.withOpacity(0.5)
-                          : Colors.white,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Stack(
+                children: <Widget>[
+                  AspectRatio(
+                    aspectRatio: 1.70,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        right: 18,
+                        left: 12,
+                        top: 24,
+                        bottom: 12,
+                      ),
+                      child: LineChart(
+                        showAvg ? avgData() : mainData(),
+                      ),
                     ),
                   ),
-                ),
+                  SizedBox(
+                    width: 60,
+                    height: 34,
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          showAvg = !showAvg;
+                        });
+                      },
+                      child: Text(
+                        'Video Uploaded',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: showAvg
+                              ? Colors.white.withOpacity(0.5)
+                              : Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // video per subject
+              const SizedBox(
+                height: 20,
               ),
             ],
           ),
-          // video per subject
-          const SizedBox(
-            height: 20,
-          ),
-        ],
+        ),
       ),
     );
   }

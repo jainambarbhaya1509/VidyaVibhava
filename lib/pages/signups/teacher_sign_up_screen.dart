@@ -24,11 +24,11 @@ class TeacherSignUpScreen extends ConsumerStatefulWidget {
 class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
   int currentPageIndex = 0;
 
-  bool checkMatchPassword(){
+  bool checkMatchPassword() {
     final teacherPassword = ref.read(createPasswordProvider);
-    if(teacherPassword['password'] != teacherPassword['confirmPassword']){
+    if (teacherPassword['password'] != teacherPassword['confirmPassword']) {
       return false;
-    }else{
+    } else {
       return true;
     }
   }
@@ -124,8 +124,9 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: List.generate(signUpSections.length, (index) => index)
-                      .map((e) {
+                  children:
+                      List.generate(signUpSections.length, (index) => index)
+                          .map((e) {
                     Color indicatorColor;
                     if (currentPageIndex == e) {
                       indicatorColor = primaryColor;
@@ -227,15 +228,12 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                 int organizationInfoIndex = signUpSections.indexWhere(
                     (widget) =>
                         widget.runtimeType == OrganizatonInformationSection);
-                
+
                 int createPassword = signUpSections.indexWhere(
-                    (widget) =>
-                        widget.runtimeType == CreatePassword);
-                      
+                    (widget) => widget.runtimeType == CreatePassword);
 
                 if (currentPageIndex == personalInfoIndex &&
                     checkAllPersonalInfoFields() == false) {
-         
                   Toast.show(
                     "Please fill all the fields",
                     duration: Toast.lengthLong,
@@ -256,7 +254,6 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
 
                 if (currentPageIndex == addressInfoIndex &&
                     checkAllAddressInfoFields() == false) {
-
                   Toast.show(
                     "Please fill all the fields",
                     duration: Toast.lengthLong,
@@ -267,7 +264,6 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
 
                 if (currentPageIndex == documentUploadIndex &&
                     checkDocumentUpload() == false) {
-                
                   Toast.show(
                     "Please upload all the documents",
                     duration: Toast.lengthLong,
@@ -277,8 +273,6 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                 }
                 if (currentPageIndex == organizationInfoIndex &&
                     checkOrganizationInfo() == false) {
-             
-                      
                   Toast.show(
                     "Please fill all the fields",
                     duration: Toast.lengthLong,

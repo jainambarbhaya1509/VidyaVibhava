@@ -50,7 +50,6 @@ class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
           BottomNavigationBarItem(
             tooltip: "Home",
             activeIcon: Container(
-              
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
                 color: Colors.grey,

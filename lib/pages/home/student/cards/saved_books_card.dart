@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BooksCard extends ConsumerStatefulWidget {
   String imageUrl;
-  BooksCard({super.key, 
+  BooksCard({
+    super.key,
     required this.imageUrl,
   });
 
@@ -14,7 +15,6 @@ class BooksCard extends ConsumerStatefulWidget {
 }
 
 class _BooksCardState extends ConsumerState<BooksCard> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +22,6 @@ class _BooksCardState extends ConsumerState<BooksCard> {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        
         image: DecorationImage(
           image: NetworkImage(widget.imageUrl, scale: 1.0),
         ),

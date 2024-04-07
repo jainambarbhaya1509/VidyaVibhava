@@ -184,6 +184,31 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
                           ),
                           const SizedBox(height: 20),
                           GeneralAppText(
+                            text: "Subject",
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: TextField(
+                              controller: null,
+                              maxLines: 1,
+                              onChanged: (value) {},
+                              decoration: InputDecoration(
+                                hintMaxLines: 1,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                labelText: 'Subject',
+                              ),
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(100),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          GeneralAppText(
                             text: "Lecture Title",
                             size: 18,
                             color: Colors.white,
@@ -232,7 +257,6 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                         
                           GeneralAppText(
                             text: "Add Tags",
                             size: 18,
@@ -321,7 +345,6 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
                 GestureDetector(
                   onTap: () {
                     if (checkAllFields()) {
-
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -342,9 +365,7 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                          color: checkAllFields()
-                              ? Colors.green
-                              : Colors.grey,
+                          color: checkAllFields() ? Colors.green : Colors.grey,
                           width: 1),
                     ),
                     child: Row(
@@ -354,17 +375,13 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
                         GeneralAppIcon(
                           icon: Icons.file_upload_outlined,
                           size: 20,
-                          color: checkAllFields()
-                              ? Colors.green
-                              : Colors.grey,
+                          color: checkAllFields() ? Colors.green : Colors.grey,
                         ),
                         const SizedBox(width: 5),
                         PrimaryAppText(
                           text: 'Upload',
                           size: 16,
-                          color: checkAllFields()
-                              ? Colors.green
-                              : Colors.grey,
+                          color: checkAllFields() ? Colors.green : Colors.grey,
                         ),
                       ],
                     ),

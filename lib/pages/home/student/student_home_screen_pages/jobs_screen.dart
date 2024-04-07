@@ -33,7 +33,10 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
           itemCount: 10,
           itemBuilder: (context, index) {
             return Container(
-              margin: const EdgeInsets.only(bottom: 10, top: 10,),
+              margin: const EdgeInsets.only(
+                bottom: 10,
+                top: 10,
+              ),
               width: double.infinity,
               height: 160,
               decoration: BoxDecoration(
@@ -54,11 +57,10 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
                         width: 50,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage(
-                                  "assets/img/teacher2.png"),
-                              // scale: 1.0
-                              fit: BoxFit.cover,
-                              ),
+                            image: AssetImage("assets/img/teacher2.png"),
+                            // scale: 1.0
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -99,11 +101,11 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(context: context, builder: (builder){
-                        return Container(
-                          
-                        );
-                      });
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (builder) {
+                            return Container();
+                          });
                     },
                     child: Container(
                       alignment: Alignment.center,

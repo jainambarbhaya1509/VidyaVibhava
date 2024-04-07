@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Student{
+class Student {
   late String? uid;
   final String firstName;
   final String lastName;
@@ -13,8 +13,8 @@ class Student{
   final String city;
   final String state;
   late final String image;
-  late final String doc1 ;
-  late final String doc2 ;
+  late final String doc1;
+  late final String doc2;
 
   Student({
     this.uid,
@@ -33,9 +33,9 @@ class Student{
     required this.doc2,
   });
 
-  toJson(){
-    return{
-      'uid':uid,
+  toJson() {
+    return {
+      'uid': uid,
       'firstName': firstName,
       'lastName': lastName,
       'dateOfBirth': dateOfBirth,
@@ -52,7 +52,8 @@ class Student{
     };
   }
 
-  factory Student.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
+  factory Student.fromSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
 
     return Student(
@@ -74,10 +75,14 @@ class Student{
   }
 }
 
-class ContinueWatching{}
-class EnrolledCourse{}
-class Course{}
-class Teacher{}
+class ContinueWatching {}
+
+class EnrolledCourse {}
+
+class Course {}
+
+class Teacher {}
+
 class Mentor {
   late String mentorId;
   final String mentorName;
@@ -104,7 +109,7 @@ class Mentor {
   }
 }
 
-class Textbook{}
+class Textbook {}
 
 class Video {
   late String? videoId;
@@ -142,7 +147,7 @@ class Video {
       'duration': duration,
       'subject': subject,
       'instructorName': instructorName,
-      'thumbnail':thumbnail,
+      'thumbnail': thumbnail,
     };
   }
 
@@ -164,9 +169,9 @@ class Video {
   }
 }
 
-class Assignment{}
+class Assignment {}
 
-class Message{
+class Message {
   final String senderId, senderEmail, receiverId, message;
   final Timestamp timestamp;
 
@@ -178,13 +183,13 @@ class Message{
     required this.message,
   });
 
-  Map<String, dynamic> toMap(){
-    return{
-      'senderId' : senderId,
-      'senderEmail':senderEmail,
-      'receiverId':receiverId,
-      'message':message,
-      'timestamp':timestamp,
+  Map<String, dynamic> toMap() {
+    return {
+      'senderId': senderId,
+      'senderEmail': senderEmail,
+      'receiverId': receiverId,
+      'message': message,
+      'timestamp': timestamp,
     };
   }
 }

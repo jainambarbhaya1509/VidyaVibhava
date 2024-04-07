@@ -3,35 +3,35 @@ import 'package:final_project/repository/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
-class ProfileController extends GetxController{
+class ProfileController extends GetxController {
   static ProfileController get instance => Get.find();
   final _authRepo = Get.put(AuthenticationRepository());
   final _userRepo = Get.put(UserRepository());
 
-  getUserData(){
+  getUserData() {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    if(uid != null){
+    if (uid != null) {
       return _userRepo.getUserDetails(uid);
-    }else{
+    } else {
       Get.snackbar("Error", "Login to Continue");
     }
   }
 
-  getVideoData(){
+  getVideoData() {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    if(uid != null){
+    if (uid != null) {
       return _userRepo.getContinueWatching(uid);
-    }else{
+    } else {
       Get.snackbar("Error", "Login to Continue");
     }
   }
 
-  getMentorData(){
+  getMentorData() {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    if(uid != null){
+    if (uid != null) {
       print("Inside Controller ${uid}");
       return _userRepo.getMentorByMentorId(uid);
-    }else{
+    } else {
       Get.snackbar("Error", "Login to Continue");
     }
   }

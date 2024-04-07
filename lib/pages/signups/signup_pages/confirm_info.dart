@@ -17,18 +17,16 @@ class ConfirmInformationSection extends StatefulWidget {
 
 String calculateAge(String dob) {
   try {
-    
     List<String> dobParts = dob.split("-");
     if (dobParts.length >= 3) {
-      
       int birthYear = int.parse(dobParts[2]);
       int age = now.year - birthYear;
-      return age.toString(); 
+      return age.toString();
     }
   } catch (e) {
     rethrow;
   }
-  return ''; 
+  return '';
 }
 
 class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
@@ -156,7 +154,9 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                       Flexible(
                         fit: FlexFit.loose,
                         child: Container(
-                          margin: const EdgeInsets.only(left: 20,),
+                          margin: const EdgeInsets.only(
+                            left: 20,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -260,7 +260,6 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                   weight: FontWeight.normal,
                 ),
                 GeneralAppText(
-                  
                   text: ref
                       .read(teacherOganizationInfoProvider)['subjects']
                       .join(", "),

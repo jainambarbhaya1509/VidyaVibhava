@@ -6,5 +6,4 @@ final savedBooksProvider = StateProvider(
     "bookTitle": [],
     "imageUrl": [],
   },
-  
 );

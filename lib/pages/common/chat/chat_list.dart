@@ -23,14 +23,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Widget build(BuildContext context) {
     final theme = ref.watch(settingsProvider);
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .primaryColor,
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         forceMaterialTransparency: true,
-        backgroundColor: Theme
-            .of(context)
-            .primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
         title: GeneralAppText(
           text: 'Inbox',
           size: 22,
@@ -41,14 +37,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         scrollDirection: Axis.vertical,
         child: Container(
           margin:
-          const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           child: Column(
             children: [
               Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                width: MediaQuery.of(context).size.width,
                 height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -92,8 +85,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (
-                          context) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
                         return MessageScreen(
                           userName: items[index].toString(),
                         );
@@ -127,19 +120,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             ),
                             Expanded(
                               child: Container(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                width: MediaQuery.of(context).size.width,
                                 margin: const EdgeInsets.only(left: 20),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         SecondaryAppText(
                                           text: 'John Doe',

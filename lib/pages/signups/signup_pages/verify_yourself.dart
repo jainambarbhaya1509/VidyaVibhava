@@ -67,7 +67,8 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                         child: TextField(
                           controller: teacherEmailController,
                           onChanged: (value) {
-                            ref.read(teacherPersonalInfoProvider)['email'] = value;
+                            ref.read(teacherPersonalInfoProvider)['email'] =
+                                value;
                           },
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
@@ -129,8 +130,9 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
-                           AuthenticationRepository.instance.phoneAuthentication(studentPhoneController.text);
+                        onTap: () {
+                          AuthenticationRepository.instance
+                              .phoneAuthentication(studentPhoneController.text);
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -177,14 +179,15 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(
-                 onTap: () async{
-                    if(await AuthenticationRepository.instance.verifyOTP(verifyOtpController.text)){
+                  onTap: () async {
+                    if (await AuthenticationRepository.instance
+                        .verifyOTP(verifyOtpController.text)) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('OTP Validated ! Please Click Next'),
                         ),
                       );
-                    }else {
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Invalid OTP'),

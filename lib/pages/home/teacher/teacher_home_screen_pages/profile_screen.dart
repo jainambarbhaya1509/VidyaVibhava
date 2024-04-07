@@ -500,12 +500,14 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                                       child: Column(
                                         children: [
                                           Container(
-                                            margin:
-                                                const EdgeInsets.only(left: 10, bottom: 20, right: 20),
+                                            margin: const EdgeInsets.only(
+                                                left: 10,
+                                                bottom: 20,
+                                                right: 20),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 GeneralAppText(
                                                   text: "Student List",
@@ -516,7 +518,6 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                                                           ? textColor1
                                                           : textColor2,
                                                 ),
-                                                
                                                 GeneralAppIcon(
                                                   icon: Icons.close,
                                                   color: theme.isLightMode
@@ -741,6 +742,5 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
     );
   }
 }
-
 
 // TODO: Fix Overflow at Name Section

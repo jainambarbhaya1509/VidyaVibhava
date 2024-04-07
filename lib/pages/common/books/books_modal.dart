@@ -8,7 +8,6 @@ import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 class BooksModal extends ConsumerStatefulWidget {
   BooksModal({
     super.key,
@@ -94,7 +93,7 @@ class _BooksModalState extends ConsumerState<BooksModal> {
                         Flexible(
                           child: GeneralAppText(
                             text: widget.bookTitle,
-                            size: fontSize-5,
+                            size: fontSize - 5,
                             weight: FontWeight.bold,
                           ),
                         ),
@@ -134,7 +133,8 @@ class _BooksModalState extends ConsumerState<BooksModal> {
                                 child: FittedBox(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       GeneralAppIcon(
                                         icon: savedBooks["bookTitle"]
@@ -166,8 +166,6 @@ class _BooksModalState extends ConsumerState<BooksModal> {
                             const SizedBox(
                               width: 10,
                             ),
-
-
                             Container(
                               padding: const EdgeInsets.all(5),
                               alignment: Alignment.center,

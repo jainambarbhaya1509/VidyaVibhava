@@ -47,7 +47,6 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherScreen> {
           BottomNavigationBarItem(
             tooltip: "Home",
             activeIcon: Container(
-              
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
                 color: Colors.grey,
@@ -60,7 +59,6 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherScreen> {
             icon: const Icon(Icons.home_rounded),
             label: 'Home',
           ),
-          
           BottomNavigationBarItem(
             tooltip: "Search",
             activeIcon: Container(
