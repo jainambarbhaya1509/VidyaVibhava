@@ -1,11 +1,14 @@
+import 'package:final_project/providers/lecture_data_provider.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AttendLecture extends ConsumerStatefulWidget {
-  const AttendLecture({
+  final int lectureIndex;
+  AttendLecture({
     super.key,
+    required this.lectureIndex,
   });
 
   @override
@@ -15,6 +18,7 @@ class AttendLecture extends ConsumerStatefulWidget {
 class _AttendLectureState extends ConsumerState<AttendLecture> {
   @override
   Widget build(BuildContext context) {
+    final lectureVideo = ref.read(lectureDataProvider);
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
         body: SafeArea(
@@ -67,7 +71,7 @@ class _AttendLectureState extends ConsumerState<AttendLecture> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       GeneralAppText(
-                        text: "The Merchant Of Venice ",
+                        text: lectureVideo.lectures[widget.lectureIndex].title,
                         size: 20,
                         weight: FontWeight.bold,
                       ),

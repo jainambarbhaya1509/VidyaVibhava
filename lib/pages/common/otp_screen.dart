@@ -36,10 +36,10 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
 
   late int userType;
   String currentFact = '';
-  final otpController = TextEditingController();
+  // final otpController = TextEditingController();
   late ConfettiController controller;
   final focusNode = FocusNode();
-  String? otpCode;
+  // String? otpCode;
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
   @override
   void dispose() {
     controller.dispose();
-    otpController.dispose();
+    // _otpController.dispose();
     focusNode.dispose();
     super.dispose();
   }
@@ -62,7 +62,8 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
   Widget build(BuildContext context) {
     final role = ref.watch(roleProvider);
     final theme = ref.watch(settingsProvider.notifier).isLightMode;
-
+    final TextEditingController _otpController = TextEditingController();
+    String otpCode = "";
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       resizeToAvoidBottomInset: false,
@@ -103,7 +104,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                 width: double.infinity,
                 height: 100,
                 child: Pinput(
-                    controller: otpController,
+                    controller: _otpController,
                     focusNode: focusNode,
                     length: 6,
                     focusedPinTheme: PinTheme(
@@ -118,6 +119,11 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                       print("\n\nValue" + value!);
                       otpCode = value;
                       print(otpCode);
+                    },
+                    onSubmitted: (value) {
+                      setState(() {
+                        otpCode = value;
+                      });
                     },
                     onCompleted: (code) {
                       print("\n\n\n\nThe entered otp is " +
