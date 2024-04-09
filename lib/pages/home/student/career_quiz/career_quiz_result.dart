@@ -63,7 +63,7 @@ class _CareerQuizResultState extends ConsumerState<CareerQuizResult> {
             ),
             Text(
               "Your Results",
-              style: GoogleFonts.montserrat(
+              style: GoogleFonts.lato(
                 color: theme.isLightMode == true ? textColor1 : textColor2,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class _CareerQuizResultState extends ConsumerState<CareerQuizResult> {
               height: 20,
             ),
             Container(
-              height: 500,
+              // height: 500,
               width: double.infinity,
               child: Material(
                 borderRadius: BorderRadius.circular(10),
@@ -85,7 +85,7 @@ class _CareerQuizResultState extends ConsumerState<CareerQuizResult> {
                     decoration: BoxDecoration(
                       color: theme.isLightMode == true
                           ? const Color.fromARGB(255, 255, 255, 255)
-                          : Colors.grey,
+                          : Colors.grey[800],
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
@@ -168,6 +168,8 @@ class _CareerQuizResultState extends ConsumerState<CareerQuizResult> {
               child: Row(
                 children: [
                   Container(
+                    height: 60,
+                    width: 60,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(

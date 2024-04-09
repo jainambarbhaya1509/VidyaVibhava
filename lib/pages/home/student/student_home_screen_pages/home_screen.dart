@@ -4,6 +4,7 @@ import 'package:final_project/models/models.dart';
 import 'package:final_project/pages/common/chat/chat_list.dart';
 import 'package:final_project/pages/common/chat/chintan_chat_page_2.dart';
 import 'package:final_project/pages/common/gemini.dart';
+import 'package:final_project/pages/home/student/cards/course_details.dart';
 import 'package:final_project/pages/home/student/cards/lecture_details.dart';
 import 'package:final_project/pages/home/student/controller/lecture_controller.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/jobs_screen.dart';
@@ -20,6 +21,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:googleapis/keep/v1.dart';
 
 import '../../../../models/backend_model.dart';
 
@@ -496,236 +498,131 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                       onTap: () {
                         showModalBottomSheet(
                           isScrollControlled: true,
-                          isDismissible: true,
                           context: context,
                           builder: (builder) {
-                            return Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                ),
-                              ),
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                    Container(
-                                      height: 5,
-                                      width: 120,
-                                      decoration: BoxDecoration(
-                                        color: primaryColor,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                    Container(
-                                      height: 190,
-                                      width: MediaQuery.sizeOf(context).width *
-                                          0.9,
-                                      decoration: BoxDecoration(
-                                        color: Colors.amber,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            height: 60,
-                                            width: 60,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: theme == true
-                                                        ? textColor1
-                                                        : textColor2),
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            child: GeneralAppIcon(
-                                              icon: Icons.bookmark_border,
-                                              color: theme == true
-                                                  ? textColor1
-                                                  : textColor2,
-                                              size: 30,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              height: 60,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                    color: theme == true
-                                                        ? textColor1
-                                                        : textColor2),
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  GeneralAppIcon(
-                                                    icon: Icons
-                                                        .play_arrow_rounded,
-                                                    color: theme == true
-                                                        ? textColor1
-                                                        : textColor2,
-                                                    size: 30,
-                                                  ),
-                                                  PrimaryAppText(
-                                                    text: "Start Learning",
-                                                    size: 20,
-                                                    color: theme == true
-                                                        ? textColor1
-                                                        : textColor2,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10.0, left: 10),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                              alignment: Alignment.centerLeft,
-                                              child: GeneralAppText(
-                                                text: "Description",
-                                                size: 20,
-                                                weight: FontWeight.bold,
-                                              )),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          GeneralAppText(
-                                            text:
-                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
-                                            size: 15,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Container(
-                                          alignment: Alignment.centerLeft,
-                                          child: GeneralAppText(
-                                            text: "Lectures",
-                                            size: 20,
-                                            weight: FontWeight.bold,
-                                          )),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        height: double.infinity,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: ListView.builder(
-                                          controller: ScrollController(),
-                                          itemCount: 10,
-                                          itemBuilder: (context, lectureIndex) {
-                                            return Container(
-                                              margin: const EdgeInsets.only(
-                                                  bottom: 10),
-                                              height: 60,
-                                              width: double.infinity,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                    color: Colors.grey),
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                      left: 10,
-                                                    ),
-                                                    height: 40,
-                                                    width: 40,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.amber,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
-                                                    ),
-                                                    child: SecondaryAppText(
-                                                      text: "$lectureIndex",
-                                                      size: 20,
-                                                      color: theme == true
-                                                          ? textColor1
-                                                          : textColor2,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 10),
-                                                    child: SecondaryAppText(
-                                                      text:
-                                                          "Lecture Title $lectureIndex",
-                                                      size: 14,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                            return CourseDetails(
+                              courseIndex: index,
+                              courseTitle: "Course Title $index",
+                              courseDescription:
+                                  "The labyrinthine complexity of human existence intertwines with the capricious whims of fate, weaving a tapestry of stories where the mundane and the extraordinary collide, where love and loss dance a perpetual waltz amidst the cacophony of existence, each individual thread contributing to the rich fabric of the universe's eternal narrative.",
+                              courseLectures: [
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                0,
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                0,
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                0,
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                0,
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                0,
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                0,
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                0,
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                0,
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                0,
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                0,
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9
+                              ],
                             );
                           },
                         );
                       },
                       child: Container(
                         margin: const EdgeInsets.only(right: 10),
+                        height: 90,
                         width: 180,
                         decoration: BoxDecoration(
                             color: Colors.white,

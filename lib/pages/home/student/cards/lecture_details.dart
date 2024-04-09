@@ -64,6 +64,18 @@ class _LectureDetailsState extends ConsumerState<LectureDetails> {
                 const SizedBox(
                   height: 10,
                 ),
+                Container(
+                  margin: EdgeInsets.only(left: 10),
+                  alignment: Alignment.centerLeft,
+                  child: GeneralAppText(
+                    text: widget.lectureTitle,
+                    size: 20,
+                    weight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
@@ -136,13 +148,6 @@ class _LectureDetailsState extends ConsumerState<LectureDetails> {
                   padding: const EdgeInsets.only(top: 10.0, left: 10),
                   child: Column(
                     children: [
-                      Container(
-                          alignment: Alignment.centerLeft,
-                          child: GeneralAppText(
-                            text: widget.lectureTitle,
-                            size: 20,
-                            weight: FontWeight.bold,
-                          )),
                       Container(
                           alignment: Alignment.centerLeft,
                           child: GeneralAppText(
