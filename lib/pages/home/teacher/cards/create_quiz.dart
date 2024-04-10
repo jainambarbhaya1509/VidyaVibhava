@@ -1,7 +1,9 @@
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CreateQuiz extends ConsumerStatefulWidget {
@@ -13,18 +15,24 @@ class CreateQuiz extends ConsumerStatefulWidget {
 }
 
 class _CreateQuizState extends ConsumerState<CreateQuiz> {
+  TextEditingController quizQuestionController = TextEditingController();
+  TextEditingController option1Controller = TextEditingController();
+  TextEditingController option2Controller = TextEditingController();
+  TextEditingController option3Controller = TextEditingController();
+  TextEditingController option4Controller = TextEditingController();
+  List<String> options = [];
 
-  final createQuiz = [
-    {
+  final addQuizQuestion = {
+    "quiz": {
       "question": "",
       "options": [],
       "correctAnswer": "",
     },
-  ];
-
+  };
 
   @override
   Widget build(BuildContext context) {
+    String? correctAnswer = options.isNotEmpty ? options.first : null;
     return Container(
       height: 700,
       width: double.infinity,
@@ -60,6 +68,7 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
+                  controller: quizQuestionController,
                   onChanged: (value) {},
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -89,7 +98,7 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                         width: 160,
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextField(
-                          onChanged: (value) {},
+                          controller: option1Controller,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -106,7 +115,7 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                         width: 160,
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextField(
-                          onChanged: (value) {},
+                          controller: option2Controller,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -128,7 +137,7 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                         width: 160,
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextField(
-                          onChanged: (value) {},
+                          controller: option3Controller,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -145,7 +154,7 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                         width: 160,
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextField(
-                          onChanged: (value) {},
+                          controller: option4Controller,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -159,8 +168,32 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () => {
+                      setState(() {
+                        options = [
+                          option1Controller.text,
+                          option2Controller.text,
+                          option3Controller.text,
+                          option4Controller.text
+                        ];
+                      })
+                    },
+                    child: Container(
+                        alignment: Alignment.centerRight,
+                        child: PrimaryAppText(
+                          text: "Update Options",
+                          size: 15,
+                          weight: FontWeight.bold,
+                          color: primaryColor,
+                        )),
+                  ),
                 ],
               ),
+
               const SizedBox(height: 20),
               GeneralAppText(
                 text: "Correct Answer",
@@ -169,16 +202,13 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
               ),
               const SizedBox(height: 5),
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                margin: const EdgeInsets.symmetric(vertical: 0.0),
                 child: DropdownButtonFormField<String>(
-                  value: "Option 1",
-                  onChanged: (String? value) {},
-                  items: [
-                    "Option 1",
-                    "Option 2",
-                    "Option 3",
-                    "Option 4",
-                  ].map<DropdownMenuItem<String>>((String option) {
+                  value: correctAnswer,
+                  onChanged: (String? value) {
+                    correctAnswer = value!;
+                  },
+                  items: options.map<DropdownMenuItem<String>>((String option) {
                     return DropdownMenuItem<String>(
                       value: option,
                       child: Text(option),
@@ -196,7 +226,12 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
               // CREATE QUIZ BUTTON
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  addQuizQuestion["quiz"]!["question"] =
+                      quizQuestionController.text;
+                  addQuizQuestion["quiz"]!["options"] = options;
+                  addQuizQuestion["quiz"]!["correctAnswer"] = correctAnswer!;
+                },
                 child: Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(10),

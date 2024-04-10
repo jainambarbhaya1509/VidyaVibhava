@@ -13,6 +13,30 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
+final List course = [
+  [
+    {
+      "course": {
+        "title": "",
+        "description": "",
+        "level": "",
+        "duration": "",
+        "courseModules": [
+          {
+            "title": "",
+            "url": "",
+            "quiz": {
+              "question": "",
+              "options": [],
+              "correctAnswer": "",
+            },
+          },
+        ],
+      },
+    }
+  ]
+];
+
 class CreateCourse extends ConsumerStatefulWidget {
   const CreateCourse({super.key});
 
@@ -30,7 +54,9 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
   List<VideoPlayerController>? controllers = [];
   final List uploadedVideos = [];
 
-  final List courseThatWillBeUploadedToDatabase = [];
+  // final List<Map<String, dynamic>> courseThatWillBeUploadedToDatabase = [
+
+  // ];
 
   Future<void> uploadCourse() async {
     final result = await FilePicker.platform.pickFiles(
@@ -292,16 +318,15 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  courseThatWillBeUploadedToDatabase
-                                                      .add(uploadedVideos[
-                                                          index]);
+                                                  // courseThatWillBeUploadedToDatabase
+                                                  //     .add(uploadedVideos[
+                                                  //         index]);
 
-                                                  print(
-                                                      courseThatWillBeUploadedToDatabase);
+                                                  // print(
+                                                  //     courseThatWillBeUploadedToDatabase);
 
                                                   showModalBottomSheet(
                                                     isScrollControlled: true,
-                                                    isDismissible: true,
                                                     context: context,
                                                     builder: (builder) {
                                                       return CreateQuiz(
