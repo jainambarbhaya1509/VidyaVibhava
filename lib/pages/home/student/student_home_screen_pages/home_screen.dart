@@ -1,15 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:final_project/controllers/profile_controller.dart';
 import 'package:final_project/models/models.dart';
 import 'package:final_project/pages/common/chat/chat_list.dart';
 import 'package:final_project/pages/common/chat/chintan_chat_page_2.dart';
 import 'package:final_project/pages/common/gemini.dart';
-import 'package:final_project/pages/home/student/cards/course_details.dart';
 import 'package:final_project/pages/home/student/cards/lecture_details.dart';
-import 'package:final_project/pages/home/student/controller/lecture_controller.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/jobs_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
-import 'package:final_project/providers/lecture_data_provider.dart';
 import 'package:final_project/repository/authentication_repository.dart';
 import 'package:final_project/repository/user_repository.dart';
 import 'package:final_project/style/themes.dart';
@@ -17,27 +16,11 @@ import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:googleapis/keep/v1.dart';
 
 import '../../../../models/backend_model.dart';
-
-const List<String> filterList = <String>["All", "Lecture", "Course"];
-
-final List<Subject> subjects = [
-  Subject(name: "Language", imageUrl: 'assets/img/lang.png'),
-  Subject(name: "Maths", imageUrl: 'assets/img/maths.png'),
-  Subject(name: "Physics", imageUrl: 'assets/img/phy.png'),
-  Subject(name: "Chemistry", imageUrl: 'assets/img/chem.png'),
-  Subject(name: "History", imageUrl: 'assets/img/hist.png'),
-  Subject(name: "Geography", imageUrl: 'assets/img/geo.png'),
-  Subject(name: "Biology", imageUrl: 'assets/img/bio.png'),
-
-  // Add more subjects here if needed
-];
 
 class StudentHomeScreen extends ConsumerStatefulWidget {
   const StudentHomeScreen({super.key});
@@ -47,6 +30,17 @@ class StudentHomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
+  final List<Subject> subjects = [
+    Subject(name: "Language", imageUrl: 'assets/img/lang.png'),
+    Subject(name: "Maths", imageUrl: 'assets/img/maths.png'),
+    Subject(name: "Physics", imageUrl: 'assets/img/phy.png'),
+    Subject(name: "Chemistry", imageUrl: 'assets/img/chem.png'),
+    Subject(name: "History", imageUrl: 'assets/img/hist.png'),
+    Subject(name: "Geography", imageUrl: 'assets/img/geo.png'),
+    Subject(name: "Biology", imageUrl: 'assets/img/bio.png'),
+
+    // Add more subjects here if needed
+  ];
   final List uploadedAssignments = [];
   final List assignments = ["Assignment 1", "Assignment 2", "Assignment 3"];
 
@@ -70,18 +64,20 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
     final theme = ref.read(settingsProvider.notifier).isLightMode;
-    final lectureData = ref.read(lectureDataProvider);
-    // return FutureBuilder(
-    //   future: controller.getUserData(),
-    //   builder: (context, snapshot) {
-    //     late Student student;
-    //     try {
-    //       student = snapshot.data as Student;
-    //     } on Exception catch (e) {
-    //       return const Center(child: CircularProgressIndicator());
-    //     }
-    //     if (snapshot.connectionState == ConnectionState.done) {
-    //       if (snapshot.hasData) {
+    return FutureBuilder(
+       future: controller.getUserData(),
+       builder: (context, snapshot) {
+         late Student student;
+         try {
+           if(snapshot.data != null ){
+             student = snapshot.data as Student;
+           }
+
+         } on Exception catch (e) {
+           return const Center(child: CircularProgressIndicator());
+         }
+         if (snapshot.connectionState == ConnectionState.done) {
+           if (snapshot.hasData) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
@@ -96,8 +92,8 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SecondaryAppText(
-                // text: "Hi, ${student.firstName}",
-                text: "Hi, Chintan",
+                text: "Hi, ${student.firstName}",
+                //text: "Hi, Chintan",
                 size: 20,
                 weight: FontWeight.bold,
                 color: theme == true ? textColor1 : textColor2,
@@ -232,206 +228,159 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                 isScrollControlled: true,
                                 context: context,
                                 builder: (builder) {
-                                  return SingleChildScrollView(
-                                    child: Expanded(
-                                      child: Container(
-                                        color: Theme.of(context).primaryColor,
-                                        width: double.infinity,
-                                        child: Column(
-                                          children: [
-                                            Stack(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                children: [
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 30,
-                                                            right: 30,
-                                                            top: 40),
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            bottom: 5),
-                                                    width: double.infinity,
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.21,
-                                                    decoration: BoxDecoration(
-                                                      color: primaryColor
-                                                          .withOpacity(0.9),
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .only(
-                                                        bottomLeft:
-                                                            Radius.circular(50),
-                                                        bottomRight:
-                                                            Radius.circular(50),
-                                                      ),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        PrimaryAppText(
-                                                          text: subjects[index]
-                                                              .name,
-                                                          size: 25,
-                                                          weight:
-                                                              FontWeight.bold,
-                                                          color: Colors.white,
-                                                        ),
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: GeneralAppIcon(
-                                                            icon: Icons
-                                                                .keyboard_arrow_down_sharp,
-                                                            color: Colors.white,
-                                                            size: 30,
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
+                                  return Container(
+                                    color: Theme.of(context).primaryColor,
+                                    width: double.infinity,
+                                    child: Column(
+                                      children: [
+                                        Stack(
+                                            alignment: Alignment.bottomCenter,
+                                            children: [
+                                              Container(
+                                                padding: const EdgeInsets.only(
+                                                    left: 30,
+                                                    right: 30,
+                                                    top: 40),
+                                                margin: const EdgeInsets.only(
+                                                    bottom: 5),
+                                                width: double.infinity,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.22,
+                                                decoration: BoxDecoration(
+                                                  color: primaryColor
+                                                      .withOpacity(0.9),
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    bottomLeft:
+                                                        Radius.circular(50),
+                                                    bottomRight:
+                                                        Radius.circular(50),
                                                   ),
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      left: 20,
-                                                      right: 20,
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    PrimaryAppText(
+                                                      text:
+                                                          subjects[index].name,
+                                                      size: 25,
+                                                      weight: FontWeight.bold,
+                                                      color: Colors.white,
                                                     ),
-                                                    child: Material(
-                                                      elevation: 5,
+                                                    GeneralAppIcon(
+                                                      icon: Icons
+                                                          .keyboard_arrow_down_sharp,
+                                                      color: Colors.white,
+                                                      size: 30,
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: const EdgeInsets.only(
+                                                  left: 20,
+                                                  right: 20,
+                                                ),
+                                                child: Material(
+                                                  elevation: 5,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    height: 60,
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10),
-                                                      child: Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        height: 60,
-                                                        width: double.infinity,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
+                                                    ),
+                                                    child: TextFormField(
+                                                      decoration:
+                                                          InputDecoration(
+                                                        hintStyle: TextStyle(
+                                                            color: Colors.grey),
+                                                        hintText:
+                                                            "Search for ${subjects[index].name}",
+                                                        prefixIcon:
+                                                            GeneralAppIcon(
+                                                          icon: Icons.search,
+                                                          color: Colors.grey,
                                                         ),
-                                                        child: TextFormField(
-                                                          decoration:
-                                                              InputDecoration(
-                                                            hintStyle:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .grey),
-                                                            hintText:
-                                                                "Search for ${subjects[index].name}",
-                                                            prefixIcon:
-                                                                GeneralAppIcon(
-                                                              icon:
-                                                                  Icons.search,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                            border: InputBorder
-                                                                .none,
-                                                          ),
-                                                        ),
+                                                        border:
+                                                            InputBorder.none,
                                                       ),
                                                     ),
                                                   ),
-                                                ]),
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                left: 10,
-                                                right: 5,
+                                                ),
                                               ),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 10),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        GeneralAppText(
-                                                          text: "Results",
-                                                          size: 20,
-                                                          weight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                        const DropdownFilter()
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  SizedBox(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.69,
-                                                    child: GridView.builder(
-                                                      gridDelegate:
-                                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                                              crossAxisCount: 2,
-                                                              childAspectRatio:
-                                                                  1.5,
-                                                              crossAxisSpacing:
-                                                                  10,
-                                                              mainAxisSpacing:
-                                                                  10),
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  right: 10,
-                                                                  bottom: 10),
-                                                          width:
-                                                              double.infinity,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: theme == true
-                                                                ? textColor1
-                                                                : textColor2,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                          ),
-                                                        );
-                                                      },
-                                                      itemCount: 10,
-                                                      shrinkWrap: true,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                            ]),
+                                        const SizedBox(
+                                          height: 20,
                                         ),
-                                      ),
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                            left: 20,
+                                            right: 20,
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              GeneralAppText(
+                                                text: "Results",
+                                                size: 20,
+                                                weight: FontWeight.bold,
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              SizedBox(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.69,
+                                                child: GridView.builder(
+                                                  gridDelegate:
+                                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                                          crossAxisCount: 2,
+                                                          childAspectRatio: 1.5,
+                                                          crossAxisSpacing: 10,
+                                                          mainAxisSpacing: 10),
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              right: 10,
+                                                              bottom: 10),
+                                                      width: double.infinity,
+                                                      decoration: BoxDecoration(
+                                                        color: theme == true
+                                                            ? textColor1
+                                                            : textColor2,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                    );
+                                                  },
+                                                  itemCount: 10,
+                                                  shrinkWrap: true,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   );
                                 });
@@ -498,131 +447,236 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                       onTap: () {
                         showModalBottomSheet(
                           isScrollControlled: true,
+                          isDismissible: true,
                           context: context,
                           builder: (builder) {
-                            return CourseDetails(
-                              courseIndex: index,
-                              courseTitle: "Course Title $index",
-                              courseDescription:
-                                  "The labyrinthine complexity of human existence intertwines with the capricious whims of fate, weaving a tapestry of stories where the mundane and the extraordinary collide, where love and loss dance a perpetual waltz amidst the cacophony of existence, each individual thread contributing to the rich fabric of the universe's eternal narrative.",
-                              courseLectures: [
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                0,
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                0,
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                0,
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                0,
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                0,
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                0,
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                0,
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                0,
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                0,
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                0,
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9
-                              ],
+                            return Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Container(
+                                      height: 5,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Container(
+                                      height: 190,
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.9,
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 60,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2),
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: GeneralAppIcon(
+                                              icon: Icons.bookmark_border,
+                                              color: theme == true
+                                                  ? textColor1
+                                                  : textColor2,
+                                              size: 30,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 60,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2),
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  GeneralAppIcon(
+                                                    icon: Icons
+                                                        .play_arrow_rounded,
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2,
+                                                    size: 30,
+                                                  ),
+                                                  PrimaryAppText(
+                                                    text: "Start Learning",
+                                                    size: 20,
+                                                    color: theme == true
+                                                        ? textColor1
+                                                        : textColor2,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10.0, left: 10),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: GeneralAppText(
+                                                text: "Description",
+                                                size: 20,
+                                                weight: FontWeight.bold,
+                                              )),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          GeneralAppText(
+                                            text:
+                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
+                                            size: 15,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: GeneralAppText(
+                                            text: "Lectures",
+                                            size: 20,
+                                            weight: FontWeight.bold,
+                                          )),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: ListView.builder(
+                                          controller: ScrollController(),
+                                          itemCount: 10,
+                                          itemBuilder: (context, lectureIndex) {
+                                            return Container(
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 10),
+                                              height: 60,
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    color: Colors.grey),
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                      left: 10,
+                                                    ),
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.amber,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                    ),
+                                                    child: SecondaryAppText(
+                                                      text: "$lectureIndex",
+                                                      size: 20,
+                                                      color: theme == true
+                                                          ? textColor1
+                                                          : textColor2,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 10),
+                                                    child: SecondaryAppText(
+                                                      text:
+                                                          "Lecture Title $lectureIndex",
+                                                      size: 14,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
                             );
                           },
                         );
                       },
                       child: Container(
                         margin: const EdgeInsets.only(right: 10),
-                        height: 90,
                         width: 180,
                         decoration: BoxDecoration(
                             color: Colors.white,
@@ -661,7 +715,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                 // color: Colors.amber,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: LectureData().lectures.length,
+                  itemCount: 10,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
@@ -670,13 +724,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                           isDismissible: true,
                           context: context,
                           builder: (builder) {
-                            // Check Point
-                            return LectureDetails(
-                                lectureIndex:
-                                    lectureData.lectures[index].lectureId,
-                                lectureTitle: lectureData.lectures[index].title,
-                                lectureDescription:
-                                    lectureData.lectures[index].description);
+                            return Container();//LectureDetails();
                           },
                         );
                       },
@@ -715,40 +763,72 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
               const SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                height: 100,
-                // color: Colors.amber,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: lectureData.lectures.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          isDismissible: true,
-                          context: context,
-                          builder: (builder) {
-                            return LectureDetails(
-                                lectureIndex:
-                                    lectureData.lectures[index].lectureId,
-                                lectureTitle: "Lecture Title $index",
-                                lectureDescription:
-                                    "Lecture Description $index");
-                          },
-                        );
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 10),
-                        width: 180,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey)),
-                      ),
-                    );
-                  },
-                ),
+              FutureBuilder<List<Video>>(
+                future: controller.getVideoData(),
+                builder: (context, snapshot){
+                  late List<Video> videoList;
+                  try {
+                    if(snapshot.data!=null){
+                      videoList = snapshot.data as List<Video>;
+                    }
+                    else{
+                      print("Snapshot.data is null");
+                    }
+                  } on Exception catch (e) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if(snapshot.connectionState == ConnectionState.waiting){
+                    return CircularProgressIndicator();
+                  }
+                  else if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      return  SizedBox(
+                        height: 100,
+                        // color: Colors.amber,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: videoList.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                print("Video Tapped---------------------------------------------------------------------");
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  isDismissible: true,
+                                  context: context,
+                                  builder: (context) {
+                                    return LectureDetails(video: videoList[index]); // Provide the Video object here
+                                  },
+                                );
+                              },
+
+                            child: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                width: 180,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.grey)
+                                ),
+                                child: Image.memory(
+                                videoList[index].thumbnailImage, // Convert data to Uint8List
+                                fit: BoxFit.cover,
+                              ),
+                              ),
+                            );
+                            },
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text(snapshot.error.toString()));
+                    } else {
+                      return const Center(child: Text("Something went wrong"));
+                    }
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                },
               ),
               const SizedBox(
                 height: 50,
@@ -1032,16 +1112,16 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
         ),
       ),
     );
-    //       } else if (snapshot.hasError) {
-    //         return Center(child: Text(snapshot.error.toString()));
-    //       } else {
-    //         return const Center(child: Text("Something went wrong"));
-    //       }
-    //     } else {
-    //       return const Center(child: CircularProgressIndicator());
-    //     }
-    //   },
-    // );
+           } else if (snapshot.hasError) {
+             return Center(child: Text(snapshot.error.toString()));
+           } else {
+             return const Center(child: Text("Something went wrong"));
+           }
+         } else {
+           return const Center(child: CircularProgressIndicator());
+         }
+       },
+    );
   }
 
   // Animated route
@@ -1061,39 +1141,6 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
           child: child,
         );
       },
-    );
-  }
-}
-
-// Dropdown Filter
-class DropdownFilter extends StatefulWidget {
-  const DropdownFilter({super.key});
-
-  @override
-  State<DropdownFilter> createState() => _DropdownFilterState();
-}
-
-class _DropdownFilterState extends State<DropdownFilter> {
-  String filterType = filterList.first;
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: filterType,
-      icon: const Icon(
-        Icons.arrow_downward_rounded,
-        size: 20,
-      ),
-      onChanged: (String? filter) {
-        setState(() {
-          filterType = filter!;
-        });
-      },
-      items: filterList.map<DropdownMenuItem<String>>((String filter) {
-        return DropdownMenuItem<String>(
-          value: filter,
-          child: Text(filter),
-        );
-      }).toList(),
     );
   }
 }

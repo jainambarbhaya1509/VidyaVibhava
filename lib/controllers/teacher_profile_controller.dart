@@ -3,15 +3,15 @@ import 'package:final_project/repository/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
-class ProfileController extends GetxController {
-  static ProfileController get instance => Get.find();
+class TeacherProfileController extends GetxController {
+  static TeacherProfileController get instance => Get.find();
   final _authRepo = Get.put(AuthenticationRepository());
   final _userRepo = Get.put(UserRepository());
 
   getUserData() {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
-      return _userRepo.getUserDetails(uid);
+      return _userRepo.getTeacherUserDetails(uid);
     } else {
       Get.snackbar("Error", "Login to Continue");
     }
@@ -34,10 +34,8 @@ class ProfileController extends GetxController {
   }
 
   getVideoData() {
-    print("Entered Video Data");
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
-      print("In Profile Controller ${uid}");
       return _userRepo.getContinueWatching(uid);
     } else {
       Get.snackbar("Error", "Login to Continue");
@@ -54,19 +52,17 @@ class ProfileController extends GetxController {
     }
   }
 
-  getStudentForMentorData() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid != null) {
-      print("Inside Controller ${uid}");
-      return _userRepo.getStudentByMentorId(uid);
-    } else {
-      Get.snackbar("Error", "Login to Continue");
-    }
-  }
-
   getImageData(String url){
     if(url!=null){
       return _userRepo.getImageData(url);
+    }else{
+      Get.snackbar("Error", "URL is empty");
+    }
+  }
+
+  getInstructorDetailsToDisplay(String id){
+    if(id!=null){
+      return _userRepo.getInstructorDetailsToDisplay(id);
     }else{
       Get.snackbar("Error", "URL is empty");
     }

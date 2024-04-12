@@ -4,6 +4,8 @@ import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../controllers/sign_up_controller.dart';
+
 class TeacherLoginScreen extends StatefulWidget {
   const TeacherLoginScreen({super.key});
 
@@ -16,6 +18,7 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   String? errorMessage1;
   String? errorMessage2;
+  final controller = SignUpController();
 
   @override
   void initState() {
@@ -169,7 +172,8 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
 
                   if (errorMessage1 == null && errorMessage2 == null) {
                     saveData();
-                    Navigator.pushReplacementNamed(context, 'getOTP',
+                    controller.LoginTeacher(_emailController.text, _passwordController.text);
+                    Navigator.pushReplacementNamed(context, 'teacherHome',
                         arguments: 1);
                   }
                 },

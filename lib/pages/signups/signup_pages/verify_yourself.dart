@@ -19,6 +19,7 @@ class VerifyYourself extends ConsumerStatefulWidget {
 
 class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
   final verifyOtpController = TextEditingController();
+  late String otp;
   @override
   Widget build(BuildContext context) {
     final role = ref.read(roleProvider);
@@ -67,8 +68,7 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                         child: TextField(
                           controller: teacherEmailController,
                           onChanged: (value) {
-                            ref.read(teacherPersonalInfoProvider)['email'] =
-                                value;
+                            ref.read(teacherPersonalInfoProvider)['email'] = value;
                           },
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
@@ -82,19 +82,30 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                           ],
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.green),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: GeneralAppIcon(
+                      GestureDetector(
+                        onTap: () async {
+                          otp = await AuthenticationRepository.instance.sendOTPToEmail(teacherEmailController.text);
+
+                          // Add your onTap logic here
+                          // For example, you can navigate to another screen or perform some action
+                          print('Container tapped!');
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.green),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: GeneralAppIcon(
                             icon: Icons.arrow_forward_outlined,
                             size: 20,
-                            color: Colors.green),
-                      ),
+                            color: Colors.green,
+                          ),
+                        ),
+                      )
+
                     ],
                   ),
                 ] else ...[
@@ -130,9 +141,8 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          AuthenticationRepository.instance
-                              .phoneAuthentication(studentPhoneController.text);
+                        onTap: (){
+                          AuthenticationRepository.instance.phoneAuthentication(studentPhoneController.text);
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -174,26 +184,44 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                       ),
                     ),
                     keyboardType:
-                        const TextInputType.numberWithOptions(decimal: false),
+                    const TextInputType.numberWithOptions(decimal: false),
                   ),
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(
-                  onTap: () async {
-                    if (await AuthenticationRepository.instance
-                        .verifyOTP(verifyOtpController.text)) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('OTP Validated ! Please Click Next'),
-                        ),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Invalid OTP'),
-                        ),
-                      );
+                  onTap: () async{
+
+                    if (role == 'teacher'){
+                      if(otp == verifyOtpController.text){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('OTP Validated ! Please Click Next'),
+                          ),
+                        );
+                      }else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Invalid OTP'),
+                          ),
+                        );
+                      }
                     }
+                    else{
+                      if(await AuthenticationRepository.instance.verifyOTP(verifyOtpController.text)){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('OTP Validated ! Please Click Next'),
+                          ),
+                        );
+                      }else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Invalid OTP'),
+                          ),
+                        );
+                      }
+                    }
+
                   },
                   child: Container(
                       alignment: Alignment.centerRight,

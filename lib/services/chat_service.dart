@@ -35,6 +35,7 @@ class ChatService extends ChangeNotifier {
     List<String> ids = [userid, otherUserId];
     ids.sort();
     String chatRoomId = ids.join("_");
+    print("Ab student Side se ${chatRoomId}");
 
     return _firestore
         .collection('Chat_Room')

@@ -1,4 +1,6 @@
+import 'package:final_project/controllers/sign_up_controller.dart';
 import 'package:final_project/providers/signup_providers.dart';
+import 'package:final_project/repository/authentication_repository.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +17,11 @@ TextEditingController createPasswordController = TextEditingController();
 TextEditingController confirmPasswordController = TextEditingController();
 
 class _VerifyYourselfState extends ConsumerState<CreatePassword> {
+  final controller = SignUpController();
   @override
   Widget build(BuildContext context) {
     final password = ref.read(createPasswordProvider.notifier).state;
+    final teacherPersonalInfo = ref.watch(teacherPersonalInfoProvider);
     return Container(
       margin: const EdgeInsets.only(
         left: 30,
@@ -80,8 +84,7 @@ class _VerifyYourselfState extends ConsumerState<CreatePassword> {
                 ),
                 TextField(
                   onChanged: (value) {
-                    password['confirmPassword'] =
-                        confirmPasswordController.text;
+                    password['confirmPassword'] = confirmPasswordController.text;
                   },
                   obscureText: true,
                   controller: confirmPasswordController,
@@ -97,6 +100,14 @@ class _VerifyYourselfState extends ConsumerState<CreatePassword> {
                       ),
                       hintText: 'Confirm your password',
                       errorText: null),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: () async {
+                    controller.RegisterUser(teacherPersonalInfo["email"], confirmPasswordController.text);
+                    // Add your logic for creating the account here
+                  },
+                  child: Text('Create Account'),
                 ),
               ]),
         ],

@@ -1,7 +1,5 @@
 import 'package:final_project/pages/common/books/books_modal.dart';
 import 'package:final_project/pages/home/student/cards/saved_books_card.dart';
-import 'package:final_project/pages/home/student/cards/student_stats.dart';
-import 'package:final_project/pages/home/student/student_home_screen_pages/enrolled_courses.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/providers/student_screen_provider.dart';
 import 'package:final_project/style/painter.dart';
@@ -172,25 +170,6 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
                   ),
                   ListTile(
                     leading: GeneralAppIcon(
-                      icon: Icons.play_circle,
-                      color:
-                          theme.isLightMode == true ? textColor1 : textColor2,
-                      size: 20,
-                    ),
-                    title: GeneralAppText(
-                      text: 'Enrolled Courses',
-                      size: 16,
-                      weight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return EnrolledCourses();
-                      }));
-                    },
-                  ),
-                  ListTile(
-                    leading: GeneralAppIcon(
                       icon: Icons.rocket_outlined,
                       color:
                           theme.isLightMode == true ? textColor1 : textColor2,
@@ -317,7 +296,18 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
                                 isDismissible: true,
                                 context: context,
                                 builder: (builder) {
-                                  return StudentStats();
+                                  return Container(
+                                    color: Theme.of(context).primaryColor,
+                                    width: double.infinity,
+                                    child: Column(
+                                      children: [
+                                        const AspectRatio(
+                                          aspectRatio: 1.6,
+                                          child: _BarChart(),
+                                        )
+                                      ],
+                                    ),
+                                  );
                                 });
                           },
                           child: Container(

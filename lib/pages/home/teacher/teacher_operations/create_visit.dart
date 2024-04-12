@@ -1,9 +1,13 @@
+import 'package:final_project/controllers/visit_controller.dart';
+import 'package:final_project/models/backend_model.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 class CreateVisit extends ConsumerStatefulWidget {
@@ -18,9 +22,11 @@ class _CreateVisitState extends ConsumerState<CreateVisit> {
   TextEditingController visitDateController = TextEditingController();
   TextEditingController visitPurposeController = TextEditingController();
   TextEditingController visitPurposeDescriptionController =
-      TextEditingController();
+  TextEditingController();
+  TextEditingController visitLocationController = TextEditingController();
   TextEditingController visitTimeController = TextEditingController();
   TimeOfDay selectedTime = TimeOfDay.now();
+
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -51,12 +57,19 @@ class _CreateVisitState extends ConsumerState<CreateVisit> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ref.watch(settingsProvider.notifier).isLightMode;
+    final theme = ref
+        .watch(settingsProvider.notifier)
+        .isLightMode;
+    final visitController = Get.put(VisitController());
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme
+          .of(context)
+          .primaryColor,
       appBar: AppBar(
         forceMaterialTransparency: true,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
         title: GeneralAppText(
           text: 'Schedule Visit',
           color: Colors.white,
@@ -74,9 +87,12 @@ class _CreateVisitState extends ConsumerState<CreateVisit> {
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
                     padding:
-                        const EdgeInsets.only(top: 30, left: 20, right: 20),
+                    const EdgeInsets.only(top: 30, left: 20, right: 20),
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.7,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.7,
                     decoration: BoxDecoration(
                       color: theme
                           ? Colors.white70
@@ -107,7 +123,7 @@ class _CreateVisitState extends ConsumerState<CreateVisit> {
                               onTap: () => selectDate(context),
                               decoration: InputDecoration(
                                 suffixIcon:
-                                    const Icon(Icons.calendar_month_rounded),
+                                const Icon(Icons.calendar_month_rounded),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
@@ -136,7 +152,9 @@ class _CreateVisitState extends ConsumerState<CreateVisit> {
                                 );
                                 setState(() {
                                   visitTimeController.text =
-                                      '${time?.hour.toString().padLeft(2, '0')}:${time?.minute.toString().padLeft(2, '0')}';
+                                  '${time?.hour.toString().padLeft(
+                                      2, '0')}:${time?.minute.toString()
+                                      .padLeft(2, '0')}';
                                 });
                               },
                               decoration: InputDecoration(
@@ -159,7 +177,7 @@ class _CreateVisitState extends ConsumerState<CreateVisit> {
                           Container(
                             margin: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextField(
-                              controller: null,
+                              controller: visitLocationController,
                               onChanged: (value) {},
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
@@ -230,7 +248,15 @@ class _CreateVisitState extends ConsumerState<CreateVisit> {
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Visit visit = Visit(visitMentorId: "",
+                        visitDate: visitDateController.text,
+                        visitTime : visitTimeController.text,
+                        visitLocation: visitLocationController.text,
+                        visitPurpose: visitPurposeController.text,
+                        visitDescription: visitPurposeDescriptionController.text);
+                    visitController.setVisit(visit);
+                  },
                   child: Container(
                     height: 50,
                     width: 200,

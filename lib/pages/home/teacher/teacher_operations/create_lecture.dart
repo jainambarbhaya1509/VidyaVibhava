@@ -1,14 +1,21 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:final_project/controllers/video_controller.dart';
+import 'package:final_project/models/backend_model.dart';
 import 'package:final_project/providers/appbar_provider.dart';
+import 'package:final_project/repository/authentication_repository.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../../../controllers/profile_controller.dart';
 
 class CreateLecture extends ConsumerStatefulWidget {
   const CreateLecture({super.key});
@@ -22,6 +29,7 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
   final lectureDescriptionController = TextEditingController();
   final lectureDurationController = TextEditingController();
   final lectureLevel = ["Beginner", "Intermediate", "Advanced"];
+  final lectureSubject = TextEditingController();
   String? selectedLevel;
 
   VideoPlayerController? controller;
@@ -33,6 +41,9 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
       allowedExtensions: ['mp4', 'avi', 'mkv', 'mov'],
     );
     if (lecture == null) return;
+    else{
+
+    }
 
     setState(() {
       this.lecture = lecture.files.first;
@@ -47,6 +58,7 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
     if (lectureTitleController.text.isEmpty ||
         lectureDescriptionController.text.isEmpty ||
         lectureDurationController.text.isEmpty ||
+        lectureSubject.text.isEmpty ||
         lecture == null) {
       return false;
     }
@@ -56,6 +68,8 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
   @override
   Widget build(BuildContext context) {
     final theme = ref.watch(settingsProvider.notifier).isLightMode;
+    final profileController = Get.put(ProfileController());
+    final videoController = Get.put(VideoController());
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -192,7 +206,7 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
                           Container(
                             margin: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextField(
-                              controller: null,
+                              controller: lectureSubject,
                               maxLines: 1,
                               onChanged: (value) {},
                               decoration: InputDecoration(
@@ -343,8 +357,25 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     if (checkAllFields()) {
+                      final name = await profileController.getUserFullName();
+                      final id  = await profileController.getUserId();
+                      //Backend Changes
+                      Video video = Video(
+                          videoTitle: lectureTitleController.text,
+                          videoDescription: lectureDescriptionController.text,
+                          videoLoc: "",
+                          keywords: [""],
+                          difficultyLevel: selectedLevel!,
+                          duration: lectureDurationController.text,
+                          subject: lectureSubject.text,
+                          instructorName: name,
+                          instructorId: id,
+                          thumbnail: "thumbnail");
+
+                      videoController.createVideoDetail(video, lecture!);
+
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

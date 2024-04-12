@@ -40,7 +40,7 @@ class _ChatActivityState extends State<ChatActivity> {
 
   Widget _buildUserList() {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('Mentors').snapshots(),
+      stream: FirebaseFirestore.instance.collection('Teachers').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Text("Error");
@@ -48,39 +48,33 @@ class _ChatActivityState extends State<ChatActivity> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Text("Loading ......");
         }
-        return ListView(
-          children: snapshot.data!.docs
-              .map<Widget>((doc) => _buildUserListItem(doc))
-              .toList(),
-        );
+        return _buildUserListItem();
       },
     );
   }
 
-  Widget _buildUserListItem(DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+  Widget _buildUserListItem() {
     final controller = Get.put(ProfileController());
     return FutureBuilder(
-      future: controller
-          .getMentorData(), // Call getMentorByMentorId to fetch mentor data
-      builder: (context, AsyncSnapshot<Mentor> mentorSnapshot) {
+      future: controller.getMentorData(), // Call getMentorByMentorId to fetch mentor data
+      builder: (context, AsyncSnapshot<Teacher> mentorSnapshot) {
         if (mentorSnapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator(); // Show loading indicator while fetching mentor data
         } else if (mentorSnapshot.hasError) {
           return Text(
               'Error fetching mentor data : ${mentorSnapshot.error}'); // Show error if fetching fails
         } else {
-          Mentor mentor =
+          Teacher mentor =
               mentorSnapshot.data!; // Mentor data fetched successfully
           return ListTile(
-            title: Text(mentor.mentorName),
+            title: Text(mentor.firstName),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Chat_Page(
-                    receiverUserEmail: mentor.mentorName,
-                    receiverUserID: mentor.mentorId,
+                    receiverUserEmail: mentor.firstName,
+                    receiverUserID: mentor.uid!,
                   ),
                 ),
               );

@@ -1,3 +1,5 @@
+import 'package:final_project/controllers/sign_up_controller.dart';
+import 'package:final_project/models/backend_model.dart';
 import 'package:final_project/pages/signups/signup_pages/address_info.dart';
 import 'package:final_project/pages/signups/signup_pages/confirm_info.dart';
 import 'package:final_project/pages/signups/signup_pages/create_password.dart';
@@ -11,7 +13,11 @@ import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:toast/toast.dart';
+
+import '../../controllers/profile_controller.dart';
 
 class TeacherSignUpScreen extends ConsumerStatefulWidget {
   const TeacherSignUpScreen({super.key});
@@ -94,6 +100,7 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SignUpController());
     ToastContext().init(context);
     final teacherSignupController = PageController(
       initialPage: currentPageIndex,
@@ -281,8 +288,37 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                   return;
                 }
                 if (currentPageIndex == signUpSections.length - 1) {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, 'teacherLogin', (route) => false);
+
+                  final personalInfo = ref.read(teacherPersonalInfoProvider);
+                  final addressInfo = ref.read(teacherAddressInfoProvider);
+                  final teacherImage = ref.read(teacherImageProvider);
+                  final teacherAadhar = ref.read(teacherAadharProvider);
+                  final teacherIncome = ref.read(teacherCertificateProvider);
+                  final orgInfo = ref.read(teacherOganizationInfoProvider);
+
+                  Teacher teacher = Teacher(
+                      firstName: personalInfo['fname'],
+                      lastName: personalInfo['lname'],
+                      dateOfBirth: personalInfo['dob'],
+                      gender: personalInfo['gender'],
+                      phoneNo: personalInfo['phone'],
+                      username: "personalInfo['username']",
+                      email: personalInfo['email'],
+                      address: addressInfo['address'],
+                      zipCode: addressInfo['zipCode'],
+                      city: addressInfo['city'],
+                      state: addressInfo['state'],
+                      organizationName: orgInfo['organization'],
+                      cddaAffiliation: orgInfo['cddaAffiliated'],
+                      subjectPreference: orgInfo['subjects'],
+                      isMentor: orgInfo['isMentor'],
+                      image: "",
+                      doc1: "",
+                      doc2: "");
+
+                  //controller.CreateTeacher(teacher, teacherImage!, teacherAadhar!, teacherIncome!);
+                  Navigator.pushNamedAndRemoveUntil(context, 'teacherHome', (route) => false);
+                  //Navigator.pushNamedAndRemoveUntil(context, 'teacherLogin', (route) => false);
                 }
 
                 teacherSignupController.nextPage(

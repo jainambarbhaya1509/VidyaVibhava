@@ -7,6 +7,7 @@ import 'package:final_project/pages/home/student/student_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/repository/authentication_repository.dart';
 import 'package:final_project/repository/user_repository.dart';
+import 'package:final_project/services/notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,6 +44,9 @@ Future main() async {
   );
   final prefs = await SharedPreferences.getInstance();
   final showHome = prefs.getBool('showHome') ?? false;
+
+  //final notificationService = NotificationService(); // Add this line
+  //await notificationService.init();
   runApp(
     ProviderScope(
       child: MyApp(
@@ -58,14 +62,16 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+
     final theme = ref.watch(settingsProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Smart Education',
       theme: theme.isLightMode == true ? lightTheme : darkTheme,
       // home: showHome ? const UserTypeScreen() : const StartScreen(),
-      home: const StudentScreen(),
-      // home: const CareerQuizResult(),
+      home: StartScreen(),
+      // home: const CareerQuiz(),
       routes: {
         'onboardingScreen': (context) => const StartScreen(),
         'usersTypeScreen': (context) => const UserTypeScreen(),

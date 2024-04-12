@@ -243,7 +243,8 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
                       state: addressInfo['state'],
                       image: '',
                       doc1: '',
-                      doc2: '');
+                      doc2: '',
+                      deviceToken: '');
                   AuthenticationRepository.instance.createStudent(
                       student, studentImage!, studentAadhar!, studentIncome!);
                   Navigator.pushNamedAndRemoveUntil(
