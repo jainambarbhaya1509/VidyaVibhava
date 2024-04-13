@@ -100,7 +100,7 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              GeneralAppText(
+                              SecondaryAppText(
                                 text: studentPersonalInfo["fname"] +
                                     " " +
                                     studentPersonalInfo["lname"],
@@ -109,7 +109,7 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                               ),
                               Row(
                                 children: [
-                                  GeneralAppText(
+                                  SecondaryAppText(
                                     text: studentPersonalInfo["gender"],
                                     size: 15,
                                     weight: FontWeight.normal,
@@ -125,7 +125,7 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  GeneralAppText(
+                                  SecondaryAppText(
                                     text: studentPersonalInfo.containsKey("dob")
                                         ? '${studentPersonalInfo["dob"]} (${calculateAge(studentPersonalInfo["dob"])})'
                                         : 'DOB not available',
@@ -134,11 +134,11 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                                   ),
                                 ],
                               ),
-                              GeneralAppText(
+                              SecondaryAppText(
                                 text: studentPersonalInfo["phone"],
                                 size: 15,
                               ),
-                              GeneralAppText(
+                              SecondaryAppText(
                                 text: studentPersonalInfo["username"],
                                 size: 15,
                                 weight: FontWeight.w500,
@@ -161,7 +161,7 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              GeneralAppText(
+                              SecondaryAppText(
                                 text: teacherPersonalInfo["fname"] +
                                     " " +
                                     teacherPersonalInfo["lname"],
@@ -170,7 +170,7 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                               ),
                               Row(
                                 children: [
-                                  GeneralAppText(
+                                  SecondaryAppText(
                                     text: teacherPersonalInfo["gender"],
                                     size: 13,
                                     weight: FontWeight.normal,
@@ -186,7 +186,7 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  GeneralAppText(
+                                  SecondaryAppText(
                                     text: teacherPersonalInfo.containsKey("dob")
                                         ? '${teacherPersonalInfo["dob"]} (${calculateAge(teacherPersonalInfo["dob"])})'
                                         : 'DOB not available',
@@ -195,11 +195,11 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                                   ),
                                 ],
                               ),
-                              GeneralAppText(
+                              SecondaryAppText(
                                 text: teacherPersonalInfo["phone"],
                                 size: 13,
                               ),
-                              GeneralAppText(
+                              SecondaryAppText(
                                 text: teacherPersonalInfo["email"],
                                 size: 13,
                                 weight: FontWeight.w500,
@@ -219,12 +219,12 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                 height: 10,
               ),
               if (role == 'student') ...[
-                GeneralAppText(
+                SecondaryAppText(
                   text: studentAddressInfo["address"],
                   size: 15,
                   weight: FontWeight.normal,
                 ),
-                GeneralAppText(
+                SecondaryAppText(
                   text: studentAddressInfo["city"] +
                       " " +
                       studentAddressInfo["zipCode"] +
@@ -234,12 +234,12 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                   weight: FontWeight.normal,
                 ),
               ] else ...[
-                GeneralAppText(
+                SecondaryAppText(
                   text: teacherAddressInfo["address"],
                   size: 13,
                   weight: FontWeight.normal,
                 ),
-                GeneralAppText(
+                SecondaryAppText(
                   text: teacherAddressInfo["city"] +
                       " " +
                       teacherAddressInfo["zipCode"] +
@@ -253,13 +253,13 @@ class _ConfirmInformationSectionState extends State<ConfirmInformationSection> {
                 height: 20,
               ),
               if (role == 'teacher') ...[
-                GeneralAppText(
+                SecondaryAppText(
                   text:
                       '${ref.read(teacherOganizationInfoProvider)['organization']} ${ref.read(teacherOganizationInfoProvider)['cddaAffiliated'] == true ? " (CDDA Affiliated)" : ""}',
                   size: 12,
                   weight: FontWeight.normal,
                 ),
-                GeneralAppText(
+                SecondaryAppText(
                   text: ref
                       .read(teacherOganizationInfoProvider)['subjects']
                       .join(", "),

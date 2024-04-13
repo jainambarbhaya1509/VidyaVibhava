@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:final_project/controllers/profile_controller.dart';
+import 'package:final_project/controllers/video_controller.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/home_screen.dart';
 import 'package:final_project/models/backend_model.dart';
+import 'package:final_project/pages/home/teacher/cards/create_quiz.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
@@ -13,10 +17,36 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:logger/web.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../../controllers/profile_controller.dart';
-import '../../../../controllers/video_controller.dart';
+final courseProvider = Provider((ref) => course);
+
+final List course = [
+  [
+    {
+      "course": {
+        "title": "",
+        "subject": "",
+        "description": "",
+        "tags": [],
+        "level": "",
+        "duration": "",
+        "courseModules": [
+          {
+            "title": "",
+            "url": "",
+            "quiz": {
+              "question": "",
+              "options": [],
+              "correctAnswer": "",
+            },
+          },
+        ],
+      },
+    }
+  ]
+];
 
 class CreateCourse extends ConsumerStatefulWidget {
   const CreateCourse({super.key});
@@ -30,6 +60,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
   final lectureDescriptionController = TextEditingController();
   final lectureDurationController = TextEditingController();
   final subjectController = TextEditingController();
+  final tagsController = TextEditingController();
   final lectureLevel = ["Beginner", "Intermediate", "Advanced"];
   String? selectedLevel;
 
@@ -81,6 +112,8 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
 
     final profileController = Get.put(ProfileController());
     final videoController = Get.put(VideoController());
+    final courseVideo = ref.watch(courseProvider);
+    final courseQuestion = ref.watch(quizQuestionProvider);
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -308,8 +341,6 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  // create quiz
-
                                                   showModalBottomSheet(
                                                     isScrollControlled: true,
                                                     isDismissible: true,
@@ -719,7 +750,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                           Container(
                             margin: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextField(
-                              controller: null,
+                              controller: tagsController,
                               maxLines: 1,
                               onChanged: (value) {},
                               decoration: InputDecoration(
@@ -799,6 +830,46 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                   onTap: () async {
                     print(uploadedVideos);
                     if (checkAllFields()) {
+                      setState(() {
+                        courseVideo.add({
+                          "course": {
+                            "title": lectureTitleController.text,
+                            "subject": subjectController.text,
+                            "description": lectureDescriptionController.text,
+                            "tags": tagsController.text.split(",").map((e) {
+                              return e.trim();
+                            }).toList(),
+                            "level": selectedLevel,
+                            "duration": lectureDurationController.text,
+                            "courseModules": [
+                              {
+                                "title": "",
+                                "url": "",
+                                "quiz": courseQuestion["quiz"] == null
+                                    ? {}
+                                    : {
+                                        "question":
+                                            courseQuestion["quiz"]!["question"],
+                                        "options":
+                                            courseQuestion["quiz"]!["options"],
+                                        "correctAnswer": courseQuestion[
+                                            "quiz"]!["correctAnswer"],
+                                      },
+                              },
+                            ],
+                          },
+                        });
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: GeneralAppText(
+                            text: 'Course uploaded successfully',
+                            size: 16,
+                            color: Colors.white,
+                          ),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
                       Course course = Course(
                           courseTitle: lectureTitleController.text,
                           courseDescription: lectureDescriptionController.text,
@@ -825,6 +896,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                         ),
                       );
                     }
+                    Logger().d(course);
                   },
                   child: Container(
                     height: 50,

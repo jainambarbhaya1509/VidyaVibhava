@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/pages/home/teacher/teacher_operations/create_course.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
+import 'package:logger/web.dart';
+
+final quizQuestionProvider = Provider((ref) => addQuizQuestion);
+
+final addQuizQuestion = {
+  "quiz": {
+    "question": "",
+    "options": [],
+    "correctAnswer": "",
+  }
+};
+
+List<Map<String, dynamic>> listOfQuiz = [];
 
 class CreateQuiz extends ConsumerStatefulWidget {
   final int questionIndex;
@@ -22,17 +38,10 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
   TextEditingController option4Controller = TextEditingController();
   List<String> options = [];
 
-  final addQuizQuestion = {
-    "quiz": {
-      "question": "",
-      "options": [],
-      "correctAnswer": "",
-    },
-  };
-
   @override
   Widget build(BuildContext context) {
     String? correctAnswer = options.isNotEmpty ? options.first : null;
+    final courseQuiz = ref.watch(courseProvider);
     return Container(
       height: 700,
       width: double.infinity,
@@ -227,10 +236,30 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
-                  addQuizQuestion["quiz"]!["question"] =
-                      quizQuestionController.text;
-                  addQuizQuestion["quiz"]!["options"] = options;
-                  addQuizQuestion["quiz"]!["correctAnswer"] = correctAnswer!;
+                  Map<String, dynamic> addQuizQuestion = {
+                    "quiz": {
+                      "id": widget.questionIndex.toString(),
+                      "question": quizQuestionController.text,
+                      "options": options.toList(),
+                      "correctAnswer": correctAnswer!,
+                    }
+                  };
+
+                  if (listOfQuiz.isNotEmpty) {
+                    listOfQuiz
+                        .where((element) =>
+                            addQuizQuestion["quiz"]["id"] ==
+                            element["quiz"]["id"])
+                        .toList()
+                        .forEach((element) {
+                      Logger().i("Quiz question already exists, updating...");
+                    });
+                  } else {
+                    listOfQuiz.add(addQuizQuestion);
+                  }
+                  Logger().i(listOfQuiz);
+
+                  Navigator.of(context).pop();
                 },
                 child: Container(
                   alignment: Alignment.center,

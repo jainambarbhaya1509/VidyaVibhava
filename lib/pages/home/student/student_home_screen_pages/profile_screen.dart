@@ -1,5 +1,9 @@
 import 'package:final_project/pages/common/books/books_modal.dart';
+import 'package:final_project/pages/home/student/cards/lecture_details.dart';
 import 'package:final_project/pages/home/student/cards/saved_books_card.dart';
+import 'package:final_project/pages/home/student/cards/saved_lecture_card.dart';
+import 'package:final_project/pages/home/student/cards/student_stats.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/enrolled_courses.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/providers/student_screen_provider.dart';
 import 'package:final_project/style/painter.dart';
@@ -9,7 +13,9 @@ import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:googleapis/appengine/v1.dart';
 
 class StudentProfileScreen extends ConsumerStatefulWidget {
   const StudentProfileScreen({super.key});
@@ -30,6 +36,8 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
     final savedBooks = ref.watch(savedBooksProvider.notifier).state;
     final imageUrl = savedBooks["imageUrl"];
     final bookTitle = savedBooks["bookTitle"];
+
+    final savedLectures = ref.watch(savedLecturesProvidrer);
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -170,6 +178,26 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
                   ),
                   ListTile(
                     leading: GeneralAppIcon(
+                      icon: Icons.play_circle,
+                      color:
+                          theme.isLightMode == true ? textColor1 : textColor2,
+                      size: 20,
+                    ),
+                    title: GeneralAppText(
+                      text: 'Enrolled Courses',
+                      size: 16,
+                      weight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return EnrolledCourses();
+                      }));
+                    },
+                  ),
+                  ListTile(
+                    leading: GeneralAppIcon(
                       icon: Icons.rocket_outlined,
                       color:
                           theme.isLightMode == true ? textColor1 : textColor2,
@@ -214,10 +242,8 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
                       weight: FontWeight.bold,
                       color: Colors.redAccent,
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  )
+                    onTap: () {},
+                  ),
                 ],
               )
             ],
@@ -228,111 +254,107 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Column(
               children: [
-                Container(
-                  margin: const EdgeInsets.only(
-                    left: 20,
-                  ),
-                  height: MediaQuery.of(context).size.height * 0.12,
-                  width: MediaQuery.of(context).size.width * 0.23,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      image: const DecorationImage(
-                        image: AssetImage('assets/img/student2.png'),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 25),
-                Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GeneralAppText(
-                      text: "Jainam Barbhaya",
-                      size: 20,
-                    ),
-                    GeneralAppText(
-                      text: "jainambarbhaya",
-                      size: 15,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 15),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            alignment: Alignment.center,
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                            child: FittedBox(
-                              child: GeneralAppText(
-                                text: "Edit Profile",
-                                size: 15,
-                                color: Theme.of(context).primaryColor,
-                                weight: FontWeight.bold,
-                              ),
-                            ),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        left: 20,
+                      ),
+                      height: MediaQuery.of(context).size.height * 0.12,
+                      width: MediaQuery.of(context).size.width * 0.23,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          image: const DecorationImage(
+                            image: NetworkImage(
+                                'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg'),
+                            fit: BoxFit.fill,
                           ),
                         ),
-                        const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                                isScrollControlled: true,
-                                isDismissible: true,
-                                context: context,
-                                builder: (builder) {
-                                  return Container(
-                                    color: Theme.of(context).primaryColor,
-                                    width: double.infinity,
-                                    child: Column(
-                                      children: [
-                                        const AspectRatio(
-                                          aspectRatio: 1.6,
-                                          child: _BarChart(),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                });
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            alignment: Alignment.center,
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                            child: FittedBox(
-                              child: GeneralAppText(
-                                text: "Analysis",
-                                size: 15,
-                                color: Theme.of(context).primaryColor,
-                                weight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                      ),
+                    ),
+                    const SizedBox(width: 25),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SecondaryAppText(
+                          text: "Jainam Barbhaya",
+                          size: 20,
+                        ),
+                        SecondaryAppText(
+                          text: "jainambarbhaya",
+                          size: 15,
+                          color: Colors.grey,
                         ),
                       ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height * 0.04,
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                        child: FittedBox(
+                          child: GeneralAppText(
+                            text: "Edit Profile",
+                            size: 15,
+                            color: Theme.of(context).primaryColor,
+                            weight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            isDismissible: true,
+                            context: context,
+                            builder: (builder) {
+                              return StudentStats();
+                            });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height * 0.04,
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                        child: FittedBox(
+                          child: GeneralAppText(
+                            text: "Analysis",
+                            size: 15,
+                            color: Theme.of(context).primaryColor,
+                            weight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -413,52 +435,27 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
                     child: GridView.builder(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.8 / 0.25,
-                        crossAxisCount: 1,
+                        childAspectRatio: 0.4 / 0.6,
+                        crossAxisCount: 3,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
                       ),
-                      itemCount: 10,
+                      itemCount: savedLectures.length,
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              isDismissible: true,
-                              context: context,
-                              builder: (context) {
-                                return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.6,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    index.toString(),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(top: 10),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                            child: Text(
-                              index.toString(),
-                            ),
-                          ),
-                        );
+                            onTap: () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                isDismissible: true,
+                                context: context,
+                                builder: (context) {
+                                  return LectureCard();
+                                },
+                              );
+                            },
+                            child: BooksCard(
+                              imageUrl: imageUrl[index],
+                            ));
                       },
                     ),
                   ),

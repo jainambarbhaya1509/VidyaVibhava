@@ -65,6 +65,7 @@ dependencies:
   uuid: ^3.0.4
   firebase_messaging: ^14.7.19
   flutter_local_notifications: ^17.0.0
+  logger: ^2.2.0
 
 dev_dependencies:
   flutter_test:

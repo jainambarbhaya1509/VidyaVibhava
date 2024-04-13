@@ -32,7 +32,7 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(settingsProvider);
+    final theme = ref.watch(settingsProvider);
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
@@ -48,44 +48,57 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: theme.isLightMode
+                      ? const Color.fromARGB(255, 231, 231, 231)
+                      : const Color.fromARGB(255, 64, 64, 64),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 margin: const EdgeInsets.all(10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        GeneralAppText(
-                          text: "Total Videos",
-                          size: 18,
-                          weight: FontWeight.bold,
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GeneralAppText(
+                              text: "Total Videos",
+                              size: 18,
+                              weight: FontWeight.bold,
+                            ),
+                            GeneralAppText(
+                              text: "10",
+                              size: 16,
+                              weight: FontWeight.bold,
+                            )
+                          ],
                         ),
-                        GeneralAppText(
-                          text: "10",
-                          size: 16,
-                          weight: FontWeight.bold,
-                        )
-                      ],
+                      ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        GeneralAppText(
-                          text: "Total Courses",
-                          size: 18,
-                          weight: FontWeight.bold,
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GeneralAppText(
+                              text: "Total Courses",
+                              size: 18,
+                              weight: FontWeight.bold,
+                            ),
+                            GeneralAppText(
+                              text: "10",
+                              size: 16,
+                              weight: FontWeight.bold,
+                            )
+                          ],
                         ),
-                        GeneralAppText(
-                          text: "10",
-                          size: 16,
-                          weight: FontWeight.bold,
-                        )
-                      ],
+                      ),
                     ),
                   ],
                 ),
@@ -94,7 +107,9 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
               Container(
                 height: 200,
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: theme.isLightMode
+                      ? const Color.fromARGB(255, 231, 231, 231)
+                      : const Color.fromARGB(255, 64, 64, 64),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 margin: const EdgeInsets.all(10),
@@ -103,38 +118,33 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 2.2,
+                    childAspectRatio: 2.7,
                   ),
                   itemCount: videosPerSubject.keys.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(left: 40),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                GeneralAppText(
-                                  text: videosPerSubject.keys.elementAt(index),
-                                  size: 18,
-                                  weight: FontWeight.bold,
-                                ),
-                                GeneralAppText(
-                                  text: videosPerSubject.values
-                                      .elementAt(index)
-                                      .toString(),
-                                  size: 16,
-                                  weight: FontWeight.bold,
-                                )
-                              ],
-                            ),
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GeneralAppText(
+                                text: videosPerSubject.keys.elementAt(index),
+                                size: 18,
+                                weight: FontWeight.bold,
+                              ),
+                              GeneralAppText(
+                                text: videosPerSubject.values
+                                    .elementAt(index)
+                                    .toString(),
+                                size: 16,
+                                weight: FontWeight.bold,
+                              )
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     );
                   },
                 ),

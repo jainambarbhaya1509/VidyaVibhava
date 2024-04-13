@@ -6,6 +6,8 @@ import 'package:final_project/models/models.dart';
 import 'package:final_project/pages/common/chat/chat_list.dart';
 import 'package:final_project/pages/common/chat/chintan_chat_page_2.dart';
 import 'package:final_project/pages/common/gemini.dart';
+import 'package:final_project/pages/home/student/cards/assignment_details.dart';
+import 'package:final_project/pages/home/student/cards/course_details.dart';
 import 'package:final_project/pages/home/student/cards/lecture_details.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/jobs_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
@@ -19,8 +21,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:logger/web.dart';
 
 import '../../../../models/backend_model.dart';
+
+
+final assignmentProvider = Provider((ref) => assignments);
+final assignments = [
+  {
+    "title": "English Essay",
+    "description": "Write an essay on the theme of nature in literature.",
+    "dueDate": "12/12/2021",
+    "marks": "10",
+    "documents": [],
+  },
+  {
+    "title": "Math Homework",
+    "description": "Solve the practice problems from Chapter 3.",
+    "dueDate": "12/12/2021",
+    "marks": "10",
+    "documents": [],
+  },
+  {
+    "title": "Science Project",
+    "description": "Prepare a presentation on the solar system.",
+    "dueDate": "12/12/2021",
+    "marks": "10",
+    "documents": [],
+  },
+  {
+    "title": "History Assignment",
+    "description":
+        "Research and write about a historical event of your choice.",
+    "dueDate": "12/12/2021",
+    "marks": "10",
+    "documents": [],
+  },
+  {
+    "title": "Art Project",
+    "description": "Create a painting inspired by a famous artist.",
+    "dueDate": "12/12/2021",
+    "marks": "10",
+    "documents": [],
+  },
+  {
+    "title": "Music Composition",
+    "description": "Compose a short piece of music using any instrument.",
+    "dueDate": "12/12/2021",
+    "marks": "10",
+    "documents": [],
+  }
+];
 
 class StudentHomeScreen extends ConsumerStatefulWidget {
   const StudentHomeScreen({super.key});
@@ -41,24 +92,6 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
 
     // Add more subjects here if needed
   ];
-  final List uploadedAssignments = [];
-  final List assignments = ["Assignment 1", "Assignment 2", "Assignment 3"];
-
-  Future uploadAssignments(String assignmentTitle) async {
-    final result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'pdf', 'doc', 'png'],
-    );
-
-    if (result != null) {
-      setState(() {
-        uploadedAssignments.addAll(result.files.map((file) {
-          return {'title': assignmentTitle, 'file': file};
-        }));
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -450,228 +483,12 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                           isDismissible: true,
                           context: context,
                           builder: (builder) {
-                            return Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                ),
-                              ),
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                    Container(
-                                      height: 5,
-                                      width: 120,
-                                      decoration: BoxDecoration(
-                                        color: primaryColor,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                    Container(
-                                      height: 190,
-                                      width: MediaQuery.sizeOf(context).width *
-                                          0.9,
-                                      decoration: BoxDecoration(
-                                        color: Colors.amber,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            height: 60,
-                                            width: 60,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: theme == true
-                                                        ? textColor1
-                                                        : textColor2),
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            child: GeneralAppIcon(
-                                              icon: Icons.bookmark_border,
-                                              color: theme == true
-                                                  ? textColor1
-                                                  : textColor2,
-                                              size: 30,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              height: 60,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                    color: theme == true
-                                                        ? textColor1
-                                                        : textColor2),
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  GeneralAppIcon(
-                                                    icon: Icons
-                                                        .play_arrow_rounded,
-                                                    color: theme == true
-                                                        ? textColor1
-                                                        : textColor2,
-                                                    size: 30,
-                                                  ),
-                                                  PrimaryAppText(
-                                                    text: "Start Learning",
-                                                    size: 20,
-                                                    color: theme == true
-                                                        ? textColor1
-                                                        : textColor2,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10.0, left: 10),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                              alignment: Alignment.centerLeft,
-                                              child: GeneralAppText(
-                                                text: "Description",
-                                                size: 20,
-                                                weight: FontWeight.bold,
-                                              )),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          GeneralAppText(
-                                            text:
-                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
-                                            size: 15,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Container(
-                                          alignment: Alignment.centerLeft,
-                                          child: GeneralAppText(
-                                            text: "Lectures",
-                                            size: 20,
-                                            weight: FontWeight.bold,
-                                          )),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        height: double.infinity,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: ListView.builder(
-                                          controller: ScrollController(),
-                                          itemCount: 10,
-                                          itemBuilder: (context, lectureIndex) {
-                                            return Container(
-                                              margin: const EdgeInsets.only(
-                                                  bottom: 10),
-                                              height: 60,
-                                              width: double.infinity,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                    color: Colors.grey),
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                      left: 10,
-                                                    ),
-                                                    height: 40,
-                                                    width: 40,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.amber,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
-                                                    ),
-                                                    child: SecondaryAppText(
-                                                      text: "$lectureIndex",
-                                                      size: 20,
-                                                      color: theme == true
-                                                          ? textColor1
-                                                          : textColor2,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 10),
-                                                    child: SecondaryAppText(
-                                                      text:
-                                                          "Lecture Title $lectureIndex",
-                                                      size: 14,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
+                            return CourseDetails(
+                                courseIndex: index,
+                                courseTitle: "Course Title $index",
+                                courseDescription:
+                                    "The labyrinthine complexity of human existence intertwines with the capricious whims of fate, weaving a tapestry of stories where the mundane and the extraordinary collide, where love and loss dance a perpetual waltz amidst the cacophony of existence, each individual thread contributing to the rich fabric of the universe's eternal narrative.",
+                                courseLectures: []);
                           },
                         );
                       },
@@ -862,149 +679,20 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          // String assignmentTitle = assignments[index];
-                          // bool isUploaded = uploadedAssignments.any(
-                          //     (assignment) =>
-                          //         assignment['title'] == assignmentTitle);
-
-                          // showModalBottomSheet(
-                          //     context: context,
-                          //     builder: (builder) {
-                          //       return Container(
-                          //         padding: const EdgeInsets.all(15),
-                          //         width: double.infinity,
-                          //         decoration: BoxDecoration(
-                          //           color: Theme.of(context).primaryColor,
-                          //           borderRadius: const BorderRadius.only(
-                          //             topLeft: Radius.circular(10),
-                          //             topRight: Radius.circular(10),
-                          //           ),
-                          //         ),
-                          //         child: Column(
-                          //           mainAxisAlignment: MainAxisAlignment.start,
-                          //           crossAxisAlignment:
-                          //               CrossAxisAlignment.center,
-                          //           children: [
-                          //             Container(
-                          //               alignment: Alignment.center,
-                          //               height: 5,
-                          //               width: 120,
-                          //               decoration: BoxDecoration(
-                          //                 color: primaryColor,
-                          //                 borderRadius:
-                          //                     BorderRadius.circular(20),
-                          //               ),
-                          //             ),
-                          //             const SizedBox(
-                          //               height: 30,
-                          //             ),
-                          //             GeneralAppText(
-                          //               text: "Assignment Title $index",
-                          //               size: 20,
-                          //               weight: FontWeight.bold,
-                          //             ),
-                          //             const SizedBox(
-                          //               height: 10,
-                          //             ),
-                          //             GeneralAppText(
-                          //               text:
-                          //                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
-                          //               size: 15,
-                          //             ),
-                          //             const SizedBox(
-                          //               height: 20,
-                          //             ),
-                          //             SizedBox(
-                          //               height: 60,
-                          //               child: Row(
-                          //                 mainAxisAlignment:
-                          //                     MainAxisAlignment.spaceBetween,
-                          //                 crossAxisAlignment:
-                          //                     CrossAxisAlignment.start,
-                          //                 children: [
-                          //                   GeneralAppText(
-                          //                     text: "Due Date: 12/12/2021",
-                          //                     size: 15,
-                          //                   ),
-                          //                   Container(
-                          //                     margin: const EdgeInsets.only(
-                          //                       right: 10,
-                          //                     ),
-                          //                     child: GeneralAppText(
-                          //                       text: "Marks: 10",
-                          //                       size: 15,
-                          //                     ),
-                          //                   ),
-                          //                 ],
-                          //               ),
-                          //             ),
-                          //             const SizedBox(
-                          //               height: 20,
-                          //             ),
-                          //             GestureDetector(
-                          //               onTap: () {
-                          //                 uploadAssignments(assignmentTitle);
-                          //               },
-                          //               child: Container(
-                          //                 height: 60,
-                          //                 width: double.infinity,
-                          //                 decoration: BoxDecoration(
-                          //                   color: Colors.white,
-                          //                   borderRadius:
-                          //                       BorderRadius.circular(10),
-                          //                   border: Border.all(
-                          //                       color: isUploaded
-                          //                           ? Colors.grey
-                          //                           : Colors.green),
-                          //                 ),
-                          //                 child: Row(
-                          //                   mainAxisAlignment:
-                          //                       MainAxisAlignment.spaceBetween,
-                          //                   children: [
-                          //                     Container(
-                          //                       margin: const EdgeInsets.only(
-                          //                         left: 10,
-                          //                       ),
-                          //                       child: PrimaryAppText(
-                          //                         text: isUploaded
-                          //                             ? "Upload Assignment"
-                          //                             : "${assignments.length} Files Uploaded",
-                          //                         size: 15,
-                          //                         color: isUploaded
-                          //                             ? Colors.grey
-                          //                             : Colors.green,
-                          //                       ),
-                          //                     ),
-                          //                     Container(
-                          //                       margin: const EdgeInsets.only(
-                          //                         right: 10,
-                          //                       ),
-                          //                       child: GeneralAppIcon(
-                          //                         icon: isUploaded
-                          //                             ? Icons.upload_file
-                          //                             : Icons
-                          //                                 .check_circle_rounded,
-                          //                         color: isUploaded
-                          //                             ? Colors.grey
-                          //                             : Colors.green,
-                          //                         size: 30,
-                          //                       ),
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       );
-                          //     }).then(
-                          //   (value) => setState(
-                          //     () {
-                          //       uploadedAssignments.removeWhere((element) =>
-                          //           element['title'] == assignments[index]);
-                          //     },
-                          //   ),
-                          // );
+                          showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (builder) {
+                                return AssignmentDetails(
+                                  index: index,
+                                  title: assignments[index]["title"].toString(),
+                                  description: assignments[index]["description"]
+                                      .toString(),
+                                  dueDate:
+                                      assignments[index]["dueDate"].toString(),
+                                  marks: assignments[index]["marks"].toString(),
+                                );
+                              });
                         },
                         child: Container(
                           margin: const EdgeInsets.only(

@@ -15,10 +15,6 @@ class StudentStats extends ConsumerStatefulWidget {
 }
 
 class _LineChartSample2State extends ConsumerState<StudentStats> {
-  List<Color> gradientColors = [Colors.green, Colors.blue];
-
-  bool showAvg = false;
-
   final videosPerSubject = {
     "Language": 10,
     "Mathematics": 10,
@@ -32,7 +28,7 @@ class _LineChartSample2State extends ConsumerState<StudentStats> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(settingsProvider);
+    final theme = ref.watch(settingsProvider);
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
@@ -43,30 +39,43 @@ class _LineChartSample2State extends ConsumerState<StudentStats> {
               topRight: Radius.circular(10),
             ),
           ),
-          padding: const EdgeInsets.only(top: 50),
+          padding: const EdgeInsets.only(top: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                height: 5,
+                width: 100,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              const SizedBox(height: 20),
               GeneralAppText(
                 text: "Your Statistics",
                 weight: FontWeight.bold,
                 size: 20,
               ),
               Container(
+                alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: theme.isLightMode
+                      ? const Color.fromARGB(255, 231, 231, 231)
+                      : const Color.fromARGB(255, 64, 64, 64),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 margin: const EdgeInsets.all(10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       child: SizedBox(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GeneralAppText(
                               text: "Total Videos",
@@ -86,8 +95,6 @@ class _LineChartSample2State extends ConsumerState<StudentStats> {
                       child: SizedBox(
                         width: 100,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GeneralAppText(
                               text: "Total Courses",
@@ -109,11 +116,13 @@ class _LineChartSample2State extends ConsumerState<StudentStats> {
               Container(
                 height: 200,
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: theme.isLightMode
+                      ? Color.fromARGB(255, 231, 231, 231)
+                      : Color.fromARGB(255, 64, 64, 64),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 margin: const EdgeInsets.all(10),
-                padding: const EdgeInsets.all(10),
+                // padding: const EdgeInsets.all(10),
                 child: GridView.builder(
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -122,43 +131,75 @@ class _LineChartSample2State extends ConsumerState<StudentStats> {
                   ),
                   itemCount: videosPerSubject.keys.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(left: 40),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GeneralAppText(
+                                text: videosPerSubject.keys.elementAt(index),
+                                size: 18,
+                                weight: FontWeight.bold,
+                              ),
+                              GeneralAppText(
+                                text: videosPerSubject.values
+                                    .elementAt(index)
+                                    .toString(),
+                                size: 16,
+                                weight: FontWeight.bold,
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(
+                    top: 10, bottom: 10, left: 20, right: 20),
+                decoration: BoxDecoration(
+                  color: theme.isLightMode
+                      ? Color.fromARGB(255, 231, 231, 231)
+                      : Color.fromARGB(255, 64, 64, 64),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                margin: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 GeneralAppText(
-                                  text: videosPerSubject.keys.elementAt(index),
+                                  text: "Overall Progress",
                                   size: 18,
                                   weight: FontWeight.bold,
                                 ),
                                 GeneralAppText(
-                                  text: videosPerSubject.values
-                                      .elementAt(index)
-                                      .toString(),
-                                  size: 16,
+                                  text: "90%",
+                                  size: 18,
                                   weight: FontWeight.bold,
                                 )
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    );
-                  },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const SizedBox(
-                height: 20,
               ),
             ],
           ),

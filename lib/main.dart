@@ -69,8 +69,8 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: 'Smart Education',
       theme: theme.isLightMode == true ? lightTheme : darkTheme,
-      // home: showHome ? const UserTypeScreen() : const StartScreen(),
-      home: StartScreen(),
+      home: showHome ? const UserTypeScreen() : const StartScreen(),
+      // home: StartScreen(),
       // home: const CareerQuiz(),
       routes: {
         'onboardingScreen': (context) => const StartScreen(),

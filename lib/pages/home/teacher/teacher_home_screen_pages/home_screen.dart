@@ -28,6 +28,7 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
   final List uploadedVideos = [];
   final List uploadedCourses = [];
   final List scheduledVisits = [];
+  final List assignments = [];
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(TeacherProfileController());
@@ -551,7 +552,101 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
                             },
                           ),
                         ),
-                      ],
+                        // assignments
+
+                // only to display if user is mentor
+                const SizedBox(
+                  height: 30,
+                ),
+                GeneralAppText(
+                  text: "Assignments",
+                  size: 20,
+                  color: theme == true ? textColor1 : textColor2,
+                  weight: FontWeight.bold,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+
+                assignments.isEmpty
+                    ? Container(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: theme == true ? textColor2 : textColor1,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GeneralAppText(
+                              text: "No Assignment Found",
+                              size: 20,
+                              color: theme == true ? textColor1 : textColor2,
+                              weight: FontWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GeneralAppText(
+                              text: "You have not assigned any assignments yet",
+                              size: 16,
+                              color: theme == true ? textColor1 : textColor2,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        height: 300,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: theme == true ? textColor1 : textColor2,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListView.builder(
+                          itemCount: assignments.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.all(5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              height: 60,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: theme == true ? textColor2 : textColor1,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                        child: GeneralAppText(
+                                      text:
+                                          "${index + 1}. ${assignments[index]}",
+                                      size: 13,
+                                      color: theme == true
+                                          ? textColor2
+                                          : textColor1,
+                                    )),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GeneralAppIcon(
+                                    icon: Icons.delete,
+                                    color:
+                                        const Color.fromARGB(255, 255, 97, 85),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+              ],
                     ),
                   ),
                 ),
