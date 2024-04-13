@@ -1,26 +1,13 @@
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Student {
   late String? uid;
-  final String firstName;
-  final String lastName;
-  final String dateOfBirth;
-  final String gender;
-  final String phoneNo;
-  final String username;
-  final String address;
-  final String zipCode;
-  final String city;
-  final String state;
-  late final String image;
-  late final String doc1;
-  late final String doc2;
+  final String firstName, lastName, dateOfBirth, gender, phoneNo, username, address, zipCode, city, state;
+  late final String image, doc1, doc2;
   late String deviceToken;
 
-  Student({
-    this.uid,
+  Student({this.uid,
     required this.firstName,
     required this.lastName,
     required this.dateOfBirth,
@@ -34,12 +21,9 @@ class Student {
     required this.image,
     required this.doc1,
     required this.doc2,
-    required this.deviceToken,
-  });
+    required this.deviceToken,});
 
-  toJson() {
-    return {
-      'uid': uid,
+  toJson() {return {'uid': uid,
       'firstName': firstName,
       'lastName': lastName,
       'dateOfBirth': dateOfBirth,
@@ -53,16 +37,12 @@ class Student {
       'image': image,
       'doc1': doc1,
       'doc2': doc2,
-      'deviceToken':deviceToken,
-    };
-  }
+      'deviceToken':deviceToken,};}
 
-  factory Student.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> document) {
+  factory Student.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
 
-    return Student(
-      uid: data['uid'],
+    return Student(uid: data['uid'],
       firstName: data["firstName"],
       lastName: data["lastName"],
       dateOfBirth: data["dateOfBirth"],
@@ -76,39 +56,16 @@ class Student {
       image: data["image"],
       doc1: data["doc1"],
       doc2: data["doc2"],
-      deviceToken : data["deviceToken"],
-    );
-  }
-}
-
-class ContinueWatching {}
-
-class EnrolledCourse {}
+      deviceToken : data["deviceToken"],);}}
 
 class Teacher {
   late String? uid;
-  final String firstName;
-  final String lastName;
-  final String dateOfBirth;
-  final String gender;
-  final String phoneNo;
-  final String username;
-  final String email;
-  final String address;
-  final String zipCode;
-  final String city;
-  final String state;
-  final String organizationName;
-  final bool cddaAffiliation;
+  final String firstName, lastName, dateOfBirth, gender, phoneNo, username, email, address, zipCode, city, state, organizationName, image, doc1, doc2;
+  final bool cddaAffiliation, isMentor;
   final List<String> subjectPreference;
-  final bool isMentor;
-  late final String image;
-  late final String doc1;
-  late final String doc2;
   late final String deviceToken;
 
-  Teacher({
-    this.uid,
+  Teacher({this.uid,
     required this.firstName,
     required this.lastName,
     required this.dateOfBirth,
@@ -126,12 +83,9 @@ class Teacher {
     required this.isMentor,
     required this.image,
     required this.doc1,
-    required this.doc2,
-  });
+    required this.doc2,});
 
-  toJson() {
-    return {
-      'uid': uid,
+  toJson() {return {'uid': uid,
       'firstName': firstName,
       'lastName': lastName,
       'dateOfBirth': dateOfBirth,
@@ -150,12 +104,9 @@ class Teacher {
       'image': image,
       'doc1': doc1,
       'doc2': doc2,
-      'deviceToken':deviceToken,
-    };
-  }
+      'deviceToken':deviceToken,};}
 
-  factory Teacher.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> document) {
+  factory Teacher.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     final subjectPreferenceDynamic = data["subjectPreference"];
     List<String> subjectPreference = (subjectPreferenceDynamic is List)
@@ -185,50 +136,14 @@ class Teacher {
   }
 }
 
-class Mentor {
-  late String mentorId;
-  final String mentorName;
-
-  Mentor({
-    required this.mentorId,
-    required this.mentorName,
-  });
-
-  factory Mentor.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
-    final data = document.data()!;
-
-    return Mentor(
-      mentorId: document.id,
-      mentorName: data["mentorName"],
-    );
-  }
-
-  toJson() {
-    return {
-      'mentorId': mentorId,
-      'mentorName': mentorName,
-    };
-  }
-}
-
-class Textbook {}
-
 class Video {
   late String? videoId;
-  final String videoTitle;
-  final String videoDescription;
-  late String videoLoc;
-  final List<String> keywords;
-  final String difficultyLevel;
-  final String duration;
-  final String subject;
-  final String instructorName;
-  final String thumbnail;
+  final String videoTitle, videoDescription, videoLoc, difficultyLevel, duration, subject, instructorName, thumbnail, instructorId;
   late Uint8List thumbnailImage;
-  final String instructorId;
+  final List<String> keywords;
 
-  Video({
-    this.videoId,
+
+  Video({this.videoId,
     required this.videoTitle,
     required this.videoDescription,
     required this.videoLoc,
@@ -241,9 +156,7 @@ class Video {
     required this.instructorId,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'videoId': videoId,
+  Map<String, dynamic> toJson() {return {'videoId': videoId,
       'videoTitle': videoTitle,
       'videoDescription': videoDescription,
       'videoLoc': videoLoc,
@@ -278,21 +191,17 @@ class Video {
 
 class CourseVideo {
   late String? videoId;
-  final String videoTitle;
+  final String videoTitle,duration;
   late String videoLoc;
-  final String duration;
 
-  CourseVideo({
-    this.videoId,
+  CourseVideo({this.videoId,
     required this.videoTitle,
     required this.videoLoc,
     required this.duration,
   });
 
   // Method to convert CourseVideo object to a map for Firestore
-  Map<String, dynamic> toJson() {
-    return {
-      'videoId': videoId,
+  Map<String, dynamic> toJson() {return {'videoId': videoId,
       'videoTitle': videoTitle,
       'videoLoc': videoLoc,
       'duration': duration,
@@ -324,21 +233,11 @@ class CourseVideo {
 
 class Course {
   late String? courseId;
-  final String courseTitle;
-  final String courseDescription;
-  late String courseLoc;
-  final List<String> keywords;
-  final String difficultyLevel;
-  final String duration;
-  final String subject;
-  final String instructorName;
-  final String thumbnail;
+  final String courseTitle, courseDescription, courseLoc, difficultyLevel, duration, subject, instructorName, thumbnail, instructorId;
   late Uint8List thumbnailImage;
-  final String instructorId;
-  //late List<CourseVideo> courseVideos;
-  Course({
+  final List<String> keywords;
 
-    this.courseId,
+  Course({this.courseId,
     required this.courseTitle,
     required this.courseDescription,
     required this.courseLoc,
@@ -348,9 +247,7 @@ class Course {
     required this.subject,
     required this.instructorName,
     required this.thumbnail,
-    required this.instructorId,
-    //required this.courseVideos,
-  });
+    required this.instructorId,});
 
   Map<String, dynamic> toJson() {
     return {
@@ -365,7 +262,6 @@ class Course {
       'instructorName': instructorName,
       'thumbnail': thumbnail,
       'instructorId': instructorId,
-      //'CourseVideos': courseVideos.map((video) => video.toJson()).toList(),
     };
   }
 
