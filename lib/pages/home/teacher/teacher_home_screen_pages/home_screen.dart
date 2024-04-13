@@ -43,6 +43,8 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
           }
 
         } on Exception catch (e) {
+          print("Exception encountered");
+          print(e.toString());
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.connectionState == ConnectionState.done) {

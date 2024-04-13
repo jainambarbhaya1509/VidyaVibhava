@@ -574,22 +574,17 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                                                       vertical:
                                                                           8.0),
                                                                   child:
-                                                                      DropdownButtonFormField<
-                                                                          String>(
+                                                                      DropdownButtonFormField<String>(
                                                                     value:
                                                                         "Option 1",
                                                                     onChanged:
-                                                                        (String?
-                                                                            value) {},
+                                                                        (String? value) {},
                                                                     items: [
                                                                       "Option 1",
                                                                       "Option 2",
                                                                       "Option 3",
                                                                       "Option 4",
-                                                                    ].map<
-                                                                        DropdownMenuItem<
-                                                                            String>>((String
-                                                                        option) {
+                                                                    ].map<DropdownMenuItem<String>>((String option) {
                                                                       return DropdownMenuItem<
                                                                           String>(
                                                                         value:
@@ -829,6 +824,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                 GestureDetector(
                   onTap: () async {
                     print(uploadedVideos);
+                    print("Quiz : ${createQuiz}");
                     if (checkAllFields()) {
                       setState(() {
                         courseVideo.add({
@@ -882,7 +878,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                           thumbnail: "thumbnail",
                           instructorId: await profileController.getUserId(),);
 
-                      videoController.createCourse(course, uploadedVideos);
+                      //videoController.createCourse(course, uploadedVideos);
                           //courseVideos: courseVideos)
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
