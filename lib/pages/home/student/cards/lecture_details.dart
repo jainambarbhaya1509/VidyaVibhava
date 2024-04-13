@@ -6,6 +6,7 @@ import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final savedLecturesProvidrer = Provider((ref) => []);
@@ -71,19 +72,23 @@ class _LectureDetailsState extends ConsumerState<LectureDetails> {
                     children: [
                       GestureDetector(
                             onTap: () {},
-                            child: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color:
-                                          theme == true ? textColor1 : textColor2),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: GeneralAppIcon(
-                            icon: Icons.bookmark_border,
-                            color: theme == true ? textColor1 : textColor2,
-                            size: 30,
+                            child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color:
+                                         
+                                      theme == true ? textColor1 : textColor2),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: GeneralAppIcon(
+                              icon: Icons.bookmark_border,
+                              color: theme == true ? textColor1 : textColor2,
+                              size: 30,
                               ),
+                          ),
                         ),
                       ),
                       const SizedBox(

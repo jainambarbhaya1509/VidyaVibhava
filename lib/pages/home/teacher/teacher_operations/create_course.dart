@@ -5,6 +5,7 @@ import 'package:final_project/controllers/profile_controller.dart';
 import 'package:final_project/controllers/video_controller.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/home_screen.dart';
 import 'package:final_project/models/backend_model.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/home_screen.dart';
 import 'package:final_project/pages/home/teacher/cards/create_quiz.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
@@ -17,10 +18,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:logger/web.dart';
 import 'package:video_player/video_player.dart';
 
 final courseProvider = Provider((ref) => course);
+
 
 final List course = [
   [
@@ -28,7 +29,9 @@ final List course = [
       "course": {
         "title": "",
         "subject": "",
+        "subject": "",
         "description": "",
+        "tags": [],
         "tags": [],
         "level": "",
         "duration": "",
@@ -59,8 +62,8 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
   final lectureTitleController = TextEditingController();
   final lectureDescriptionController = TextEditingController();
   final lectureDurationController = TextEditingController();
-  final subjectController = TextEditingController();
   final tagsController = TextEditingController();
+  final subjectController = TextEditingController();
   final lectureLevel = ["Beginner", "Intermediate", "Advanced"];
   String? selectedLevel;
 
@@ -892,7 +895,6 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                         ),
                       );
                     }
-                    Logger().d(course);
                   },
                   child: Container(
                     height: 50,
