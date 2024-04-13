@@ -37,8 +37,9 @@ class _MessageScreenState extends State<MessageScreen> {
               height: 45,
               width: 120,
               decoration: BoxDecoration(
-                  color: const Color.fromARGB(66, 211, 210, 210),
-                  borderRadius: BorderRadius.circular(50)),
+                color: const Color.fromARGB(66, 211, 210, 210),
+                borderRadius: BorderRadius.circular(50),
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,8 +56,9 @@ class _MessageScreenState extends State<MessageScreen> {
                     endIndent: 10,
                   ),
                   GeneralAppIcon(
-                      icon: Icons.video_call_rounded,
-                      color: const Color.fromARGB(255, 77, 77, 77))
+                    icon: Icons.video_call_rounded,
+                    color: const Color.fromARGB(255, 77, 77, 77),
+                  )
                 ],
               ),
             ),

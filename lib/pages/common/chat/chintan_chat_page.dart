@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/widgets/app_icon.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -79,6 +80,20 @@ class _Chat_PageState extends State<Chat_Page> {
 
     return Container(
         alignment: alignment,
+        decoration: BoxDecoration(
+          borderRadius: (data['senderId'] == _firebaseAuth.currentUser!.uid)
+              ? const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomRight: Radius.circular(20))
+              : const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20)),
+          color: (data['senderId'] == _firebaseAuth.currentUser!.uid
+              ? Colors.grey.shade200
+              : Colors.blue[200]),
+        ),
         child: Column(
           children: [
             Text(data['senderEmail']),
@@ -89,23 +104,34 @@ class _Chat_PageState extends State<Chat_Page> {
   }
 
   Widget _buildMessageInput() {
-    return Row(
-      children: [
-        Expanded(
-          child: MyTextField(
-            controller: _messageController,
-            hintText: 'Enter message',
-            obscureText: false,
+    return Align(
+      alignment: Alignment.bottomLeft,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(50),
+          border: Border.all(color: Colors.grey),
+        ),
+        child: TextField(
+          controller: _messageController,
+          maxLines: null,
+          decoration: InputDecoration(
+            hintText: 'Type a message',
+            hintStyle: const TextStyle(color: Colors.grey),
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              icon: GeneralAppIcon(
+                icon: Icons.send,
+                color: Colors.grey,
+              ),
+              onPressed: () => sendMessage,
+            ),
           ),
         ),
-        IconButton(
-          onPressed: sendMessage,
-          icon: const Icon(
-            Icons.arrow_upward,
-            size: 40,
-          ),
-        )
-      ],
+      ),
     );
   }
 }

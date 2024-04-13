@@ -13,7 +13,7 @@ final savedLecturesProvidrer = Provider((ref) => []);
 class LectureDetails extends ConsumerStatefulWidget {
   final Video video;
 
-  const LectureDetails({Key? key, required this.video}) : super(key: key);
+  const LectureDetails({super.key, required this.video});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LectureDetailsState();
