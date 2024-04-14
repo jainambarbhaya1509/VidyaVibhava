@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:final_project/providers/appbar_provider.dart';
-import 'package:final_project/providers/student_screen_provider.dart';
+import 'package:final_project/providers/books_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
@@ -19,6 +19,8 @@ class BooksModal extends ConsumerStatefulWidget {
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _BooksModalState();
 }
+
+
 
 class _BooksModalState extends ConsumerState<BooksModal> {
   double baseFontSize = 26.0;
@@ -101,6 +103,7 @@ class _BooksModalState extends ConsumerState<BooksModal> {
                           children: [
                             GestureDetector(
                               onTap: () {
+                                
                                 if (savedBooks["bookTitle"]
                                     .contains(widget.bookTitle)) {
                                   setState(() {

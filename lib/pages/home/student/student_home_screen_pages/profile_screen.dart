@@ -7,8 +7,9 @@ import 'package:final_project/pages/home/student/student_home_screen_pages/explo
 import 'package:final_project/pages/home/student/student_home_screen_pages/student_stats.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/enrolled_courses.dart';
 import 'package:final_project/providers/appbar_provider.dart';
-import 'package:final_project/providers/student_screen_provider.dart';
+import 'package:final_project/providers/books_provider.dart';
 import 'package:final_project/repository/authentication_repository.dart';
+import 'package:final_project/providers/books_provider.dart';
 import 'package:final_project/style/painter.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';

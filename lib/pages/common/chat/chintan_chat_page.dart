@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../services/chat_service.dart';
 import '../../../widgets/chat_bubble.dart';
 import '../../../widgets/custom_text_field.dart';
 
-class Chat_Page extends StatefulWidget {
+class Chat_Page extends ConsumerStatefulWidget {
   final String receiverUserEmail;
   final String receiverUserID;
   const Chat_Page({
@@ -17,10 +19,10 @@ class Chat_Page extends StatefulWidget {
   });
 
   @override
-  State<Chat_Page> createState() => _Chat_PageState();
+  ConsumerState<Chat_Page> createState() => _Chat_PageState();
 }
 
-class _Chat_PageState extends State<Chat_Page> {
+class _Chat_PageState extends ConsumerState<Chat_Page> {
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -35,6 +37,7 @@ class _Chat_PageState extends State<Chat_Page> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ref.watch(settingsProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.receiverUserEmail),
@@ -44,7 +47,7 @@ class _Chat_PageState extends State<Chat_Page> {
           Expanded(
             child: _buildMessageList(),
           ),
-          _buildMessageInput(),
+          _buildMessageInput(theme),
         ],
       ),
     );
@@ -103,35 +106,62 @@ class _Chat_PageState extends State<Chat_Page> {
         ));
   }
 
-  Widget _buildMessageInput() {
+  Widget _buildMessageInput(theme) {
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
+        height: 50,
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(50),
-          border: Border.all(color: Colors.grey),
+          color: theme.isLightMode
+              ? const Color.fromARGB(211, 228, 228, 228)
+              : const Color.fromARGB(255, 54, 54, 54),
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: TextField(
+        child: TextFormField(
           controller: _messageController,
-          maxLines: null,
           decoration: InputDecoration(
-            hintText: 'Type a message',
-            hintStyle: const TextStyle(color: Colors.grey),
-            border: InputBorder.none,
-            suffixIcon: IconButton(
-              icon: GeneralAppIcon(
+            suffixIcon: GestureDetector(
+              onTap: sendMessage,
+              child: GeneralAppIcon(
+                
                 icon: Icons.send,
                 color: Colors.grey,
               ),
-              onPressed: () => sendMessage,
             ),
+            hintText: "Send message",
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.only(left: 10),
           ),
         ),
       ),
+
+      // Container(
+      //   width: double.infinity,
+      //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      //   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      //   decoration: BoxDecoration(
+      //     color: Colors.white,
+      //     borderRadius: BorderRadius.circular(50),
+      //     border: Border.all(color: Colors.grey),
+      //   ),
+      //   child: TextField(
+      //     controller: _messageController,
+      //     maxLines: null,
+      //     decoration: InputDecoration(
+      //       hintText: 'Type a message',
+      //       hintStyle: const TextStyle(color: Colors.grey),
+      //       border: InputBorder.none,
+      //       suffixIcon: IconButton(
+      //         icon: GeneralAppIcon(
+      //           icon: Icons.send,
+      //           color: Colors.grey,
+      //         ),
+      //         onPressed: () => sendMessage,
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

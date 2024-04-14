@@ -4,7 +4,7 @@ import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/edit_
 import 'package:final_project/pages/signups/signup_pages/personal_info.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/providers/signup_providers.dart';
-import 'package:final_project/providers/student_screen_provider.dart';
+import 'package:final_project/providers/books_provider.dart';
 import 'package:final_project/style/painter.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
@@ -552,22 +552,23 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                         itemCount: savedBooks["imageUrl"].length,
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  isDismissible: true,
-                                  context: context,
-                                  builder: (context) {
-                                    return BooksModal(
-                                      imageUrl: imageUrl[index],
-                                      bookTitle: bookTitle[index],
-                                    );
-                                  },
-                                );
-                              },
-                              child: BooksCard(
-                                imageUrl: imageUrl[index],
-                              ));
+                            onTap: () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                isDismissible: true,
+                                context: context,
+                                builder: (context) {
+                                  return BooksModal(
+                                    imageUrl: imageUrl[index],
+                                    bookTitle: bookTitle[index],
+                                  );
+                                },
+                              );
+                            },
+                            child: BooksCard(
+                              imageUrl: imageUrl[index],
+                            ),
+                          );
                         },
                       ),
                     ),
