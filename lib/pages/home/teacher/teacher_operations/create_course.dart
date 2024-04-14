@@ -873,6 +873,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                           backgroundColor: Colors.green,
                         ),
                       );
+                      print(courseVideo);
                       Course course = Course(
                         courseTitle: lectureTitleController.text,
                         courseDescription: lectureDescriptionController.text,

@@ -14,6 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../repository/authentication_repository.dart';
+import '../../../common/start_screen.dart';
+
 class TeacherProfileScreen extends ConsumerStatefulWidget {
   const TeacherProfileScreen({super.key});
 
@@ -218,7 +221,8 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                       color: Colors.redAccent,
                     ),
                     onTap: () {
-                      Navigator.pop(context);
+                      AuthenticationRepository.instance.signOut();
+                      Navigator.push(context,MaterialPageRoute(builder: (context) {return StartScreen();}));
                     },
                   )
                 ],

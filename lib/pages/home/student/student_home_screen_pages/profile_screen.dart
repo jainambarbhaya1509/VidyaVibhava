@@ -8,6 +8,7 @@ import 'package:final_project/pages/home/student/student_home_screen_pages/stude
 import 'package:final_project/pages/home/student/student_home_screen_pages/enrolled_courses.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/providers/student_screen_provider.dart';
+import 'package:final_project/repository/authentication_repository.dart';
 import 'package:final_project/style/painter.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
@@ -19,6 +20,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:googleapis/appengine/v1.dart';
+
+import '../../../common/start_screen.dart';
 
 class StudentProfileScreen extends ConsumerStatefulWidget {
   const StudentProfileScreen({super.key});
@@ -248,7 +251,9 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
                       weight: FontWeight.bold,
                       color: Colors.redAccent,
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      AuthenticationRepository.instance.signOut();
+                      Navigator.push(context,MaterialPageRoute(builder: (context) {return StartScreen();}));},
                   ),
                 ],
               )
