@@ -14,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:logger/web.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:final_project/pages/home/teacher/teacher_screen.dart';
 import 'package:final_project/pages/logins/student_login_screen.dart';
@@ -62,13 +63,15 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    Logger().d(MediaQuery.of(context).size);
+
     final theme = ref.watch(settingsProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Smart Education',
       theme: theme.isLightMode == true ? lightTheme : darkTheme,
       // home: showHome ? const UserTypeScreen() : const StartScreen(),
-      home: const StudentScreen(),
+      home: const TeacherScreen(),
       // home: const CareerQuiz(),
       routes: {
         'onboardingScreen': (context) => const StartScreen(),

@@ -20,8 +20,6 @@ class BooksModal extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _BooksModalState();
 }
 
-
-
 class _BooksModalState extends ConsumerState<BooksModal> {
   double baseFontSize = 26.0;
 
@@ -103,7 +101,6 @@ class _BooksModalState extends ConsumerState<BooksModal> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                
                                 if (savedBooks["bookTitle"]
                                     .contains(widget.bookTitle)) {
                                   setState(() {

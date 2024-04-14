@@ -222,7 +222,10 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                     ),
                     onTap: () {
                       AuthenticationRepository.instance.signOut();
-                      Navigator.push(context,MaterialPageRoute(builder: (context) {return StartScreen();}));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return StartScreen();
+                      }));
                     },
                   )
                 ],
@@ -245,14 +248,14 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
                           margin: const EdgeInsets.only(
                             left: 20,
                           ),
-                          height: 70,
-                          width: 70,
+                          height: 100,
+                          width: 100,
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
@@ -264,7 +267,7 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 20),
                         Container(
                           // color: Colors.amber,
                           margin: const EdgeInsets.only(
@@ -278,15 +281,15 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   SecondaryAppText(
-                                    text: "Jainam  Barbhaya",
+                                    text: "Jainam Barbhaya",
                                     weight: FontWeight.bold,
-                                    size: 16,
+                                    size: 20,
                                   ),
                                   const SizedBox(width: 10),
                                   GeneralAppIcon(
                                     icon: Icons.verified_outlined,
                                     color: primaryColor,
-                                    size: 16,
+                                    size: 18,
                                   ),
                                 ],
                               ),

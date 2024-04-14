@@ -94,6 +94,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   onTap: () {
                     showModalBottomSheet(
                       isScrollControlled: true,
+                      isDismissible: true,
                       context: context,
                       builder: (builder) {
                         return Container(
@@ -211,6 +212,16 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       Container(
                                           alignment: Alignment.centerLeft,
                                           child: GeneralAppText(
+                                            text: "Title",
+                                            size: 20,
+                                            weight: FontWeight.bold,
+                                          )),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: GeneralAppText(
                                             text: "Description",
                                             size: 20,
                                             weight: FontWeight.bold,
@@ -234,33 +245,49 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     );
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(
-                      bottom: 10,
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.only(bottom: 15),
+                    height: 100,
+                    width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 80,
-                          width: 120,
+                          height: 90,
+                          width: 130,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.amber),
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                         const SizedBox(
-                          width: 15,
+                          width: 10,
+                        ),
+                        const SizedBox(
+                          width: 10,
                         ),
                         Expanded(
-                            child: GeneralAppText(
-                                text: "The brief history of modern india",
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GeneralAppText(
+                                text: "The Brief History of Modern India",
                                 size: 16,
-                                weight: FontWeight.bold)),
+                                weight: FontWeight.bold,
+                                color:
+                                    theme.isLightMode ? textColor1 : textColor2,
+                              ),
+                              GeneralAppText(
+                                text: "Instructor",
+                                size: 15,
+                                color:
+                                    theme.isLightMode ? textColor1 : textColor2,
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -299,7 +326,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             print("Waiting");
             return CircularProgressIndicator();
           } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
+            return Text(
+                'Error: ${snapshot.error}'); // Display a loading indicator while waiting for data
+          } else if (snapshot.hasError) {
+            return Text(
+                'Error: ${snapshot.error}'); // Display an error message if fetching data fails
           } else if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
               final videoList = snapshot.data;

@@ -20,7 +20,6 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherScreen> {
   final List<Widget> body = const [
     TeacherHomeScreen(),
     EbooksScreen(),
-    TeacherStatsScreen(),
     TeacherProfileScreen()
   ];
   @override
@@ -73,21 +72,6 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherScreen> {
             ),
             icon: const Icon(Icons.search_rounded),
             label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            tooltip: "eLibrary",
-            activeIcon: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: GeneralAppIcon(
-                  icon: Icons.analytics_outlined,
-                  color: theme ? Colors.white : Colors.white),
-            ),
-            icon: const Icon(Icons.analytics_outlined),
-            label: 'EBooks',
           ),
           BottomNavigationBarItem(
             tooltip: "Profile",

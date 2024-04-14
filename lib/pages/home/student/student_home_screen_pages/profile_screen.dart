@@ -254,7 +254,11 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
                     ),
                     onTap: () {
                       AuthenticationRepository.instance.signOut();
-                      Navigator.push(context,MaterialPageRoute(builder: (context) {return StartScreen();}));},
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return StartScreen();
+                      }));
+                    },
                   ),
                 ],
               )

@@ -12,9 +12,11 @@ class WebViewPage extends ConsumerStatefulWidget {
 
 class _WebViewPageState extends ConsumerState<WebViewPage> {
   final webViewController = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.disabled)
-    ..loadRequest(Uri.parse(
-        'https://www.google.com')); // api call for the scholarships etc..
+    ..setJavaScriptMode(JavaScriptMode.disabled)..loadHtmlString(
+      '<html><body><h1>Explore Schemes</h1><p>Click the button below to explore the schemes</p><button onclick="window.location.href=\'https://www.google.com\'">Explore</button></body></html>',
+    );
+    // ..loadRequest(Uri.parse(
+    //     'https://www.google.com')); // api call for the scholarships etc..
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +30,11 @@ class _WebViewPageState extends ConsumerState<WebViewPage> {
           weight: FontWeight.bold,
         ),
       ),
-      body: WebViewWidget(
-        controller: webViewController,
+      body: Container(
+        height: 100,
+        child: WebViewWidget(
+          controller: webViewController,
+        ),
       ),
     );
   }

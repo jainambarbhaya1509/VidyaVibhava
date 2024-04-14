@@ -78,25 +78,11 @@ class _Chat_PageState extends ConsumerState<Chat_Page> {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
     var alignment = (data['senderId'] == _firebaseAuth.currentUser!.uid)
-        ? Alignment.centerRight
-        : Alignment.centerLeft;
+        ? Alignment.topRight
+        : Alignment.topLeft;
 
     return Container(
         alignment: alignment,
-        decoration: BoxDecoration(
-          borderRadius: (data['senderId'] == _firebaseAuth.currentUser!.uid)
-              ? const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                  bottomRight: Radius.circular(20))
-              : const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                  bottomLeft: Radius.circular(20)),
-          color: (data['senderId'] == _firebaseAuth.currentUser!.uid
-              ? Colors.grey.shade200
-              : Colors.blue[200]),
-        ),
         child: Column(
           children: [
             Text(data['senderEmail']),
@@ -124,7 +110,6 @@ class _Chat_PageState extends ConsumerState<Chat_Page> {
             suffixIcon: GestureDetector(
               onTap: sendMessage,
               child: GeneralAppIcon(
-                
                 icon: Icons.send,
                 color: Colors.grey,
               ),
@@ -135,33 +120,6 @@ class _Chat_PageState extends ConsumerState<Chat_Page> {
           ),
         ),
       ),
-
-      // Container(
-      //   width: double.infinity,
-      //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      //   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-      //   decoration: BoxDecoration(
-      //     color: Colors.white,
-      //     borderRadius: BorderRadius.circular(50),
-      //     border: Border.all(color: Colors.grey),
-      //   ),
-      //   child: TextField(
-      //     controller: _messageController,
-      //     maxLines: null,
-      //     decoration: InputDecoration(
-      //       hintText: 'Type a message',
-      //       hintStyle: const TextStyle(color: Colors.grey),
-      //       border: InputBorder.none,
-      //       suffixIcon: IconButton(
-      //         icon: GeneralAppIcon(
-      //           icon: Icons.send,
-      //           color: Colors.grey,
-      //         ),
-      //         onPressed: () => sendMessage,
-      //       ),
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
