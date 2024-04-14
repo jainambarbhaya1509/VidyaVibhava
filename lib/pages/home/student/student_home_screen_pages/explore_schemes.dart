@@ -1,3 +1,4 @@
+import 'package:final_project/pages/home/student/student_home_screen_pages/web_view_page.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
@@ -110,8 +111,13 @@ class _ExploreSchemesState extends ConsumerState<ExploreSchemes> {
                         ),
                         const SizedBox(height: 10),
                         GestureDetector(
-                          onTap: (){
-                            
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const WebViewPage(),
+                              ),
+                            );
                           },
                           child: Row(
                             children: [

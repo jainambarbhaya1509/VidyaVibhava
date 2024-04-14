@@ -600,7 +600,6 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                   context: context,
                                   builder: (builder) {
                                     return Container(); //LectureDetails();
-                                    
                                   },
                                 );
                               },

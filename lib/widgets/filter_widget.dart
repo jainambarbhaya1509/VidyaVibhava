@@ -8,7 +8,8 @@ class FilterDialog extends ConsumerStatefulWidget {
   _FilterDialogState createState() => _FilterDialogState();
 }
 
-  bool _videoSelected = false;
+bool _videoSelected = false;
+
 class _FilterDialogState extends ConsumerState<FilterDialog> {
   bool _courseSelected = false;
   String _searchBy = 'Title';
