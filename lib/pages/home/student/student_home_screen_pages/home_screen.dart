@@ -623,38 +623,39 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                   // itemCount: videoList.length,
                   itemCount: 2,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                        // onTap: () {
-                        //   print(
-                        //       "Video Tapped---------------------------------------------------------------------");
-                        //   showModalBottomSheet(
-                        //     isScrollControlled: true,
-                        //     isDismissible: true,
-                        //     context: context,
-                        //     builder: (context) {
-                        //       return LectureDetails(
-                        //           video: videoList[
-                        //               index]); // Provide the Video object here
-                        //     },
-                        //   );
-                        // },
-                        // child: Container(
-                        //   margin:
-                        //       const EdgeInsets.only(right: 10),
-                        //   width: 180,
-                        //   decoration: BoxDecoration(
-                        //       color: Colors.white,
-                        //       borderRadius:
-                        //           BorderRadius.circular(10),
-                        //       border:
-                        //           Border.all(color: Colors.grey)),
-                        //   child: Image.memory(
-                        //     videoList[index]
-                        //         .thumbnailImage, // Convert data to Uint8List
-                        //     fit: BoxFit.cover,
-                        //   ),
-                        // ),
-                        );
+                    return Container();
+                    // return GestureDetector(
+                    //     onTap: () {
+                    //       print(
+                    //           "Video Tapped---------------------------------------------------------------------");
+                    //       showModalBottomSheet(
+                    //         isScrollControlled: true,
+                    //         isDismissible: true,
+                    //         context: context,
+                    //         builder: (context) {
+                    //           return LectureDetails(
+                    //               video: videoList[
+                    //                   index]); // Provide the Video object here
+                    //         },
+                    //       );
+                    //     },
+                    //     child: Container(
+                    //       margin:
+                    //           const EdgeInsets.only(right: 10),
+                    //       width: 180,
+                    //       decoration: BoxDecoration(
+                    //           color: Colors.white,
+                    //           borderRadius:
+                    //               BorderRadius.circular(10),
+                    //           border:
+                    //               Border.all(color: Colors.grey)),
+                    //       child: Image.memory(
+                    //         videoList[index]
+                    //             .thumbnailImage, // Convert data to Uint8List
+                    //         fit: BoxFit.cover,
+                    //       ),
+                    //     ),
+                    //     );
                   },
                 ),
               ), //;
