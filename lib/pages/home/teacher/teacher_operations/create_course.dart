@@ -833,36 +833,38 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                     print(uploadedVideos);
                     print("Quiz : ${createQuiz}");
                     if (checkAllFields()) {
-                      setState(() {
-                        courseVideo.add({
-                          "course": {
-                            "title": lectureTitleController.text,
-                            "subject": subjectController.text,
-                            "description": lectureDescriptionController.text,
-                            "tags": tagsController.text.split(",").map((e) {
-                              return e.trim();
-                            }).toList(),
-                            "level": selectedLevel,
-                            "duration": lectureDurationController.text,
-                            "courseModules": [
-                              {
-                                "title": "",
-                                "url": "",
-                                "quiz": courseQuestion["quiz"] == null
-                                    ? {}
-                                    : {
-                                        "question":
-                                            courseQuestion["quiz"]!["question"],
-                                        "options":
-                                            courseQuestion["quiz"]!["options"],
-                                        "correctAnswer": courseQuestion[
-                                            "quiz"]!["correctAnswer"],
-                                      },
-                              },
-                            ],
-                          },
-                        });
-                      });
+                      setState(
+                        () {
+                          courseVideo.add({
+                            "course": {
+                              "title": lectureTitleController.text,
+                              "subject": subjectController.text,
+                              "description": lectureDescriptionController.text,
+                              "tags": tagsController.text.split(",").map((e) {
+                                return e.trim();
+                              }).toList(),
+                              "level": selectedLevel,
+                              "duration": lectureDurationController.text,
+                              "courseModules": [
+                                {
+                                  "title": "",
+                                  "url": "",
+                                  "quiz": courseQuestion["quiz"] == null
+                                      ? {}
+                                      : {
+                                          "question": courseQuestion["quiz"]![
+                                              "question"],
+                                          "options": courseQuestion["quiz"]![
+                                              "options"],
+                                          "correctAnswer": courseQuestion[
+                                              "quiz"]!["correctAnswer"],
+                                        },
+                                },
+                              ],
+                            },
+                          });
+                        },
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: GeneralAppText(
