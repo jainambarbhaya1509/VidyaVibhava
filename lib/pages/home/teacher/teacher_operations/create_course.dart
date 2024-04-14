@@ -89,6 +89,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
 
     setState(() {
       uploadedVideos.addAll(result.files);
+
       controllers?.addAll(result.files.map((file) {
         return VideoPlayerController.file(File(file.path!))
           ..initialize().then((_) {
@@ -617,7 +618,8 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                                                 const SizedBox(
                                                                     height: 20),
                                                                 GestureDetector(
-                                                                  onTap: () {},
+                                                                  onTap: () {
+                                                                  },
                                                                   child:
                                                                       Container(
                                                                     alignment:

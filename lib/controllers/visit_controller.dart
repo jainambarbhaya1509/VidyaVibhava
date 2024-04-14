@@ -21,7 +21,7 @@ class VisitController extends GetxController {
     if (uid != null) {
       visit.visitMentorId = uid;
       //_visitRepo.setVisit(visit);
-      final studentList = await _userRepo.getMentoringStudents(uid);
+      final studentList = await _userRepo.getStudentByMentorId(uid);
       _visitRepo.sendNotificationOfVisit(visit, studentList);
     }
   }

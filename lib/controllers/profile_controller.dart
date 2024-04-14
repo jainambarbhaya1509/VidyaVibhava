@@ -71,4 +71,13 @@ class ProfileController extends GetxController {
       Get.snackbar("Error", "URL is empty");
     }
   }
+
+  getAssignmentData(){
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if(uid != null){
+      return _userRepo.getAssignmentByStudentId(uid);
+    }else{
+      Get.snackbar("Error", "Login to Continue");
+    }
+  }
 }

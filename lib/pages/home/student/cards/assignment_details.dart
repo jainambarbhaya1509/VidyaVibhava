@@ -8,6 +8,7 @@ import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:googleapis/keep/v1.dart';
 import 'package:logger/web.dart';
 
@@ -41,6 +42,8 @@ class _AssignmentDetailsState extends ConsumerState<AssignmentDetails> {
 
     if (files != null) {
       setState(() {
+        uploadedFiles.addAll(files.files);
+        print(uploadedFiles);
         for (var file in files.files) {
           (assignment[index]['documents'] as List).add(file.name);
         }
@@ -206,12 +209,23 @@ class _AssignmentDetailsState extends ConsumerState<AssignmentDetails> {
           const SizedBox(
             height: 20,
           ),
-          Container(
-            alignment: Alignment.center,
-            child: GeneralAppText(
-              text: "Submit",
-              size: 18,
-              weight: FontWeight.bold,
+          GestureDetector(
+            onTap: (){
+              print(uploadedFiles);
+              final data = {
+                "isSubmitted":true,
+                "submittedOn":Timestamp.now(),
+                "assignmentDoc" : "",
+                "gradeAssigned":""
+              };
+            },
+            child: Container(
+              alignment: Alignment.center,
+              child: GeneralAppText(
+                text: "Submit",
+                size: 18,
+                weight: FontWeight.bold,
+              ),
             ),
           ),
         ],

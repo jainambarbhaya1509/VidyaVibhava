@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../services/chat_service.dart';
+import '../../../widgets/app_text.dart';
 import '../../../widgets/chat_bubble.dart';
 import '../../../widgets/custom_text_field.dart';
 
@@ -77,33 +78,36 @@ class _Chat_PageState extends ConsumerState<Chat_Page> {
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-    var alignment = (data['senderId'] == _firebaseAuth.currentUser!.uid)
-        ? Alignment.centerRight
-        : Alignment.centerLeft;
-
     return Container(
-        alignment: alignment,
-        decoration: BoxDecoration(
-          borderRadius: (data['senderId'] == _firebaseAuth.currentUser!.uid)
-              ? const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                  bottomRight: Radius.circular(20))
-              : const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                  bottomLeft: Radius.circular(20)),
-          color: (data['senderId'] == _firebaseAuth.currentUser!.uid
-              ? Colors.grey.shade200
-              : Colors.blue[200]),
-        ),
-        child: Column(
-          children: [
-            Text(data['senderEmail']),
-            const SizedBox(height: 5),
-            ChatBubble(message: data['message']),
-          ],
-        ));
+      padding: const EdgeInsets.only(
+          left: 14, right: 14, top: 10, bottom: 10),
+      child: Align(
+        alignment: ((data['senderId'] == _firebaseAuth.currentUser!.uid)
+            ? Alignment.topLeft
+            : Alignment.topRight),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: (data['senderId'] == _firebaseAuth.currentUser!.uid)
+                ? const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomRight: Radius.circular(20))
+                : const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20)),
+            color: (data['senderId'] == _firebaseAuth.currentUser!.uid
+                ? Colors.grey.shade200
+                : Colors.blue[200]),
+          ),
+          padding: const EdgeInsets.all(16),
+          child: SecondaryAppText(
+            text: data["message"],
+            size: 15,
+          ),),
+      ),
+    );
+
   }
 
   Widget _buildMessageInput(theme) {

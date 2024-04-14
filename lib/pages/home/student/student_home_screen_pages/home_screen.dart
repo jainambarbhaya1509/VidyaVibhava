@@ -24,6 +24,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:googleapis/keep/v1.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/web.dart';
 
 import '../../../../models/backend_model.dart';
@@ -114,17 +115,6 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
           if (snapshot.hasData) {
             final lectureData = ref.read(lectureDataProvider);
             final assignment = ref.read(assignmentProvider);
-            // return FutureBuilder(
-            //   future: controller.getUserData(),
-            //   builder: (context, snapshot) {
-            //     late Student student;
-            //     try {
-            //       student = snapshot.data as Student;
-            //     } on Exception catch (e) {
-            //       return const Center(child: CircularProgressIndicator());
-            //     }
-            //     if (snapshot.connectionState == ConnectionState.done) {
-            //       if (snapshot.hasData) {
             return Scaffold(
               backgroundColor: Theme.of(context).primaryColor,
               appBar: AppBar(
@@ -675,8 +665,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                           context: context,
                                           builder: (context) {
                                             return LectureDetails(
-                                                video: videoList[
-                                                    index]); // Provide the Video object here
+                                                video: videoList[index]); // Provide the Video object here
                                           },
                                         );
                                       },
@@ -739,72 +728,92 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                       SizedBox(
                         height: 60,
                         // color: Colors.amber,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: assignments.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      context: context,
-                                      builder: (builder) {
-                                        return AssignmentDetails(
-                                          index: index,
-                                          title: assignments[index]["title"]
-                                              .toString(),
-                                          description: assignments[index]
-                                                  ["description"]
-                                              .toString(),
-                                          dueDate: assignments[index]["dueDate"]
-                                              .toString(),
-                                          marks: assignments[index]["marks"]
-                                              .toString(),
-                                        );
-                                      });
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.only(
-                                    right: 5,
-                                  ),
-                                  // height: 10,
-                                  width: 180,
-                                  decoration: BoxDecoration(
-                                      // color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(color: Colors.grey)),
-                                  child: FittedBox(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
+                        child: FutureBuilder(
+                          future :controller.getAssignmentData(),
+                          builder:(context, snapshot){
+                            late List<Assignment>? assignmentList;
+                            late Assignment? assignment;
+                            try {
+                              if (snapshot.data != null) {
+                              assignmentList = snapshot.data as List<Assignment>?;}
+                            } on Exception catch (e) {
+                              return const Center(child: CircularProgressIndicator());}
+                            if (snapshot.connectionState == ConnectionState.done) {
+                              if (snapshot.hasData) {
+                                return ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: assignmentList?.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              context: context,
+                                              builder: (builder) {
+                                                assignment = assignmentList?[index];
+                                                return AssignmentDetails(
+                                                  index: index,
+                                                  title: assignment!.title,
+                                                  description: assignment!.question,
+                                                  dueDate: DateFormat('yyyy-MM-dd HH:mm:ss').format((assignment!.dueDate).toDate()),
+                                                  marks: assignment!.totalMarks,
+                                                );
+                                              });
+                                        },
+                                        child: Container(
                                           margin: const EdgeInsets.only(
-                                              left: 10, top: 10, bottom: 10),
-                                          height: 50,
-                                          width: 50,
+                                            right: 5,
+                                          ),
+                                          // height: 10,
+                                          width: 180,
                                           decoration: BoxDecoration(
-                                              color: Colors.amber,
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Container(
-                                          margin:
-                                              const EdgeInsets.only(right: 10),
-                                          child: GeneralAppText(
-                                            text: "Assignment $index",
-                                            size: 14,
+                                            // color: Colors.white,
+                                              borderRadius: BorderRadius.circular(10),
+                                              border: Border.all(color: Colors.grey)),
+                                          child: FittedBox(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  margin: const EdgeInsets.only(
+                                                      left: 10, top: 10, bottom: 10),
+                                                  height: 50,
+                                                  width: 50,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.amber,
+                                                      borderRadius:
+                                                      BorderRadius.circular(5)),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Container(
+                                                  margin:
+                                                  const EdgeInsets.only(right: 10),
+                                                  child: GeneralAppText(
+                                                    text: "Assignment $index",
+                                                    size: 14,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
+                                      );
+                                    });
+                              } else if (snapshot.hasError) {
+                                print(snapshot.error.toString());
+                                return Center(child: Text(snapshot.error.toString()));
+
+                              } else {
+                                return const Center(child: Text("Something went wrong"));
+                              }
+                            } else {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+                          },
+                        ),
                       ),
                       const SizedBox(
                         height: 50,

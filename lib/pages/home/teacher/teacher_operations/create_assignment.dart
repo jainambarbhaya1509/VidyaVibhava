@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/controllers/teacher_profile_controller.dart';
+import 'package:final_project/models/backend_model.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class CreateAssignment extends ConsumerStatefulWidget {
@@ -16,6 +20,7 @@ class CreateAssignment extends ConsumerStatefulWidget {
 }
 
 class _CreateAssignmentState extends ConsumerState<CreateAssignment> {
+  TextEditingController assignmentTitleController = TextEditingController();
   TextEditingController assignmentQuestionController = TextEditingController();
   TextEditingController dueDateController = TextEditingController();
   TextEditingController marksController = TextEditingController();
@@ -31,15 +36,17 @@ class _CreateAssignmentState extends ConsumerState<CreateAssignment> {
 
     setState(() {
       if (picked != null && picked != dueDate) {
-        final DateFormat formatter = DateFormat('dd-MMM-yyyy');
-        dueDate = picked;
-        dueDateController.text = formatter.format(dueDate);
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        String formatDate = formatter.format(picked);
+        formatDate += ' 23:59:59';
+        dueDateController.text = formatDate;
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final teacherController = Get.put(TeacherProfileController());
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -71,6 +78,23 @@ class _CreateAssignmentState extends ConsumerState<CreateAssignment> {
                 weight: FontWeight.bold,
               ),
               const SizedBox(height: 5),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextField(
+                  controller: assignmentTitleController,
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    hintText: 'Title',
+                  ),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(100),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextField(
@@ -157,7 +181,22 @@ class _CreateAssignmentState extends ConsumerState<CreateAssignment> {
               ),
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  Timestamp timestamp = Timestamp.fromDate(DateTime.parse(dueDateController.text));
+
+                  Assignment assignment = Assignment(
+                      title : assignmentTitleController.text,
+                      question: assignmentQuestionController.text,
+                      dueDate: timestamp,
+                      totalMarks: marksController.text);
+
+                  if(teacherController.createAssignment(assignment)){
+                    //Add snackbar and close the create Assignment Widget
+                  }else{
+                  //Add system error snackbar and close the create Assignment Widget
+                  }
+
+                },
                 child: Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(10),

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/repository/video_repository.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -244,14 +245,6 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<Iterable<Student>> getMentoringStudents(String id) async {
-    final snapshot =
-        await _db.collection("Users").where("mentorId", isEqualTo: id).get();
-    final studentlist = snapshot.docs.map((e) => Student.fromSnapshot(e));
-    //print(studentlist.single.deviceToken);
-    return studentlist;
-  }
-
   Future<List<Uint8List>> getInstructorVideoImage(String id) async {
     List<Uint8List> imageList = [];
     final snapshot = await _db
@@ -313,5 +306,50 @@ class UserRepository extends GetxController {
       });
     }
     return instructorDetail;
+  }
+
+  Future<bool> createAssignment(Assignment assignment, String uid) async {
+    assignment.creatorId = uid;
+    assignment.assignmentId = VideoRepository().generateRandomUid();
+
+    try {
+      // add assignment to assignment collection
+      await _db.collection("Assignment").add(assignment.toJson());
+      //update Associated Users
+      final data = {
+        "assignmentId" : assignment.assignmentId,
+        "isSubmitted":false
+      };
+      final snapshot = await _db.collection("Users").where("mentorId",isEqualTo: uid).get();
+      for(final doc in snapshot.docs){
+        await doc.reference.collection("Assignments").add(data);
+      }
+      // If the assignment is added successfully, return true
+      return true;
+    } catch (error) {
+      // If there's an error, print the error message and return false
+      print("Error adding assignment: $error");
+      return false;
+    }
+  }
+
+  Future<List<Assignment>> getAssignmentByStudentId(String uid) async {
+    final List<Assignment> assignmentList = [];
+    final snapshot =
+        await _db.collection('Users').where("uid", isEqualTo: uid).get();
+    if (snapshot.docs.isNotEmpty) {
+      final userDoc = snapshot.docs.first;
+      final userAssignmentSnapshot =
+          await userDoc.reference.collection('Assignments').get();
+
+      for(final assignment in userAssignmentSnapshot.docs){
+        final AssignmentSnapshot = await _db.collection("Assignment").where("assignmentId", isEqualTo: assignment.data()["assignmentId"]).get();
+        assignmentList.addAll(AssignmentSnapshot.docs.map((e) => Assignment.fromSnapshot(e)));
+      }
+      return assignmentList;
+    } else {
+    //print("In user repo else encountered");
+    return [];
+    }
   }
 }

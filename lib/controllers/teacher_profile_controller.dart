@@ -3,6 +3,8 @@ import 'package:final_project/repository/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
+import '../models/backend_model.dart';
+
 class TeacherProfileController extends GetxController {
   static TeacherProfileController get instance => Get.find();
   final _authRepo = Get.put(AuthenticationRepository());
@@ -65,6 +67,13 @@ class TeacherProfileController extends GetxController {
       return _userRepo.getInstructorDetailsToDisplay(id);
     } else {
       Get.snackbar("Error", "URL is empty");
+    }
+  }
+
+  createAssignment(Assignment assignment){
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if(uid != null){
+      return _userRepo.createAssignment(assignment, uid);
     }
   }
 }

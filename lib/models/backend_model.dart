@@ -1,18 +1,8 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Student {
-  late String? uid;
-  final String firstName,
-      lastName,
-      dateOfBirth,
-      gender,
-      phoneNo,
-      username,
-      address,
-      zipCode,
-      city,
-      state;
+class Student {late String? uid;
+  final String firstName,lastName,dateOfBirth,gender,phoneNo,username,address,zipCode,city,state;
   late final String image, doc1, doc2;
   late String deviceToken;
 
@@ -350,7 +340,44 @@ class Course {
   }
 }
 
-class Assignment {}
+class Assignment {
+  late String? assignmentId, creatorId;
+  final String question, title;
+  final Timestamp dueDate;
+  final String totalMarks;
+
+  Assignment({this.assignmentId,
+    this.creatorId,
+    required this.title,
+    required this.question,
+    required this.dueDate,
+    required this.totalMarks});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'assignmentId': assignmentId,
+      'creatorId':creatorId,
+      'title':title,
+      'question': question,
+      'dueDate': dueDate,
+      'totalMarks': totalMarks,
+    };
+  }
+
+  factory Assignment.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
+    final data = document.data()!;
+
+    return Assignment(
+      assignmentId: document.id,
+      creatorId : data["creatorId"],
+      title: data["title"] ?? "",
+      question: data["question"],
+      dueDate: data["dueDate"],
+      totalMarks: data["totalMarks"],
+    );
+  }
+}
+
 
 class Quiz {
   late String? quizId;

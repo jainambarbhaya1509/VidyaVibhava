@@ -16,6 +16,7 @@ import 'package:get/get_core/src/get_main.dart';
 import '../../../../controllers/profile_controller.dart';
 import '../../../../controllers/teacher_profile_controller.dart';
 import '../../../../models/backend_model.dart';
+import '../teacher_operations/create_assignment.dart';
 
 class TeacherHomeScreen extends ConsumerStatefulWidget {
   const TeacherHomeScreen({super.key});
@@ -243,6 +244,37 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
                                                   ),
                                                 ),
                                               ],
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    builder: (builder) {
+                                                      return const CreateAssignment();
+                                                    });
+                                              },
+                                              child: Container(
+                                                // margin: EdgeInsets.only(left: 10),
+                                                alignment: Alignment.center,
+                                                height: 50,
+                                                width: 160,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Colors.green,
+                                                    width: 1,
+                                                  ),
+                                                  borderRadius:
+                                                  BorderRadius.circular(10),
+                                                ),
+                                                child: PrimaryAppText(
+                                                  text: "Attach Assignment",
+                                                  size: 16,
+                                                  color: Colors.green,
+                                                ),
+                                              ),
                                             ),
                                           ],
                                         ),
