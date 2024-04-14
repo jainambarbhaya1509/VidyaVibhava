@@ -139,7 +139,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
                     padding:
-                        const EdgeInsets.only(top: 30, left: 20, right: 20),
+                    const EdgeInsets.only(top: 30, left: 20, right: 20),
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height * 0.7,
                     decoration: BoxDecoration(
@@ -166,7 +166,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                             onTap: () => uploadCourse(),
                             child: Container(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              const EdgeInsets.symmetric(horizontal: 10),
                               alignment: Alignment.center,
                               height: 50,
                               width: double.infinity,
@@ -205,470 +205,169 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                             ),
                             child: uploadedVideos.isEmpty
                                 ? Container(
-                                    alignment: Alignment.center,
-                                    child: GeneralAppText(
-                                      text: "No videos uploaded",
-                                      size: 16,
-                                      color: Colors.white,
-                                    ),
-                                  )
+                              alignment: Alignment.center,
+                              child: GeneralAppText(
+                                text: "No videos uploaded",
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                            )
                                 : ListView.builder(
-                                    itemCount: uploadedVideos.length,
-                                    scrollDirection: Axis.vertical,
-                                    itemBuilder: (context, index) {
-                                      return Column(
+                              itemCount: uploadedVideos.length,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          right: 10, left: 10),
+                                      height: 50,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                         children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 10, left: 10),
-                                            height: 50,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                GeneralAppText(
-                                                  text: "${index + 1}. ",
-                                                  size: 14,
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      final controller =
-                                                          controllers![index];
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return Dialog(
-                                                              child: Stack(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                children: [
-                                                                  Container(
-                                                                      height:
-                                                                          200,
-                                                                      width: double
-                                                                          .infinity,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(10),
-                                                                      ),
-                                                                      child: controller
-                                                                              .value
-                                                                              .isInitialized
-                                                                          ? VideoPlayer(
-                                                                              controller)
-                                                                          : Container()),
-                                                                  GestureDetector(
-                                                                    onTap: () {
-                                                                      setState(
-                                                                          () {
-                                                                        if (controller
-                                                                            .value
-                                                                            .isPlaying) {
-                                                                          controller
-                                                                              .pause();
-                                                                        } else {
-                                                                          controller
-                                                                              .play();
-                                                                        }
-                                                                      });
-                                                                    },
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          50,
-                                                                      width: 50,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: theme
-                                                                            ? textColor1
-                                                                            : textColor2,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(50),
-                                                                      ),
-                                                                      child:
-                                                                          Icon(
-                                                                        color: theme
-                                                                            ? textColor2
-                                                                            : textColor1,
-                                                                        controller.value.isPlaying
-                                                                            ? Icons.pause
-                                                                            : Icons.play_arrow,
-                                                                        size:
-                                                                            30,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            );
-                                                          });
-                                                    },
-                                                    child: Container(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 10),
-                                                      height: 60,
-                                                      child: GeneralAppText(
-                                                        text: uploadedVideos[
-                                                                    index]
-                                                                ?.name ??
-                                                            "",
-                                                        size: 14,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                GeneralAppIcon(
-                                                  icon: Icons.delete,
-                                                  size: 20,
-                                                  color: Colors.redAccent,
-                                                ),
-                                              ],
-                                            ),
+                                          GeneralAppText(
+                                            text: "${index + 1}. ",
+                                            size: 14,
                                           ),
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              const Divider(
-                                                thickness: 0.5,
-                                                indent: 20,
-                                                endIndent: 20,
-                                                color: Colors.grey,
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  showModalBottomSheet(
-                                                    isScrollControlled: true,
-                                                    isDismissible: true,
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                final controller =
+                                                controllers![index];
+                                                showDialog(
                                                     context: context,
-                                                    builder: (builder) {
-                                                      return Container(
-                                                        height: 700,
-                                                        width: double.infinity,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(20),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    20),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    20),
-                                                          ),
-                                                        ),
-                                                        child: Column(
+                                                    builder: (context) {
+                                                      return Dialog(
+                                                        child: Stack(
+                                                          alignment:
+                                                          Alignment
+                                                              .center,
                                                           children: [
                                                             Container(
-                                                              height: 5,
-                                                              width: 100,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color:
-                                                                    primaryColor,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
+                                                                height:
+                                                                200,
+                                                                width: double
+                                                                    .infinity,
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  borderRadius:
+                                                                  BorderRadius.circular(10),
+                                                                ),
+                                                                child: controller
+                                                                    .value
+                                                                    .isInitialized
+                                                                    ? VideoPlayer(
+                                                                    controller)
+                                                                    : Container()),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                setState(
+                                                                        () {
+                                                                      if (controller
+                                                                          .value
+                                                                          .isPlaying) {
+                                                                        controller
+                                                                            .pause();
+                                                                      } else {
+                                                                        controller
+                                                                            .play();
+                                                                      }
+                                                                    });
+                                                              },
+                                                              child:
+                                                              Container(
+                                                                height:
+                                                                50,
+                                                                width: 50,
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  color: theme
+                                                                      ? textColor1
+                                                                      : textColor2,
+                                                                  borderRadius:
+                                                                  BorderRadius.circular(50),
+                                                                ),
+                                                                child:
+                                                                Icon(
+                                                                  color: theme
+                                                                      ? textColor2
+                                                                      : textColor1,
+                                                                  controller.value.isPlaying
+                                                                      ? Icons.pause
+                                                                      : Icons.play_arrow,
+                                                                  size:
+                                                                  30,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                GeneralAppText(
-                                                                  text:
-                                                                      "Question ${index + 1}",
-                                                                  size: 18,
-                                                                  weight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                                const SizedBox(
-                                                                    height: 5),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                      .symmetric(
-                                                                      vertical:
-                                                                          8.0),
-                                                                  child:
-                                                                      TextField(
-                                                                    onChanged:
-                                                                        (value) {},
-                                                                    decoration:
-                                                                        InputDecoration(
-                                                                      border:
-                                                                          OutlineInputBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(10.0),
-                                                                      ),
-                                                                      hintText:
-                                                                          'Question',
-                                                                    ),
-                                                                    inputFormatters: [
-                                                                      LengthLimitingTextInputFormatter(
-                                                                          100),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                const SizedBox(
-                                                                    height: 20),
-                                                                GeneralAppText(
-                                                                  text:
-                                                                      "Options",
-                                                                  size: 18,
-                                                                  weight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                                const SizedBox(
-                                                                    height: 5),
-                                                                Column(
-                                                                  children: [
-                                                                    Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .start,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Container(
-                                                                          width:
-                                                                              160,
-                                                                          margin: const EdgeInsets
-                                                                              .symmetric(
-                                                                              vertical: 8.0),
-                                                                          child:
-                                                                              TextField(
-                                                                            onChanged:
-                                                                                (value) {},
-                                                                            decoration:
-                                                                                InputDecoration(
-                                                                              border: OutlineInputBorder(
-                                                                                borderRadius: BorderRadius.circular(10.0),
-                                                                              ),
-                                                                              hintText: 'Option 1',
-                                                                            ),
-                                                                            inputFormatters: [
-                                                                              LengthLimitingTextInputFormatter(100),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        const SizedBox(
-                                                                            width:
-                                                                                20),
-                                                                        Container(
-                                                                          width:
-                                                                              160,
-                                                                          margin: const EdgeInsets
-                                                                              .symmetric(
-                                                                              vertical: 8.0),
-                                                                          child:
-                                                                              TextField(
-                                                                            onChanged:
-                                                                                (value) {},
-                                                                            decoration:
-                                                                                InputDecoration(
-                                                                              border: OutlineInputBorder(
-                                                                                borderRadius: BorderRadius.circular(10.0),
-                                                                              ),
-                                                                              hintText: 'Option 2',
-                                                                            ),
-                                                                            inputFormatters: [
-                                                                              LengthLimitingTextInputFormatter(100),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .start,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Container(
-                                                                          width:
-                                                                              160,
-                                                                          margin: const EdgeInsets
-                                                                              .symmetric(
-                                                                              vertical: 8.0),
-                                                                          child:
-                                                                              TextField(
-                                                                            onChanged:
-                                                                                (value) {},
-                                                                            decoration:
-                                                                                InputDecoration(
-                                                                              border: OutlineInputBorder(
-                                                                                borderRadius: BorderRadius.circular(10.0),
-                                                                              ),
-                                                                              hintText: 'Option 3',
-                                                                            ),
-                                                                            inputFormatters: [
-                                                                              LengthLimitingTextInputFormatter(100),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        const SizedBox(
-                                                                            width:
-                                                                                20),
-                                                                        Container(
-                                                                          width:
-                                                                              160,
-                                                                          margin: const EdgeInsets
-                                                                              .symmetric(
-                                                                              vertical: 8.0),
-                                                                          child:
-                                                                              TextField(
-                                                                            onChanged:
-                                                                                (value) {},
-                                                                            decoration:
-                                                                                InputDecoration(
-                                                                              border: OutlineInputBorder(
-                                                                                borderRadius: BorderRadius.circular(10.0),
-                                                                              ),
-                                                                              hintText: 'Option 4',
-                                                                            ),
-                                                                            inputFormatters: [
-                                                                              LengthLimitingTextInputFormatter(100),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                const SizedBox(
-                                                                    height: 20),
-                                                                GeneralAppText(
-                                                                  text:
-                                                                      "Correct Answer",
-                                                                  size: 18,
-                                                                  weight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                                const SizedBox(
-                                                                    height: 5),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                      .symmetric(
-                                                                      vertical:
-                                                                          8.0),
-                                                                  child:
-                                                                      DropdownButtonFormField<
-                                                                          String>(
-                                                                    value:
-                                                                        "Option 1",
-                                                                    onChanged:
-                                                                        (String?
-                                                                            value) {},
-                                                                    items: [
-                                                                      "Option 1",
-                                                                      "Option 2",
-                                                                      "Option 3",
-                                                                      "Option 4",
-                                                                    ].map<
-                                                                        DropdownMenuItem<
-                                                                            String>>((String
-                                                                        option) {
-                                                                      return DropdownMenuItem<
-                                                                          String>(
-                                                                        value:
-                                                                            option,
-                                                                        child: Text(
-                                                                            option),
-                                                                      );
-                                                                    }).toList(),
-                                                                    decoration:
-                                                                        InputDecoration(
-                                                                      border:
-                                                                          OutlineInputBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(10.0),
-                                                                      ),
-                                                                      hintText:
-                                                                          "Correct Answer",
-                                                                    ),
-                                                                  ),
-                                                                ),
-
-                                                                // CREATE QUIZ BUTTON
-                                                                const SizedBox(
-                                                                    height: 20),
-                                                                GestureDetector(
-                                                                  onTap: () {
-                                                                  },
-                                                                  child:
-                                                                      Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            10),
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                            border:
-                                                                                Border.all(
-                                                                              color: primaryColor,
-                                                                              width: 1,
-                                                                            ),
-                                                                            borderRadius: BorderRadius.circular(10)),
-                                                                    child:
-                                                                        PrimaryAppText(
-                                                                      text:
-                                                                          "Create Quiz",
-                                                                      size: 18,
-                                                                      color:
-                                                                          primaryColor,
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              ],
                                                             ),
                                                           ],
                                                         ),
                                                       );
-                                                    },
-                                                  );
-                                                },
-                                                child: GeneralAppIcon(
-                                                  icon: Icons.add_box_rounded,
-                                                  color: theme
-                                                      ? Colors.grey
-                                                      : Colors.white,
-                                                  size: 25,
+                                                    });
+                                              },
+                                              child: Container(
+                                                alignment:
+                                                Alignment.center,
+                                                padding: const EdgeInsets
+                                                    .symmetric(
+                                                    horizontal: 10),
+                                                height: 60,
+                                                child: GeneralAppText(
+                                                  text: uploadedVideos[
+                                                  index]
+                                                      ?.name ??
+                                                      "",
+                                                  size: 14,
+                                                  color: Colors.white,
                                                 ),
                                               ),
-                                            ],
+                                            ),
+                                          ),
+                                          GeneralAppIcon(
+                                            icon: Icons.delete,
+                                            size: 20,
+                                            color: Colors.redAccent,
                                           ),
                                         ],
-                                      );
-                                    },
-                                  ),
+                                      ),
+                                    ),
+                                    Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        const Divider(
+                                          thickness: 0.5,
+                                          indent: 20,
+                                          endIndent: 20,
+                                          color: Colors.grey,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                isDismissible: true,
+                                                context: context,
+                                                builder: (builder) {
+                                                  return CreateQuiz(
+                                                    questionIndex: index,
+                                                  );
+                                                });
+                                          },
+                                          child: GeneralAppIcon(
+                                            icon: Icons.add_box_rounded,
+                                            color: theme
+                                                ? Colors.grey
+                                                : Colors.white,
+                                            size: 25,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
                           ),
                           const SizedBox(height: 20),
                           GeneralAppText(
@@ -785,12 +484,12 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                 selectedLevel = value;
                               },
                               items: lectureLevel.map<DropdownMenuItem<String>>(
-                                  (String level) {
-                                return DropdownMenuItem<String>(
-                                  value: level,
-                                  child: Text(level),
-                                );
-                              }).toList(),
+                                      (String level) {
+                                    return DropdownMenuItem<String>(
+                                      value: level,
+                                      child: Text(level),
+                                    );
+                                  }).toList(),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -835,36 +534,38 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                     print(uploadedVideos);
                     print("Quiz : ${createQuiz}");
                     if (checkAllFields()) {
-                      setState(() {
-                        courseVideo.add({
-                          "course": {
-                            "title": lectureTitleController.text,
-                            "subject": subjectController.text,
-                            "description": lectureDescriptionController.text,
-                            "tags": tagsController.text.split(",").map((e) {
-                              return e.trim();
-                            }).toList(),
-                            "level": selectedLevel,
-                            "duration": lectureDurationController.text,
-                            "courseModules": [
-                              {
-                                "title": "",
-                                "url": "",
-                                "quiz": courseQuestion["quiz"] == null
-                                    ? {}
-                                    : {
-                                        "question":
-                                            courseQuestion["quiz"]!["question"],
-                                        "options":
-                                            courseQuestion["quiz"]!["options"],
-                                        "correctAnswer": courseQuestion[
-                                            "quiz"]!["correctAnswer"],
-                                      },
-                              },
-                            ],
-                          },
-                        });
-                      });
+                      setState(
+                            () {
+                          courseVideo.add({
+                            "course": {
+                              "title": lectureTitleController.text,
+                              "subject": subjectController.text,
+                              "description": lectureDescriptionController.text,
+                              "tags": tagsController.text.split(",").map((e) {
+                                return e.trim();
+                              }).toList(),
+                              "level": selectedLevel,
+                              "duration": lectureDurationController.text,
+                              "courseModules": [
+                                {
+                                  "title": "",
+                                  "url": "",
+                                  "quiz": courseQuestion["quiz"] == null
+                                      ? {}
+                                      : {
+                                    "question": courseQuestion["quiz"]![
+                                    "question"],
+                                    "options": courseQuestion["quiz"]![
+                                    "options"],
+                                    "correctAnswer": courseQuestion[
+                                    "quiz"]!["correctAnswer"],
+                                  },
+                                },
+                              ],
+                            },
+                          });
+                        },
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: GeneralAppText(
@@ -885,53 +586,13 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                         duration: lectureDurationController.text,
                         subject: subjectController.text,
                         instructorName:
-                            await profileController.getUserFullName(),
+                        await profileController.getUserFullName(),
                         thumbnail: "thumbnail",
                         instructorId: await profileController.getUserId(),
                       );
 
                       //videoController.createCourse(course, uploadedVideos);
                       //courseVideos: courseVideos)
-                      setState(() {
-                        courseVideo.add({
-                          "course": {
-                            "title": lectureTitleController.text,
-                            "subject": subjectController.text,
-                            "description": lectureDescriptionController.text,
-                            "tags": tagsController.text.split(",").map((e) {
-                              return e.trim();
-                            }).toList(),
-                            "level": selectedLevel,
-                            "duration": lectureDurationController.text,
-                            "courseModules": [
-                              {
-                                "title": "",
-                                "url": "",
-                                "quiz": courseQuestion["quiz"] == null
-                                    ? {}
-                                    : {
-                                        "question":
-                                            courseQuestion["quiz"]!["question"],
-                                        "options":
-                                            courseQuestion["quiz"]!["options"],
-                                        "correctAnswer": courseQuestion[
-                                            "quiz"]!["correctAnswer"],
-                                      },
-                              },
-                            ],
-                          },
-                        });
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: GeneralAppText(
-                            text: 'Course uploaded successfully',
-                            size: 16,
-                            color: Colors.white,
-                          ),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

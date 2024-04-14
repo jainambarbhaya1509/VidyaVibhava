@@ -164,14 +164,14 @@ class AuthenticationRepository extends GetxController {
     await _db.collection("Users").doc(user.uid).update(updateData);
   }
 
-    void signOut() async {
-      try {
-        await _auth.signOut();
-      } catch (e) {
-        // Handle sign out errors, if any
-        print("Error signing out: $e");
-      }
+  void signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      // Handle sign out errors, if any
+      print("Error signing out: $e");
     }
+  }
 
   Future<String> sendOTPToEmail(String email) async {
     String requestBody = jsonEncode(email);

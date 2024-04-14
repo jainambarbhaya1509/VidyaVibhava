@@ -67,7 +67,7 @@ final assignments = [
   {
     "title": "History Assignment",
     "description":
-        "Research and write about a historical event of your choice.",
+    "Research and write about a historical event of your choice.",
     "dueDate": "12/12/2021",
     "marks": "10",
     "documents": [],
@@ -267,67 +267,67 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                         builder: (builder) {
                                           return Container(
                                             color:
-                                                Theme.of(context).primaryColor,
+                                            Theme.of(context).primaryColor,
                                             width: double.infinity,
                                             child: Column(
                                               children: [
                                                 Stack(
                                                     alignment:
-                                                        Alignment.bottomCenter,
+                                                    Alignment.bottomCenter,
                                                     children: [
                                                       Container(
                                                         padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                left: 30,
-                                                                right: 30,
-                                                                top: 40),
+                                                        const EdgeInsets
+                                                            .only(
+                                                            left: 30,
+                                                            right: 30,
+                                                            top: 40),
                                                         margin: const EdgeInsets
                                                             .only(bottom: 5),
                                                         width: double.infinity,
                                                         height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
+                                                            context)
+                                                            .size
+                                                            .height *
                                                             0.22,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           color: primaryColor
                                                               .withOpacity(0.9),
                                                           borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
+                                                          const BorderRadius
+                                                              .only(
                                                             bottomLeft:
-                                                                Radius.circular(
-                                                                    50),
+                                                            Radius.circular(
+                                                                50),
                                                             bottomRight:
-                                                                Radius.circular(
-                                                                    50),
+                                                            Radius.circular(
+                                                                50),
                                                           ),
                                                         ),
                                                         child: Row(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                           children: [
                                                             PrimaryAppText(
                                                               text: subjects[
-                                                                      index]
+                                                              index]
                                                                   .name,
                                                               size: 25,
                                                               weight: FontWeight
                                                                   .bold,
                                                               color:
-                                                                  Colors.white,
+                                                              Colors.white,
                                                             ),
                                                             GeneralAppIcon(
                                                               icon: Icons
                                                                   .keyboard_arrow_down_sharp,
                                                               color:
-                                                                  Colors.white,
+                                                              Colors.white,
                                                               size: 30,
                                                             )
                                                           ],
@@ -335,50 +335,50 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                       ),
                                                       Container(
                                                         padding:
-                                                            const EdgeInsets
-                                                                .only(
+                                                        const EdgeInsets
+                                                            .only(
                                                           left: 20,
                                                           right: 20,
                                                         ),
                                                         child: Material(
                                                           elevation: 5,
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
+                                                          BorderRadius
+                                                              .circular(10),
                                                           child: Container(
                                                             alignment: Alignment
                                                                 .center,
                                                             height: 60,
                                                             width:
-                                                                double.infinity,
+                                                            double.infinity,
                                                             decoration:
-                                                                BoxDecoration(
+                                                            BoxDecoration(
                                                               color:
-                                                                  Colors.white,
+                                                              Colors.white,
                                                               borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  10),
                                                             ),
                                                             child:
-                                                                TextFormField(
+                                                            TextFormField(
                                                               decoration:
-                                                                  InputDecoration(
+                                                              InputDecoration(
                                                                 hintStyle: TextStyle(
                                                                     color: Colors
                                                                         .grey),
                                                                 hintText:
-                                                                    "Search for ${subjects[index].name}",
+                                                                "Search for ${subjects[index].name}",
                                                                 prefixIcon:
-                                                                    GeneralAppIcon(
+                                                                GeneralAppIcon(
                                                                   icon: Icons
                                                                       .search,
                                                                   color: Colors
                                                                       .grey,
                                                                 ),
                                                                 border:
-                                                                    InputBorder
-                                                                        .none,
+                                                                InputBorder
+                                                                    .none,
                                                               ),
                                                             ),
                                                           ),
@@ -390,16 +390,16 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                 ),
                                                 Container(
                                                   padding:
-                                                      const EdgeInsets.only(
+                                                  const EdgeInsets.only(
                                                     left: 20,
                                                     right: 20,
                                                   ),
                                                   child: Column(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment.start,
+                                                    MainAxisAlignment.start,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    CrossAxisAlignment
+                                                        .start,
                                                     children: [
                                                       GeneralAppText(
                                                         text: "Results",
@@ -411,42 +411,42 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                       ),
                                                       SizedBox(
                                                         height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
+                                                            context)
+                                                            .size
+                                                            .height *
                                                             0.69,
                                                         child: GridView.builder(
                                                           gridDelegate:
-                                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                                                  crossAxisCount:
-                                                                      2,
-                                                                  childAspectRatio:
-                                                                      1.5,
-                                                                  crossAxisSpacing:
-                                                                      10,
-                                                                  mainAxisSpacing:
-                                                                      10),
+                                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                                              crossAxisCount:
+                                                              2,
+                                                              childAspectRatio:
+                                                              1.5,
+                                                              crossAxisSpacing:
+                                                              10,
+                                                              mainAxisSpacing:
+                                                              10),
                                                           itemBuilder:
                                                               (context, index) {
                                                             return Container(
                                                               margin:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      right: 10,
-                                                                      bottom:
-                                                                          10),
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 10,
+                                                                  bottom:
+                                                                  10),
                                                               width: double
                                                                   .infinity,
                                                               decoration:
-                                                                  BoxDecoration(
+                                                              BoxDecoration(
                                                                 color: theme ==
-                                                                        true
+                                                                    true
                                                                     ? textColor1
                                                                     : textColor2,
                                                                 borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    5),
                                                               ),
                                                             );
                                                           },
@@ -535,7 +535,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                         courseIndex: index,
                                         courseTitle: "Course Title $index",
                                         courseDescription:
-                                            "The labyrinthine complexity of human existence intertwines with the capricious whims of fate, weaving a tapestry of stories where the mundane and the extraordinary collide, where love and loss dance a perpetual waltz amidst the cacophony of existence, each individual thread contributing to the rich fabric of the universe's eternal narrative.",
+                                        "The labyrinthine complexity of human existence intertwines with the capricious whims of fate, weaving a tapestry of stories where the mundane and the extraordinary collide, where love and loss dance a perpetual waltz amidst the cacophony of existence, each individual thread contributing to the rich fabric of the universe's eternal narrative.",
                                         courseLectures: []);
                                   },
                                 );
@@ -671,14 +671,14 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                       },
                                       child: Container(
                                         margin:
-                                            const EdgeInsets.only(right: 10),
+                                        const EdgeInsets.only(right: 10),
                                         width: 180,
                                         decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius:
-                                                BorderRadius.circular(10),
+                                            BorderRadius.circular(10),
                                             border:
-                                                Border.all(color: Colors.grey)),
+                                            Border.all(color: Colors.grey)),
                                         child: Image.memory(
                                           videoList[index]
                                               .thumbnailImage, // Convert data to Uint8List
@@ -735,7 +735,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                             late Assignment? assignment;
                             try {
                               if (snapshot.data != null) {
-                              assignmentList = snapshot.data as List<Assignment>?;}
+                                assignmentList = snapshot.data as List<Assignment>?;}
                             } on Exception catch (e) {
                               return const Center(child: CircularProgressIndicator());}
                             if (snapshot.connectionState == ConnectionState.done) {
@@ -830,7 +830,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                       ),
                       GeneralAppText(
                         text:
-                            "Discover your ideal career path with our quick and comprehensive career counselling quiz!",
+                        "Discover your ideal career path with our quick and comprehensive career counselling quiz!",
                         size: 15,
                       ),
                       const SizedBox(
@@ -868,7 +868,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                 PrimaryAppText(
                                   text: 'Craft Your Career Journey',
                                   size:
-                                      MediaQuery.of(context).size.width * 0.04,
+                                  MediaQuery.of(context).size.width * 0.04,
                                   weight: FontWeight.bold,
                                   color: primaryColor.withOpacity(0.8),
                                 ),
@@ -904,7 +904,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
         var end = Offset.zero;
         var curve = Curves.ease;
         var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
         final offsetAnimation = animation.drive(tween);
         return SlideTransition(
           position: offsetAnimation,

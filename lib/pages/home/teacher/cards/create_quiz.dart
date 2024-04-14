@@ -243,15 +243,13 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                     }
                   };
 
-                  if (listOfQuiz.isNotEmpty) {
-                    listOfQuiz
-                        .where((element) =>
-                            addQuizQuestion["quiz"]["id"] ==
-                            element["quiz"]["id"])
-                        .toList()
-                        .forEach((element) {
-                      Logger().i("Quiz question already exists, updating...");
-                    });
+                  if (listOfQuiz
+                      .where((element) =>
+                          addQuizQuestion["quiz"]["id"] ==
+                          element["quiz"]["id"])
+                      .toList()
+                      .isNotEmpty) {
+                    Logger().i("Question already exists");
                   } else {
                     listOfQuiz.add(addQuizQuestion);
                   }
