@@ -56,7 +56,8 @@ class _ChatActivityState extends State<ChatActivity> {
   Widget _buildUserListItem() {
     final controller = Get.put(ProfileController());
     return FutureBuilder(
-      future: controller.getMentorData(), // Call getMentorByMentorId to fetch mentor data
+      future: controller
+          .getMentorData(), // Call getMentorByMentorId to fetch mentor data
       builder: (context, AsyncSnapshot<Teacher> mentorSnapshot) {
         if (mentorSnapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator(); // Show loading indicator while fetching mentor data

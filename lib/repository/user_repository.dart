@@ -49,14 +49,16 @@ class UserRepository extends GetxController {
   Future<Teacher> getTeacherUserDetails(String id) async {
     //print("Passed Id ${id}");
     try {
-      final snapshot = await _db.collection('Teachers').where("uid", isEqualTo: id).get();
+      final snapshot =
+          await _db.collection('Teachers').where("uid", isEqualTo: id).get();
       //print("Snapshot: $snapshot");
 
       if (snapshot.docs.isEmpty) {
         throw Exception("No documents found for the provided ID");
       }
 
-      Teacher userData = snapshot.docs.map((e) => Teacher.fromSnapshot(e)).single;
+      Teacher userData =
+          snapshot.docs.map((e) => Teacher.fromSnapshot(e)).single;
 
       return userData;
     } catch (e) {
@@ -65,11 +67,9 @@ class UserRepository extends GetxController {
     }
   }
 
-
-
   Future<List<Teacher>> getAllTeacherUsers(String id) async {
     final snapshot =
-    await _db.collection('Teachers').where("uid", isEqualTo: id).get();
+        await _db.collection('Teachers').where("uid", isEqualTo: id).get();
     final userData = snapshot.docs.map((e) => Teacher.fromSnapshot(e)).toList();
     return userData;
   }
@@ -82,7 +82,7 @@ class UserRepository extends GetxController {
     //print(userData.length);
     //print(userData.single.firstName);
     if (userData.isNotEmpty) {
-      return (userData.single.firstName+" "+userData.single.lastName);
+      return (userData.single.firstName + " " + userData.single.lastName);
     }
   }
 
@@ -138,19 +138,24 @@ class UserRepository extends GetxController {
 
   Future<List<Video>> getContinueWatching(String id) async {
     //print("In user repo $id");
-    final snapshot = await _db.collection('Users').where("uid", isEqualTo: id).get();
+    final snapshot =
+        await _db.collection('Users').where("uid", isEqualTo: id).get();
     if (snapshot.docs.isNotEmpty) {
       final userDoc = snapshot.docs.first;
-      final continueWatchingSnapshot = await userDoc.reference.collection('ContinueWatching').get();
+      final continueWatchingSnapshot =
+          await userDoc.reference.collection('ContinueWatching').get();
 
-      final List<Future<Video>> continueWatchingList = continueWatchingSnapshot.docs.map((doc) async {
+      final List<Future<Video>> continueWatchingList =
+          continueWatchingSnapshot.docs.map((doc) async {
         final data = doc.data() as Map<String, dynamic>;
-        return await getVideo(data["videoId"]); // Await the result of getVideo function
+        return await getVideo(
+            data["videoId"]); // Await the result of getVideo function
       }).toList();
       //print("Continue Watching : ${continueWatchingList.length}");
 
       // Wait for all videos to be fetched
-      final List<Video> videos = (await Future.wait(continueWatchingList)).whereType<Video>().toList();
+      final List<Video> videos =
+          (await Future.wait(continueWatchingList)).whereType<Video>().toList();
       //print("In user repo $videos");
       return videos;
     } else {
@@ -215,20 +220,20 @@ class UserRepository extends GetxController {
   }
 
   Future<Iterable<Student>> getStudentByMentorId(String userId) async {
-    final querySnapshot =
-    await _db.collection('Users').where('mentorId', isEqualTo: userId).get();
+    final querySnapshot = await _db
+        .collection('Users')
+        .where('mentorId', isEqualTo: userId)
+        .get();
 
-    final studentData =
-        querySnapshot.docs.map((e) => Student.fromSnapshot(e));
+    final studentData = querySnapshot.docs.map((e) => Student.fromSnapshot(e));
     return studentData;
   }
 
   Future<Uint8List?> getImageData(String imageUrl) async {
     try {
       // Fetch data from Firebase Storage URL
-      Uint8List? imageData = await FirebaseStorage.instance
-          .refFromURL(imageUrl)
-          .getData();
+      Uint8List? imageData =
+          await FirebaseStorage.instance.refFromURL(imageUrl).getData();
 
       return imageData;
     } catch (error) {
@@ -240,7 +245,8 @@ class UserRepository extends GetxController {
   }
 
   Future<Iterable<Student>> getMentoringStudents(String id) async {
-    final snapshot = await _db.collection("Users").where("mentorId", isEqualTo: id).get();
+    final snapshot =
+        await _db.collection("Users").where("mentorId", isEqualTo: id).get();
     final studentlist = snapshot.docs.map((e) => Student.fromSnapshot(e));
     //print(studentlist.single.deviceToken);
     return studentlist;
@@ -248,10 +254,13 @@ class UserRepository extends GetxController {
 
   Future<List<Uint8List>> getInstructorVideoImage(String id) async {
     List<Uint8List> imageList = [];
-    final snapshot = await _db.collection("VideoDetails").where("instructorId", isEqualTo: id).get();
+    final snapshot = await _db
+        .collection("VideoDetails")
+        .where("instructorId", isEqualTo: id)
+        .get();
     if (snapshot.docs.isNotEmpty) {
       final videoList = snapshot.docs.map((e) => Video.fromSnapshot(e));
-      for(final video in videoList){
+      for (final video in videoList) {
         final image = await getImageData(video.thumbnail);
         imageList.add(image!);
       }
@@ -263,8 +272,10 @@ class UserRepository extends GetxController {
     final now = DateTime.now();
     final twoWeeksFromNow = now.add(Duration(days: 14));
     final currentDateString = now.toIso8601String().substring(0, 10);
-    final twoWeeksFromNowString = twoWeeksFromNow.toIso8601String().substring(0, 10);
-    final snapshot = await _db.collection("Visit")
+    final twoWeeksFromNowString =
+        twoWeeksFromNow.toIso8601String().substring(0, 10);
+    final snapshot = await _db
+        .collection("Visit")
         .where("visitMentorId", isEqualTo: id)
         .where("visitDate", isGreaterThanOrEqualTo: currentDateString)
         .where("visitDate", isLessThanOrEqualTo: twoWeeksFromNowString)
@@ -276,7 +287,8 @@ class UserRepository extends GetxController {
 
   Future<Map<String, dynamic>> getInstructorDetailsToDisplay(String id) async {
     //print("Entered user repo----------------------->");
-    final snapshot = await _db.collection("Teachers").where("uid", isEqualTo: id).get();
+    final snapshot =
+        await _db.collection("Teachers").where("uid", isEqualTo: id).get();
     final instructorDetail = <String, dynamic>{};
 
     for (var doc in snapshot.docs) {
@@ -286,12 +298,14 @@ class UserRepository extends GetxController {
       final id = data["uid"];
       final name = data["firstName"] + " " + data["lastName"];
       final orgName = data["organizationName"];
-      final videoImageListFuture = getInstructorVideoImage(id); // Assuming this returns some data
-      Visit visitData = await getInstructorVisitSchedule(id); // Assuming this returns some data
+      final videoImageListFuture =
+          getInstructorVideoImage(id); // Assuming this returns some data
+      Visit visitData = await getInstructorVisitSchedule(
+          id); // Assuming this returns some data
       final videoImageList = await videoImageListFuture;
       instructorDetail.addAll({
         "image": image,
-        "id":id,
+        "id": id,
         "name": name,
         "orgName": orgName,
         "videoImageList": videoImageList,
@@ -300,5 +314,4 @@ class UserRepository extends GetxController {
     }
     return instructorDetail;
   }
-
 }

@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:math';
 
@@ -11,17 +10,19 @@ import 'package:video_player/video_player.dart';
 import 'package:uuid/uuid.dart';
 import '../models/backend_model.dart';
 
-class VideoRepository extends GetxController{
-  static VideoRepository get instance=> Get.find();
+class VideoRepository extends GetxController {
+  static VideoRepository get instance => Get.find();
 
   final _db = FirebaseFirestore.instance;
 
   String generateRandomUid() {
-    const String _chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const String _chars =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     final Random _random = Random();
 
     // Generate a random string of length 10 by selecting characters randomly from _chars
-    return String.fromCharCodes(Iterable.generate(10, (_) => _chars.codeUnitAt(_random.nextInt(_chars.length))));
+    return String.fromCharCodes(Iterable.generate(
+        10, (_) => _chars.codeUnitAt(_random.nextInt(_chars.length))));
   }
 
   /*Future<void> uploadVideo(PlatformFile file, String? id, String docId) async {
@@ -93,14 +94,14 @@ class VideoRepository extends GetxController{
       print("File path: ${file.path}");
 
       // Upload file to Firebase Storage
-      final uploadTask = FirebaseStorage.instance
-          .ref()
-          .child('videos/${id}.mp4');
+      final uploadTask =
+          FirebaseStorage.instance.ref().child('videos/${id}.mp4');
       print("Upload task created");
 
       // Wait for upload to complete
       final metadata = SettableMetadata(contentType: 'video/mp4');
-      final TaskSnapshot snapshot = await uploadTask.putFile(File(file.path!), metadata);
+      final TaskSnapshot snapshot =
+          await uploadTask.putFile(File(file.path!), metadata);
       print("Upload completed");
 
       // Get download URL of the uploaded file
@@ -131,14 +132,16 @@ class VideoRepository extends GetxController{
     }
   }
 
-  Future<void> createVideoDocument(Video video, PlatformFile lectureVideo, [File? img]) async {
+  Future<void> createVideoDocument(Video video, PlatformFile lectureVideo,
+      [File? img]) async {
     try {
       print("Creating video document...");
 
       video.videoId = Uuid().v4();
       print("Generated video ID: ${video.videoId}");
 
-      DocumentReference documentReference = await _db.collection("VideoDetails").add(video.toJson());
+      DocumentReference documentReference =
+          await _db.collection("VideoDetails").add(video.toJson());
       print("Firestore document created: ${documentReference.id}");
 
       await uploadVideo(lectureVideo, video.videoId, documentReference.id);
@@ -160,23 +163,32 @@ class VideoRepository extends GetxController{
     }
   }
 
-
   Future<void> createCourse(Course course, List videoList) async {
-    DocumentReference documentReference = await _db.collection("Courses").add(course.toJson()).whenComplete(
+    DocumentReference documentReference = await _db
+        .collection("Courses")
+        .add(course.toJson())
+        .whenComplete(
           () => Get.snackbar("Success", "Course has been uploaded successfully",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green.withOpacity(0.1),
-          colorText: Colors.green),).catchError((error, stackTrace) {
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.green.withOpacity(0.1),
+              colorText: Colors.green),
+        )
+        .catchError((error, stackTrace) {
       Get.snackbar("Error", "Something went wrong try again",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.redAccent.withOpacity(0.1),
           colorText: Colors.red);
       print(error.toString());
     });
-    List<String> idList = await uploadCourseVideo(videoList, documentReference.id);
-    for (final id in idList){
+    List<String> idList =
+        await uploadCourseVideo(videoList, documentReference.id);
+    for (final id in idList) {
       print("Id Processing");
-      await _db.collection("Courses").doc(documentReference.id).collection("CourseVideos").add({"videoId":id});
+      await _db
+          .collection("Courses")
+          .doc(documentReference.id)
+          .collection("CourseVideos")
+          .add({"videoId": id});
       print("Id Done");
     }
     print("Khalaas");
@@ -185,13 +197,12 @@ class VideoRepository extends GetxController{
   Future<List<String>> uploadCourseVideo(List file, String? id) async {
     late List<String> idList = [];
 
-    for(final video in file){
+    for (final video in file) {
       final duration = await getDuration(video);
-      CourseVideo courseVideo = CourseVideo(
-          videoTitle: video.name,
-          videoLoc: "",
-          duration: duration);
-      DocumentReference documentReference = await _db.collection("VideoDetails").add(courseVideo.toJson());
+      CourseVideo courseVideo =
+          CourseVideo(videoTitle: video.name, videoLoc: "", duration: duration);
+      DocumentReference documentReference =
+          await _db.collection("VideoDetails").add(courseVideo.toJson());
 
       idList.add(documentReference.id);
 
@@ -199,13 +210,18 @@ class VideoRepository extends GetxController{
           .ref()
           .child('videos/course${id}/${documentReference.id}.mp4');
       final metadata = SettableMetadata(contentType: 'video/mp4');
-      final TaskSnapshot snapshot = await uploadTask.putFile(File(video.path!), metadata);
+      final TaskSnapshot snapshot =
+          await uploadTask.putFile(File(video.path!), metadata);
       final String downloadUrl = await snapshot.ref.getDownloadURL();
 
       Map<String, dynamic> updateData = {'videoLoc': downloadUrl};
-      await _db.collection("VideoDetails").doc(documentReference.id).update(updateData);
+      await _db
+          .collection("VideoDetails")
+          .doc(documentReference.id)
+          .update(updateData);
     }
-    print("----------------------------------------------------------> Returning Id list");
+    print(
+        "----------------------------------------------------------> Returning Id list");
     return idList;
   }
 
@@ -220,11 +236,13 @@ class VideoRepository extends GetxController{
   Future<Iterable<Video>> getVideoList(String query) async {
     print("Inside Repository");
     final columns = ["instructorId", "instructorName", "subject", "videoTitle"];
-    final snapshot = await _db.collection("VideoDetails")
-    .where(columns[0], isEqualTo: query)
-    .where(columns[1], isEqualTo: query)
-    .where(columns[2], isEqualTo: query)
-    .where(columns[3], isEqualTo: query).get();
+    final snapshot = await _db
+        .collection("VideoDetails")
+        .where(columns[0], isEqualTo: query)
+        .where(columns[1], isEqualTo: query)
+        .where(columns[2], isEqualTo: query)
+        .where(columns[3], isEqualTo: query)
+        .get();
 
     final videoList = snapshot.docs.map((e) => Video.fromSnapshot(e));
     print(videoList.length);
@@ -237,17 +255,19 @@ class VideoRepository extends GetxController{
     // Create a Firestore query for each field
     Query query = FirebaseFirestore.instance.collection('VideoDetails');
     for (String field in columns) {
-      query = query.where(field, isEqualTo: query,);
+      query = query.where(
+        field,
+        isEqualTo: query,
+      );
     }
 
     // Execute the query
     QuerySnapshot querySnapshot = await query.get();
 
     // Process the query results
-    final videoList = querySnapshot.docs
-        .map((e) => Video.fromSnapshot(e as DocumentSnapshot<Map<String, dynamic>>));
+    final videoList = querySnapshot.docs.map(
+        (e) => Video.fromSnapshot(e as DocumentSnapshot<Map<String, dynamic>>));
     print(videoList.length);
     return videoList;
   }
-
 }

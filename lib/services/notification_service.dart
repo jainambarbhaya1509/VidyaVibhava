@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class NotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
     await initializeFlutterLocalNotificationsPlugin();
@@ -16,12 +16,11 @@ class NotificationService {
 
   Future<void> initializeFlutterLocalNotificationsPlugin() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('app_icon');
+        AndroidInitializationSettings('app_icon');
     final InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
+        InitializationSettings(android: initializationSettingsAndroid);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
-
 
   Future<void> setupFirebaseMessaging() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -33,14 +32,14 @@ class NotificationService {
   Future<void> showNotification(RemoteNotification? notification) async {
     if (notification != null) {
       const AndroidNotificationDetails androidPlatformChannelSpecifics =
-      AndroidNotificationDetails(
+          AndroidNotificationDetails(
         'VidyaVibhava', // Change this to a unique ID for your app
         'VisitChannel', // Change // Change this to a custom channel description
         importance: Importance.max,
         priority: Priority.high,
       );
       const NotificationDetails platformChannelSpecifics =
-      NotificationDetails(android: androidPlatformChannelSpecifics);
+          NotificationDetails(android: androidPlatformChannelSpecifics);
       await flutterLocalNotificationsPlugin.show(
         0, // Change this to a unique ID for each notification
         notification.title ?? '', // Title of the notification
@@ -49,10 +48,12 @@ class NotificationService {
       );
     }
   }
+
   Future<void> selectNotification(String? payload) async {
     // Handle notification tap
   }
-  Future<void> sendPushNotification(String fcmToken, String title, String body) async {
+  Future<void> sendPushNotification(
+      String fcmToken, String title, String body) async {
     try {
       String urlToParse = 'http://127.0.0.1:5000/sendNotification';
       print("URL Parse Start");

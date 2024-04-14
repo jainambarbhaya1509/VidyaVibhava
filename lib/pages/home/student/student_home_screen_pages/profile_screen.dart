@@ -1,8 +1,10 @@
 import 'package:final_project/pages/common/books/books_modal.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/edit_student_profile.dart';
 import 'package:final_project/pages/home/student/cards/lecture_details.dart';
 import 'package:final_project/pages/home/student/cards/saved_books_card.dart';
 import 'package:final_project/pages/home/student/cards/saved_lecture_card.dart';
-import 'package:final_project/pages/home/student/cards/student_stats.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/explore_schemes.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/student_stats.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/enrolled_courses.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/providers/student_screen_provider.dart';
@@ -15,6 +17,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:googleapis/appengine/v1.dart';
 
 class StudentProfileScreen extends ConsumerStatefulWidget {
@@ -198,19 +201,22 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
                   ),
                   ListTile(
                     leading: GeneralAppIcon(
-                      icon: Icons.rocket_outlined,
+                      icon: Icons.explore,
                       color:
                           theme.isLightMode == true ? textColor1 : textColor2,
                       size: 20,
                     ),
                     title: GeneralAppText(
-                      text: 'Chat Bot',
+                      text: 'Explore Schemes',
                       size: 16,
                       weight: FontWeight.bold,
                       color: Theme.of(context).primaryColor,
                     ),
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const ExploreSchemes();
+                      }));
                     },
                   ),
                   ListTile(
@@ -258,14 +264,14 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
                       margin: const EdgeInsets.only(
                         left: 20,
                       ),
-                      height: MediaQuery.of(context).size.height * 0.12,
-                      width: MediaQuery.of(context).size.width * 0.23,
+                      height: 100,
+                      width: 100,
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
@@ -280,14 +286,19 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
                     const SizedBox(width: 25),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SecondaryAppText(
                           text: "Jainam Barbhaya",
-                          size: 20,
+                          size: 22,
+                          color: theme.isLightMode == true
+                              ? textColor1
+                              : textColor2,
+                          weight: FontWeight.bold,
                         ),
                         SecondaryAppText(
                           text: "jainambarbhaya",
-                          size: 15,
+                          size: 18,
                           color: Colors.grey,
                         ),
                       ],
@@ -300,7 +311,15 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            isDismissible: true,
+                            context: context,
+                            builder: (builder) {
+                              return EditStudentProfile();
+                            });
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(5),
                         alignment: Alignment.center,
@@ -468,8 +487,6 @@ class _ProfileScreenState extends ConsumerState<StudentProfileScreen>
     );
   }
 }
-
-// TODO: Fix Overflow at Name Section
 
 class _BarChart extends StatelessWidget {
   const _BarChart();

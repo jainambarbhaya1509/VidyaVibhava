@@ -40,10 +40,9 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
       type: FileType.custom,
       allowedExtensions: ['mp4', 'avi', 'mkv', 'mov'],
     );
-    if (lecture == null) return;
-    else{
-
-    }
+    if (lecture == null)
+      return;
+    else {}
 
     setState(() {
       this.lecture = lecture.files.first;
@@ -360,7 +359,7 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
                   onTap: () async {
                     if (checkAllFields()) {
                       final name = await profileController.getUserFullName();
-                      final id  = await profileController.getUserId();
+                      final id = await profileController.getUserId();
                       //Backend Changes
                       Video video = Video(
                           videoTitle: lectureTitleController.text,
@@ -375,7 +374,6 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
                           thumbnail: "thumbnail");
 
                       videoController.createVideoDetail(video, lecture!);
-
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

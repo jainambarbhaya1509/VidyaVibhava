@@ -62,15 +62,13 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-
     final theme = ref.watch(settingsProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Smart Education',
       theme: theme.isLightMode == true ? lightTheme : darkTheme,
       // home: showHome ? const UserTypeScreen() : const StartScreen(),
-      home: TeacherScreen(),
+      home: StudentScreen(),
       // home: const CareerQuiz(),
       routes: {
         'onboardingScreen': (context) => const StartScreen(),

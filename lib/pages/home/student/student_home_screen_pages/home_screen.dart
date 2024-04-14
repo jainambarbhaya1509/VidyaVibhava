@@ -7,6 +7,7 @@ import 'package:final_project/pages/common/chat/chat_list.dart';
 import 'package:final_project/pages/common/chat/chintan_chat_page_2.dart';
 import 'package:final_project/pages/common/gemini.dart';
 import 'package:final_project/pages/home/student/cards/assignment_details.dart';
+import 'package:final_project/pages/home/student/cards/assignment_details.dart';
 import 'package:final_project/pages/home/student/cards/course_details.dart';
 import 'package:final_project/pages/home/student/cards/lecture_details.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/jobs_screen.dart';
@@ -26,6 +27,18 @@ import 'package:googleapis/keep/v1.dart';
 import 'package:logger/web.dart';
 
 import '../../../../models/backend_model.dart';
+
+final List<Subject> subjects = [
+  Subject(name: "Language", imageUrl: 'assets/img/lang.png'),
+  Subject(name: "Maths", imageUrl: 'assets/img/maths.png'),
+  Subject(name: "Physics", imageUrl: 'assets/img/phy.png'),
+  Subject(name: "Chemistry", imageUrl: 'assets/img/chem.png'),
+  Subject(name: "History", imageUrl: 'assets/img/hist.png'),
+  Subject(name: "Geography", imageUrl: 'assets/img/geo.png'),
+  Subject(name: "Biology", imageUrl: 'assets/img/bio.png'),
+
+  // Add more subjects here if needed
+];
 
 final assignmentProvider = Provider((ref) => assignments);
 final assignments = [
@@ -82,18 +95,6 @@ class StudentHomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
-  final List<Subject> subjects = [
-    Subject(name: "Language", imageUrl: 'assets/img/lang.png'),
-    Subject(name: "Maths", imageUrl: 'assets/img/maths.png'),
-    Subject(name: "Physics", imageUrl: 'assets/img/phy.png'),
-    Subject(name: "Chemistry", imageUrl: 'assets/img/chem.png'),
-    Subject(name: "History", imageUrl: 'assets/img/hist.png'),
-    Subject(name: "Geography", imageUrl: 'assets/img/geo.png'),
-    Subject(name: "Biology", imageUrl: 'assets/img/bio.png'),
-
-    // Add more subjects here if needed
-  ];
-
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
@@ -599,6 +600,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                   context: context,
                                   builder: (builder) {
                                     return Container(); //LectureDetails();
+                                    
                                   },
                                 );
                               },

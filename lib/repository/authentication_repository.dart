@@ -22,7 +22,6 @@ class AuthenticationRepository extends GetxController {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   late String? deviceToken;
 
-
   @override
   void onReady() {
     firebaseUser = _auth.currentUser as Rx<User?>;
@@ -107,10 +106,10 @@ class AuthenticationRepository extends GetxController {
         .add(teacher.toJson())
         .whenComplete(
           () => Get.snackbar("Success", "Account has been created successfully",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green.withOpacity(0.1),
-          colorText: Colors.green),
-    )
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.green.withOpacity(0.1),
+              colorText: Colors.green),
+        )
         .catchError((error, stackTrace) {
       Get.snackbar("Error", "Something went wrong try again",
           snackPosition: SnackPosition.BOTTOM,
@@ -170,11 +169,11 @@ class AuthenticationRepository extends GetxController {
   Future<String> sendOTPToEmail(String email) async {
     String requestBody = jsonEncode(email);
     final response = await http.post(
-    Uri.parse("http://127.0.0.1:5000/sendOTPtoEmail"),
-        headers: <String, String>{
-    'Content-Type' : 'application/json; charset=UTF-8',
-    },
-    body:requestBody,
+      Uri.parse("http://127.0.0.1:5000/sendOTPtoEmail"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: requestBody,
     );
 
     if (response.statusCode == 200) {
@@ -189,19 +188,22 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
-  Future<void> createUserWithEmailAndPassword(String email, String password) async {
-    try{
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<void> createUserWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       deviceToken = await _firebaseMessaging.getToken();
-    }catch(_){}
+    } catch (_) {}
   }
 
-  Future<void> loginUserWithEmailAndPassword(String email, String password) async {
-    try{
+  Future<void> loginUserWithEmailAndPassword(
+      String email, String password) async {
+    try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       print("Logging In");
       deviceToken = await _firebaseMessaging.getToken();
       print("Device Token : ${deviceToken}");
-    }catch(_){}
+    } catch (_) {}
   }
 }

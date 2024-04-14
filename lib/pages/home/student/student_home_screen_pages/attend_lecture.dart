@@ -14,10 +14,7 @@ import '../../../common/video/video_viewer.dart';
 
 class AttendLecture extends ConsumerStatefulWidget {
   final Video video;
-  const AttendLecture({
-    super.key,
-    required this.video
-  });
+  const AttendLecture({super.key, required this.video});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AttendLectureState();
@@ -91,8 +88,8 @@ class _AttendLectureState extends ConsumerState<AttendLecture> {
                         height: 5,
                       ),
                       GeneralAppText(
-                        text:widget.video.videoDescription,
-                            //"The Merchant of Venice is a 16th-century play written by William Shakespeare in which a merchant in Venice named Antonio defaults on a large loan provided by a Jewish moneylender, Shylock. It is believed to have been written between 1596 and 1599.",
+                        text: widget.video.videoDescription,
+                        //"The Merchant of Venice is a 16th-century play written by William Shakespeare in which a merchant in Venice named Antonio defaults on a large loan provided by a Jewish moneylender, Shylock. It is believed to have been written between 1596 and 1599.",
                         size: 14,
                         weight: FontWeight.w400,
                       ),
@@ -116,27 +113,37 @@ class _AttendLectureState extends ConsumerState<AttendLecture> {
                               height: 400,
                               width: double.infinity,
                               child: FutureBuilder<Map<String, dynamic>>(
-                                future: instructorController.getInstructorDetailsToDisplay(widget.video.instructorId),
+                                future: instructorController
+                                    .getInstructorDetailsToDisplay(
+                                        widget.video.instructorId),
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
                                     return CircularProgressIndicator(); // Display a loading indicator while waiting for data
                                   } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}'); // Display an error message if fetching data fails
+                                    return Text(
+                                        'Error: ${snapshot.error}'); // Display an error message if fetching data fails
                                   } else {
                                     final instructorDetails = snapshot.data;
                                     if (instructorDetails != null) {
                                       final image = instructorDetails["image"];
                                       final name = instructorDetails["name"];
-                                      final orgName = instructorDetails["orgName"];
-                                      final videoImageList = instructorDetails["videoImageList"];
+                                      final orgName =
+                                          instructorDetails["orgName"];
+                                      final videoImageList =
+                                          instructorDetails["videoImageList"];
                                       final id = instructorDetails["id"];
-                                      Visit visit = instructorDetails["visitData"];
-                                      print("Instructor ke Visit Details : ${visit}");
+                                      Visit visit =
+                                          instructorDetails["visitData"];
+                                      print(
+                                          "Instructor ke Visit Details : ${visit}");
 
                                       // Build your UI using the fetched data
                                       return Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Row(
                                             children: [
@@ -144,7 +151,9 @@ class _AttendLectureState extends ConsumerState<AttendLecture> {
                                                 height: 60,
                                                 width: 60,
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(100),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
                                                   image: DecorationImage(
                                                     image: NetworkImage(image),
                                                     fit: BoxFit.cover,
@@ -153,8 +162,10 @@ class _AttendLectureState extends ConsumerState<AttendLecture> {
                                               ),
                                               SizedBox(width: 10),
                                               Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   GeneralAppText(
                                                     text: name,
@@ -178,25 +189,40 @@ class _AttendLectureState extends ConsumerState<AttendLecture> {
                                           ),
                                           SizedBox(height: 10),
                                           GestureDetector(
-                                            onTap:(){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen(searchId: id,instructorName: name,)));
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SearchScreen(
+                                                            searchId: id,
+                                                            instructorName:
+                                                                name,
+                                                          )));
                                             },
                                             child: SizedBox(
                                               height: 100,
                                               width: double.infinity,
                                               child: ListView.builder(
-                                                scrollDirection: Axis.horizontal,
-                                                itemCount: videoImageList.length,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount:
+                                                    videoImageList.length,
                                                 itemBuilder: (context, index) {
                                                   return Container(
-                                                    margin: EdgeInsets.only(right: 10),
+                                                    margin: EdgeInsets.only(
+                                                        right: 10),
                                                     height: 100,
                                                     width: 150,
                                                     decoration: BoxDecoration(
                                                       color: Colors.white,
-                                                      borderRadius: BorderRadius.circular(10),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
                                                       image: DecorationImage(
-                                                        image: MemoryImage(videoImageList[index]),
+                                                        image: MemoryImage(
+                                                            videoImageList[
+                                                                index]),
                                                         fit: BoxFit.cover,
                                                       ),
                                                     ),
@@ -215,23 +241,23 @@ class _AttendLectureState extends ConsumerState<AttendLecture> {
                                           SizedBox(
                                             height: 70,
                                             width: double.infinity,
-                                            child:Row(
+                                            child: Row(
                                               children: [
                                                 Text(
                                                   "Visit Date & Time : ${visit.visitDate} ${visit.visitTime} \nVisit Location : ${visit.visitLocation} \nVisit Purpose : ${visit.visitPurpose} ",
-                                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 SizedBox(width: 10),
-
                                               ],
                                             ),
-
-
                                           ),
                                         ],
                                       );
                                     } else {
-                                      return Text('No data available'); // Handle case where data is null
+                                      return Text(
+                                          'No data available'); // Handle case where data is null
                                     }
                                   }
                                 },
@@ -248,8 +274,10 @@ class _AttendLectureState extends ConsumerState<AttendLecture> {
           ),
         ));
   }
+
   Widget _buildTextColumn(String title, String value) {
-    return Flexible( // Wrap the Column with Flexible
+    return Flexible(
+      // Wrap the Column with Flexible
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -266,6 +294,4 @@ class _AttendLectureState extends ConsumerState<AttendLecture> {
       ),
     );
   }
-
-
 }

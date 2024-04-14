@@ -21,7 +21,7 @@ class _TeacherChatActivityState extends State<TeacherChatActivity> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   void signOut() {
     final authService =
-    Provider.of<AuthenticationRepository>(context, listen: false);
+        Provider.of<AuthenticationRepository>(context, listen: false);
     authService.signOut();
   }
 
@@ -55,7 +55,8 @@ class _TeacherChatActivityState extends State<TeacherChatActivity> {
         );
       },
     );*/
-    return Container( // Wrap the ListView with a Container
+    return Container(
+      // Wrap the ListView with a Container
       height: 150, // Provide a fixed height
       child: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('Users').snapshots(),
@@ -83,9 +84,11 @@ class _TeacherChatActivityState extends State<TeacherChatActivity> {
           return Text('Error fetching mentor data : ${studentSnapshot.error}');
         } else {
           Iterable<Student> studentList = studentSnapshot.data!;
-          print("\n\n\n\n\n\n\n\n\n\n\n Students Ka list : ${studentList.length}\n\n\n---------------------------\n\n\n\n\n-------------\n\n\n\n");
+          print(
+              "\n\n\n\n\n\n\n\n\n\n\n Students Ka list : ${studentList.length}\n\n\n---------------------------\n\n\n\n\n-------------\n\n\n\n");
           return Container(
-            height: MediaQuery.of(context).size.height, // Or specify a fixed height
+            height:
+                MediaQuery.of(context).size.height, // Or specify a fixed height
             child: ListView.builder(
               itemCount: studentList.length,
               itemBuilder: (context, index) {
@@ -107,7 +110,6 @@ class _TeacherChatActivityState extends State<TeacherChatActivity> {
               },
             ),
           );
-
         }
       },
     );

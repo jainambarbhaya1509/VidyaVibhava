@@ -1,19 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:final_project/pages/common/books/books_modal.dart';
+import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-class EbooksScreen extends StatefulWidget {
+class EbooksScreen extends ConsumerStatefulWidget {
   const EbooksScreen({super.key});
 
   @override
-  State<EbooksScreen> createState() => _EbooksScreenState();
+  ConsumerState<EbooksScreen> createState() => _EbooksScreenState();
 }
 
-class _EbooksScreenState extends State<EbooksScreen> {
+class _EbooksScreenState extends ConsumerState<EbooksScreen> {
   List<dynamic> _bookCoverPage = [];
   List<dynamic> _bookTitle = [];
 
@@ -67,6 +69,7 @@ class _EbooksScreenState extends State<EbooksScreen> {
   @override
   Widget build(BuildContext context) {
     TextEditingController searchController = TextEditingController();
+    final theme = ref.watch(settingsProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
@@ -78,25 +81,27 @@ class _EbooksScreenState extends State<EbooksScreen> {
           weight: FontWeight.bold,
         ),
       ),
-      body: SizedBox(
+      body: Container(
+        margin: const EdgeInsets.only(left: 10, right: 10),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 10,
+              height: 50,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: theme.isLightMode
+                    ? const Color.fromARGB(211, 228, 228, 228)
+                    : const Color.fromARGB(255, 54, 54, 54),
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: TextField(
-                onSubmitted: (value) {},
+              child: TextFormField(
                 controller: searchController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  prefixIcon: const Icon(Icons.search),
-                  hintText: 'Search Your Books',
+                decoration: const InputDecoration(
+                  hintText: "search your books",
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(left: 10),
                 ),
               ),
             ),

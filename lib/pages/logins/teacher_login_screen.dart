@@ -172,7 +172,8 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
 
                   if (errorMessage1 == null && errorMessage2 == null) {
                     saveData();
-                    controller.LoginTeacher(_emailController.text, _passwordController.text);
+                    controller.LoginTeacher(
+                        _emailController.text, _passwordController.text);
                     Navigator.pushReplacementNamed(context, 'teacherHome',
                         arguments: 1);
                   }

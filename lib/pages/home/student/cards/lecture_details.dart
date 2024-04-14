@@ -7,6 +7,7 @@ import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final savedLecturesProvidrer = Provider((ref) => []);
@@ -19,7 +20,6 @@ class LectureDetails extends ConsumerStatefulWidget {
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LectureDetailsState();
 }
-
 
 class _LectureDetailsState extends ConsumerState<LectureDetails> {
   @override
@@ -71,23 +71,26 @@ class _LectureDetailsState extends ConsumerState<LectureDetails> {
                   child: Row(
                     children: [
                       GestureDetector(
-                            onTap: () {},
-                            child: GestureDetector(
                         onTap: () {},
-                        child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color:
-                                         
-                                      theme == true ? textColor1 : textColor2),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: GeneralAppIcon(
-                              icon: Icons.bookmark_border,
-                              color: theme == true ? textColor1 : textColor2,
-                              size: 30,
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: theme == true
+                                          ? textColor1
+                                          : textColor2),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: GeneralAppIcon(
+                                icon: Icons.bookmark_border,
+                                color: theme == true ? textColor1 : textColor2,
+                                size: 30,
                               ),
+                            ),
                           ),
                         ),
                       ),
@@ -96,8 +99,12 @@ class _LectureDetailsState extends ConsumerState<LectureDetails> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => AttendLecture(video: videoToDisplay)));
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        AttendLecture(video: videoToDisplay)));
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width,
@@ -105,7 +112,8 @@ class _LectureDetailsState extends ConsumerState<LectureDetails> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                  color: theme == true ? textColor1 : textColor2),
+                                  color:
+                                      theme == true ? textColor1 : textColor2),
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,13 +121,15 @@ class _LectureDetailsState extends ConsumerState<LectureDetails> {
                               children: [
                                 GeneralAppIcon(
                                   icon: Icons.play_arrow_rounded,
-                                  color: theme == true ? textColor1 : textColor2,
+                                  color:
+                                      theme == true ? textColor1 : textColor2,
                                   size: 30,
                                 ),
                                 PrimaryAppText(
                                   text: "Start Learning",
                                   size: 20,
-                                  color: theme == true ? textColor1 : textColor2,
+                                  color:
+                                      theme == true ? textColor1 : textColor2,
                                 ),
                               ],
                             ),
@@ -147,8 +157,8 @@ class _LectureDetailsState extends ConsumerState<LectureDetails> {
                         height: 10,
                       ),
                       GeneralAppText(
-                        text:widget.video.videoDescription,
-                            //"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
+                        text: widget.video.videoDescription,
+                        //"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
                         size: 15,
                       ),
                     ],

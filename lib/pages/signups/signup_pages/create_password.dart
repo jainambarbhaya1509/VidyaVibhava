@@ -84,7 +84,8 @@ class _VerifyYourselfState extends ConsumerState<CreatePassword> {
                 ),
                 TextField(
                   onChanged: (value) {
-                    password['confirmPassword'] = confirmPasswordController.text;
+                    password['confirmPassword'] =
+                        confirmPasswordController.text;
                   },
                   obscureText: true,
                   controller: confirmPasswordController,
@@ -104,7 +105,8 @@ class _VerifyYourselfState extends ConsumerState<CreatePassword> {
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () async {
-                    controller.RegisterUser(teacherPersonalInfo["email"], confirmPasswordController.text);
+                    controller.RegisterUser(teacherPersonalInfo["email"],
+                        confirmPasswordController.text);
                     // Add your logic for creating the account here
                   },
                   child: Text('Create Account'),

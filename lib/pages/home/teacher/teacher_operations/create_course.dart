@@ -6,6 +6,7 @@ import 'package:final_project/controllers/video_controller.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/home_screen.dart';
 import 'package:final_project/models/backend_model.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/home_screen.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/home_screen.dart';
 import 'package:final_project/pages/home/teacher/cards/create_quiz.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
@@ -18,10 +19,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:logger/web.dart';
 import 'package:video_player/video_player.dart';
 
 final courseProvider = Provider((ref) => course);
-
 
 final List course = [
   [
@@ -29,9 +30,7 @@ final List course = [
       "course": {
         "title": "",
         "subject": "",
-        "subject": "",
         "description": "",
-        "tags": [],
         "tags": [],
         "level": "",
         "duration": "",
@@ -577,17 +576,22 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                                                       vertical:
                                                                           8.0),
                                                                   child:
-                                                                      DropdownButtonFormField<String>(
+                                                                      DropdownButtonFormField<
+                                                                          String>(
                                                                     value:
                                                                         "Option 1",
                                                                     onChanged:
-                                                                        (String? value) {},
+                                                                        (String?
+                                                                            value) {},
                                                                     items: [
                                                                       "Option 1",
                                                                       "Option 2",
                                                                       "Option 3",
                                                                       "Option 4",
-                                                                    ].map<DropdownMenuItem<String>>((String option) {
+                                                                    ].map<
+                                                                        DropdownMenuItem<
+                                                                            String>>((String
+                                                                        option) {
                                                                       return DropdownMenuItem<
                                                                           String>(
                                                                         value:
@@ -870,19 +874,61 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                         ),
                       );
                       Course course = Course(
-                          courseTitle: lectureTitleController.text,
-                          courseDescription: lectureDescriptionController.text,
-                          courseLoc: "",
-                          keywords: [""],
-                          difficultyLevel: selectedLevel!,
-                          duration: lectureDurationController.text,
-                          subject: subjectController.text,
-                          instructorName: await profileController.getUserFullName(),
-                          thumbnail: "thumbnail",
-                          instructorId: await profileController.getUserId(),);
+                        courseTitle: lectureTitleController.text,
+                        courseDescription: lectureDescriptionController.text,
+                        courseLoc: "",
+                        keywords: [""],
+                        difficultyLevel: selectedLevel!,
+                        duration: lectureDurationController.text,
+                        subject: subjectController.text,
+                        instructorName:
+                            await profileController.getUserFullName(),
+                        thumbnail: "thumbnail",
+                        instructorId: await profileController.getUserId(),
+                      );
 
                       //videoController.createCourse(course, uploadedVideos);
-                          //courseVideos: courseVideos)
+                      //courseVideos: courseVideos)
+                      setState(() {
+                        courseVideo.add({
+                          "course": {
+                            "title": lectureTitleController.text,
+                            "subject": subjectController.text,
+                            "description": lectureDescriptionController.text,
+                            "tags": tagsController.text.split(",").map((e) {
+                              return e.trim();
+                            }).toList(),
+                            "level": selectedLevel,
+                            "duration": lectureDurationController.text,
+                            "courseModules": [
+                              {
+                                "title": "",
+                                "url": "",
+                                "quiz": courseQuestion["quiz"] == null
+                                    ? {}
+                                    : {
+                                        "question":
+                                            courseQuestion["quiz"]!["question"],
+                                        "options":
+                                            courseQuestion["quiz"]!["options"],
+                                        "correctAnswer": courseQuestion[
+                                            "quiz"]!["correctAnswer"],
+                                      },
+                              },
+                            ],
+                          },
+                        });
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: GeneralAppText(
+                            text: 'Course uploaded successfully',
+                            size: 16,
+                            color: Colors.white,
+                          ),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -895,6 +941,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                         ),
                       );
                     }
+                    Logger().d(course);
                   },
                   child: Container(
                     height: 50,

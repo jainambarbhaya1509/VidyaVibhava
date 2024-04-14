@@ -172,7 +172,8 @@ class _AssignmentDetailsState extends ConsumerState<AssignmentDetails> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    if ((assignment[widget.index]['documents'] as List).isNotEmpty) {
+                    if ((assignment[widget.index]['documents'] as List)
+                        .isNotEmpty) {
                       (assignment[widget.index]['documents'] as List).clear();
                       setState(() {});
                     } else {

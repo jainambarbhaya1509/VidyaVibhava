@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FilterDialog extends StatefulWidget {
+final searchTypeProvider = StateProvider<bool>((ref) => _videoSelected);
+
+class FilterDialog extends ConsumerStatefulWidget {
   @override
   _FilterDialogState createState() => _FilterDialogState();
 }
 
-class _FilterDialogState extends State<FilterDialog> {
   bool _videoSelected = false;
+class _FilterDialogState extends ConsumerState<FilterDialog> {
   bool _courseSelected = false;
   String _searchBy = 'Title';
   String _duration = 'Small';
@@ -51,7 +54,8 @@ class _FilterDialogState extends State<FilterDialog> {
                   _searchBy = 'Keyword';
                 });
               }),
-              _buildOption('Difficulty Level', _searchBy == 'Difficulty Level', () {
+              _buildOption('Difficulty Level', _searchBy == 'Difficulty Level',
+                  () {
                 setState(() {
                   _searchBy = 'Difficulty Level';
                 });
@@ -63,7 +67,8 @@ class _FilterDialogState extends State<FilterDialog> {
               }),
             ]),
             SizedBox(height: 16),
-            _buildSubOption('Duration', ['Small', 'Medium', 'Large'], _duration, (value) {
+            _buildSubOption('Duration', ['Small', 'Medium', 'Large'], _duration,
+                (value) {
               setState(() {
                 _duration = value;
               });
@@ -78,7 +83,8 @@ class _FilterDialogState extends State<FilterDialog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(category, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(category,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         SizedBox(height: 8),
         Column(children: options),
       ],
@@ -95,6 +101,7 @@ class _FilterDialogState extends State<FilterDialog> {
       onTap: onTap,
     );
   }
+
   void _handleDurationChanged(String? value) {
     if (value != null) {
       setState(() {
@@ -103,11 +110,13 @@ class _FilterDialogState extends State<FilterDialog> {
     }
   }
 
-  Widget _buildSubOption(String category, List<String> options, String selectedOption, Function(String) onChanged) {
+  Widget _buildSubOption(String category, List<String> options,
+      String selectedOption, Function(String) onChanged) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(category, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(category,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         SizedBox(height: 8),
         DropdownButtonFormField(
           value: _duration,
@@ -119,7 +128,6 @@ class _FilterDialogState extends State<FilterDialog> {
           }).toList(),
           onChanged: _handleDurationChanged,
         )
-
       ],
     );
   }

@@ -17,7 +17,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  getUserId(){
+  getUserId() {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
       return uid;
@@ -26,9 +26,9 @@ class ProfileController extends GetxController {
     }
   }
 
-  getUserFullName(){
+  getUserFullName() {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    if(uid!=null){
+    if (uid != null) {
       return _userRepo.getTeacherFullName(uid);
     }
   }
@@ -64,10 +64,10 @@ class ProfileController extends GetxController {
     }
   }
 
-  getImageData(String url){
-    if(url!=null){
+  getImageData(String url) {
+    if (url != null) {
       return _userRepo.getImageData(url);
-    }else{
+    } else {
       Get.snackbar("Error", "URL is empty");
     }
   }

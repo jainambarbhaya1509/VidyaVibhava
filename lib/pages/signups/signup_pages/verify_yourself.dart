@@ -68,7 +68,8 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                         child: TextField(
                           controller: teacherEmailController,
                           onChanged: (value) {
-                            ref.read(teacherPersonalInfoProvider)['email'] = value;
+                            ref.read(teacherPersonalInfoProvider)['email'] =
+                                value;
                           },
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
@@ -84,7 +85,8 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          otp = await AuthenticationRepository.instance.sendOTPToEmail(teacherEmailController.text);
+                          otp = await AuthenticationRepository.instance
+                              .sendOTPToEmail(teacherEmailController.text);
 
                           // Add your onTap logic here
                           // For example, you can navigate to another screen or perform some action
@@ -105,7 +107,6 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                           ),
                         ),
                       )
-
                     ],
                   ),
                 ] else ...[
@@ -141,8 +142,9 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
-                          AuthenticationRepository.instance.phoneAuthentication(studentPhoneController.text);
+                        onTap: () {
+                          AuthenticationRepository.instance
+                              .phoneAuthentication(studentPhoneController.text);
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -184,21 +186,35 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                       ),
                     ),
                     keyboardType:
-                    const TextInputType.numberWithOptions(decimal: false),
+                        const TextInputType.numberWithOptions(decimal: false),
                   ),
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(
-                  onTap: () async{
-
-                    if (role == 'teacher'){
-                      if(otp == verifyOtpController.text){
+                  onTap: () async {
+                    if (role == 'teacher') {
+                      if (otp == verifyOtpController.text) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('OTP Validated ! Please Click Next'),
                           ),
                         );
-                      }else {
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Invalid OTP'),
+                          ),
+                        );
+                      }
+                    } else {
+                      if (await AuthenticationRepository.instance
+                          .verifyOTP(verifyOtpController.text)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('OTP Validated ! Please Click Next'),
+                          ),
+                        );
+                      } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Invalid OTP'),
@@ -206,22 +222,6 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                         );
                       }
                     }
-                    else{
-                      if(await AuthenticationRepository.instance.verifyOTP(verifyOtpController.text)){
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('OTP Validated ! Please Click Next'),
-                          ),
-                        );
-                      }else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Invalid OTP'),
-                          ),
-                        );
-                      }
-                    }
-
                   },
                   child: Container(
                       alignment: Alignment.centerRight,

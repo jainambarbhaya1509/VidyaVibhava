@@ -288,7 +288,6 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                   return;
                 }
                 if (currentPageIndex == signUpSections.length - 1) {
-
                   final personalInfo = ref.read(teacherPersonalInfoProvider);
                   final addressInfo = ref.read(teacherAddressInfoProvider);
                   final teacherImage = ref.read(teacherImageProvider);
@@ -317,7 +316,8 @@ class _TeacherSignUpScreenState extends ConsumerState<TeacherSignUpScreen> {
                       doc2: "");
 
                   //controller.CreateTeacher(teacher, teacherImage!, teacherAadhar!, teacherIncome!);
-                  Navigator.pushNamedAndRemoveUntil(context, 'teacherHome', (route) => false);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, 'teacherHome', (route) => false);
                   //Navigator.pushNamedAndRemoveUntil(context, 'teacherLogin', (route) => false);
                 }
 

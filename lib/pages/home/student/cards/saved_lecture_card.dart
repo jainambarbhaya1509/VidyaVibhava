@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-
-
 class LectureCard extends ConsumerStatefulWidget {
   const LectureCard({
     super.key,
