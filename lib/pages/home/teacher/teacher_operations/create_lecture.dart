@@ -42,7 +42,9 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
     );
     if (lecture == null)
       return;
-    else {}
+    else {
+      
+    }
 
     setState(() {
       this.lecture = lecture.files.first;
@@ -83,11 +85,11 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: const EdgeInsets.all(25),
+            margin: const EdgeInsets.all(10),
             child: Column(
               children: [
                 Material(
-                  elevation: 3,
+                  elevation: 1,
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
                     padding:
@@ -96,8 +98,8 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
                     height: MediaQuery.of(context).size.height * 0.7,
                     decoration: BoxDecoration(
                       color: theme
-                          ? Colors.white70
-                          : const Color.fromARGB(255, 62, 62, 62),
+                          ? const Color.fromARGB(211, 228, 228, 228)
+                          : const Color.fromARGB(255, 54, 54, 54),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: SingleChildScrollView(

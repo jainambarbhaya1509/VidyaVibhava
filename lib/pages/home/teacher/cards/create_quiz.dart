@@ -8,16 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:logger/web.dart';
 
-final quizQuestionProvider = Provider((ref) => addQuizQuestion);
-
-final addQuizQuestion = {
-  "quiz": {
-    "question": "",
-    "options": [],
-    "correctAnswer": "",
-  }
-};
-
 List<Map<String, dynamic>> listOfQuiz = [];
 
 class CreateQuiz extends ConsumerStatefulWidget {
@@ -38,8 +28,8 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
 
   @override
   Widget build(BuildContext context) {
+    // Logger().e(courseModules);
     String? correctAnswer = options.isNotEmpty ? options.first : null;
-    final courseQuiz = ref.watch(courseProvider);
     return Container(
       height: 700,
       width: double.infinity,
@@ -235,25 +225,29 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
               GestureDetector(
                 onTap: () {
                   Map<String, dynamic> addQuizQuestion = {
-                    "quiz": {
-                      "id": widget.questionIndex.toString(),
-                      "question": quizQuestionController.text,
-                      "options": options.toList(),
-                      "correctAnswer": correctAnswer!,
-                    }
+                    "id": widget.questionIndex.toString(),
+                    "question": quizQuestionController.text,
+                    "options": options.toList(),
+                    "correctAnswer": correctAnswer!,
                   };
 
                   if (listOfQuiz
-                      .where((element) =>
-                          addQuizQuestion["quiz"]["id"] ==
-                          element["quiz"]["id"])
+                      .where(
+                          (element) => addQuizQuestion["id"] == element["id"])
                       .toList()
                       .isNotEmpty) {
                     Logger().i("Question already exists");
                   } else {
-                    listOfQuiz.add(addQuizQuestion);
+                    Logger().i("Question added");
+
+                    for (var module in courseModules) {
+                      if (module["id"].toString() ==
+                          widget.questionIndex.toString()) {
+                        module["quiz"] = addQuizQuestion;
+                      }
+                    }
+                    Logger().f(courseModules);
                   }
-                  Logger().i(listOfQuiz);
 
                   Navigator.of(context).pop();
                 },

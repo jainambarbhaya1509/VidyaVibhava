@@ -1,4 +1,5 @@
 import 'package:final_project/pages/common/books/ebooks_screen.dart';
+import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/check_assignments.dart';
 import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/home_screen.dart';
 import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/profile_screen.dart';
 import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/teacher_stats.dart';
@@ -20,6 +21,7 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherScreen> {
   final List<Widget> body = const [
     TeacherHomeScreen(),
     EbooksScreen(),
+    CheckAssignments(),
     TeacherProfileScreen()
   ];
   @override
@@ -72,6 +74,21 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherScreen> {
             ),
             icon: const Icon(Icons.search_rounded),
             label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            tooltip: "Check Assignments",
+            activeIcon: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: GeneralAppIcon(
+                  icon: Icons.check_box_rounded,
+                  color: theme ? Colors.white : Colors.white),
+            ),
+            icon: const Icon(Icons.check_box_rounded),
+            label: 'Check Assignments',
           ),
           BottomNavigationBarItem(
             tooltip: "Profile",

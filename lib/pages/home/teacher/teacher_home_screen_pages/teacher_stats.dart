@@ -19,8 +19,6 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
 
   bool showAvg = false;
 
-  
-
   @override
   Widget build(BuildContext context) {
     final theme = ref.watch(settingsProvider);
@@ -36,9 +34,7 @@ class _LineChartSample2State extends ConsumerState<TeacherStatsScreen> {
                 weight: FontWeight.bold,
                 size: 20,
               ),
-              
 
-              
               const SizedBox(
                 height: 20,
               ),

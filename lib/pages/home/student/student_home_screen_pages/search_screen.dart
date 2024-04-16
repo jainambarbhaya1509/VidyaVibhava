@@ -30,7 +30,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget build(BuildContext context) {
     final theme = ref.watch(settingsProvider);
 
-    if  (widget.instructorName != null)  {
+    if (widget.instructorName != null) {
       searchQuery.text = (widget.instructorName)!;
     }
     return Container(

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:final_project/controllers/profile_controller.dart';
 import 'package:final_project/controllers/video_controller.dart';
@@ -24,31 +25,16 @@ import 'package:video_player/video_player.dart';
 
 final courseProvider = Provider((ref) => course);
 
-final List course = [
-  [
-    {
-      "course": {
-        "title": "",
-        "subject": "",
-        "description": "",
-        "tags": [],
-        "level": "",
-        "duration": "",
-        "courseModules": [
-          {
-            "title": "",
-            "url": "",
-            "quiz": {
-              "question": "",
-              "options": [],
-              "correctAnswer": "",
-            },
-          },
-        ],
-      },
-    }
-  ]
-];
+Map<String, dynamic> course = {
+  "title": "",
+  "subject": "",
+  "description": "",
+  "tags": [],
+  "level": "",
+  "duration": "",
+  "courseModules": [],
+};
+List<Map<String, dynamic>> courseModules = [];
 
 class CreateCourse extends ConsumerStatefulWidget {
   const CreateCourse({super.key});
@@ -64,38 +50,48 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
   final tagsController = TextEditingController();
   final subjectController = TextEditingController();
   final lectureLevel = ["Beginner", "Intermediate", "Advanced"];
-  String? selectedLevel;
+  String selectedLevel = "Beginner";
 
   List<VideoPlayerController>? controllers = [];
-
   final List uploadedVideos = [];
-
-  final createQuiz = [
-    {
-      "question": "",
-      "options": [],
-      "correctAnswer": "",
-    },
-  ];
 
   Future<void> uploadCourse() async {
     final result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
       type: FileType.custom,
-      allowedExtensions: ['mp4', 'avi', 'mkv', 'mov'],
+      allowedExtensions: ['mp4', 'avi', 'mkv', 'mov', 'mpeg'],
     );
 
     if (result == null || result.files.isEmpty) return;
 
     setState(() {
       uploadedVideos.addAll(result.files);
-
       controllers?.addAll(result.files.map((file) {
         return VideoPlayerController.file(File(file.path!))
           ..initialize().then((_) {
             setState(() {});
           });
       }).toList());
+
+      for (int i = 0; i < uploadedVideos.length; i++) {
+        Map<String, dynamic> module = {
+          "id": i.toString(),
+          "name": uploadedVideos[i].name,
+          "path": uploadedVideos[i].path,
+          "quiz": null
+        };
+        // Logger().f(videoQuiz[i]["id"]);
+        // for (int j = 0; j < uploadedVideos.length; j++) {
+        //   Logger().i(videoQuiz[j]);
+        //   if (uploadedVideos[i]["id"] == videoQuiz[j]["id"]) {
+        //     module["quiz"] = videoQuiz[j]["id"];
+        //     break;
+        //   }
+        // }
+
+        // Logger().f(module);
+        courseModules.add(module);
+      }
     });
   }
 
@@ -112,11 +108,11 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
   @override
   Widget build(BuildContext context) {
     final theme = ref.watch(settingsProvider.notifier).isLightMode;
-
     final profileController = Get.put(ProfileController());
     final videoController = Get.put(VideoController());
+
     final courseVideo = ref.watch(courseProvider);
-    final courseQuestion = ref.watch(quizQuestionProvider);
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -131,25 +127,24 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: const EdgeInsets.all(25),
+            margin: const EdgeInsets.all(10),
             child: Column(
               children: [
                 Material(
-                  elevation: 3,
+                  elevation: 1,
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
                     padding:
-                    const EdgeInsets.only(top: 30, left: 20, right: 20),
+                        const EdgeInsets.only(top: 30, left: 20, right: 20),
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height * 0.7,
                     decoration: BoxDecoration(
                       color: theme
-                          ? Colors.white70
-                          : const Color.fromARGB(255, 62, 62, 62),
+                          ? const Color.fromARGB(211, 228, 228, 228)
+                          : const Color.fromARGB(255, 54, 54, 54),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +161,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                             onTap: () => uploadCourse(),
                             child: Container(
                               padding:
-                              const EdgeInsets.symmetric(horizontal: 10),
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               alignment: Alignment.center,
                               height: 50,
                               width: double.infinity,
@@ -194,76 +189,76 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                           ),
                           const SizedBox(height: 10),
                           Container(
-                            height: 200,
+                            height: 300,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: primaryColor,
+                                color: Colors.grey,
                                 width: 1,
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: uploadedVideos.isEmpty
                                 ? Container(
-                              alignment: Alignment.center,
-                              child: GeneralAppText(
-                                text: "No videos uploaded",
-                                size: 16,
-                                color: Colors.white,
-                              ),
-                            )
+                                    alignment: Alignment.center,
+                                    child: GeneralAppText(
+                                      text: "No videos uploaded",
+                                      size: 16,
+                                      color: Colors.white,
+                                    ),
+                                  )
                                 : ListView.builder(
-                              itemCount: uploadedVideos.length,
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          right: 10, left: 10),
-                                      height: 50,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    itemCount: uploadedVideos.length,
+                                    scrollDirection: Axis.vertical,
+                                    itemBuilder: (context, index) {
+                                      return Column(
                                         children: [
-                                          GeneralAppText(
-                                            text: "${index + 1}. ",
-                                            size: 14,
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Expanded(
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                final controller =
-                                                controllers![index];
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return Dialog(
-                                                        child: Stack(
-                                                          alignment:
-                                                          Alignment
-                                                              .center,
-                                                          children: [
-                                                            Container(
-                                                                height:
-                                                                200,
-                                                                width: double
-                                                                    .infinity,
-                                                                decoration:
-                                                                BoxDecoration(
-                                                                  borderRadius:
-                                                                  BorderRadius.circular(10),
-                                                                ),
-                                                                child: controller
-                                                                    .value
-                                                                    .isInitialized
-                                                                    ? VideoPlayer(
-                                                                    controller)
-                                                                    : Container()),
-                                                            GestureDetector(
-                                                              onTap: () {
-                                                                setState(
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 10, left: 10),
+                                            height: 50,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                GeneralAppText(
+                                                  text: "${index + 1}. ",
+                                                  size: 14,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      final controller =
+                                                          controllers![index];
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return Dialog(
+                                                            child: Stack(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              children: [
+                                                                Container(
+                                                                    height: 200,
+                                                                    width: double
+                                                                        .infinity,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10),
+                                                                    ),
+                                                                    child: controller
+                                                                            .value
+                                                                            .isInitialized
+                                                                        ? VideoPlayer(
+                                                                            controller)
+                                                                        : Container()),
+                                                                GestureDetector(
+                                                                  onTap: () {
+                                                                    setState(
                                                                         () {
                                                                       if (controller
                                                                           .value
@@ -275,99 +270,108 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                                                             .play();
                                                                       }
                                                                     });
-                                                              },
-                                                              child:
-                                                              Container(
-                                                                height:
-                                                                50,
-                                                                width: 50,
-                                                                decoration:
-                                                                BoxDecoration(
-                                                                  color: theme
-                                                                      ? textColor1
-                                                                      : textColor2,
-                                                                  borderRadius:
-                                                                  BorderRadius.circular(50),
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    height: 50,
+                                                                    width: 50,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: theme
+                                                                          ? textColor1
+                                                                          : textColor2,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              50),
+                                                                    ),
+                                                                    child: Icon(
+                                                                      color: theme
+                                                                          ? textColor2
+                                                                          : textColor1,
+                                                                      controller
+                                                                              .value
+                                                                              .isPlaying
+                                                                          ? Icons
+                                                                              .pause
+                                                                          : Icons
+                                                                              .play_arrow,
+                                                                      size: 30,
+                                                                    ),
+                                                                  ),
                                                                 ),
-                                                                child:
-                                                                Icon(
-                                                                  color: theme
-                                                                      ? textColor2
-                                                                      : textColor1,
-                                                                  controller.value.isPlaying
-                                                                      ? Icons.pause
-                                                                      : Icons.play_arrow,
-                                                                  size:
-                                                                  30,
-                                                                ),
-                                                              ),
+                                                              ],
                                                             ),
-                                                          ],
-                                                        ),
+                                                          );
+                                                        },
                                                       );
-                                                    });
-                                              },
-                                              child: Container(
-                                                alignment:
-                                                Alignment.center,
-                                                padding: const EdgeInsets
-                                                    .symmetric(
-                                                    horizontal: 10),
-                                                height: 60,
-                                                child: GeneralAppText(
-                                                  text: uploadedVideos[
-                                                  index]
-                                                      ?.name ??
-                                                      "",
-                                                  size: 14,
-                                                  color: Colors.white,
+                                                    },
+                                                    child: Container(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 10),
+                                                      height: 60,
+                                                      child: GeneralAppText(
+                                                        text: uploadedVideos[
+                                                                    index]
+                                                                ?.name ??
+                                                            "",
+                                                        size: 14,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    showModalBottomSheet(
+                                                        isScrollControlled:
+                                                            true,
+                                                        isDismissible: true,
+                                                        context: context,
+                                                        builder: (builder) {
+                                                          return CreateQuiz(
+                                                            questionIndex:
+                                                                index,
+                                                          );
+                                                        });
+                                                  },
+                                                  child: GeneralAppIcon(
+                                                    icon: Icons.add_box_rounded,
+                                                    color: theme
+                                                        ? const Color.fromARGB(
+                                                            255, 54, 54, 54)
+                                                        : const Color.fromARGB(
+                                                            211, 228, 228, 228),
+                                                    size: 20,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 20,
+                                                ),
+                                                GeneralAppIcon(
+                                                  icon: Icons.delete,
+                                                  size: 20,
+                                                  color: Colors.redAccent,
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          GeneralAppIcon(
-                                            icon: Icons.delete,
-                                            size: 20,
-                                            color: Colors.redAccent,
+                                          Divider(
+                                            thickness: 0.5,
+                                            indent: 10,
+                                            endIndent: 10,
+                                            color: theme
+                                                ? const Color.fromARGB(
+                                                    255, 54, 54, 54)
+                                                : const Color.fromARGB(
+                                                    211, 228, 228, 228),
                                           ),
                                         ],
-                                      ),
-                                    ),
-                                    Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        const Divider(
-                                          thickness: 0.5,
-                                          indent: 20,
-                                          endIndent: 20,
-                                          color: Colors.grey,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                isDismissible: true,
-                                                context: context,
-                                                builder: (builder) {
-                                                  return CreateQuiz(
-                                                    questionIndex: index,
-                                                  );
-                                                });
-                                          },
-                                          child: GeneralAppIcon(
-                                            icon: Icons.add_box_rounded,
-                                            color: theme
-                                                ? Colors.grey
-                                                : Colors.white,
-                                            size: 25,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
+                                      );
+                                    },
+                                  ),
                           ),
                           const SizedBox(height: 20),
                           GeneralAppText(
@@ -481,15 +485,15 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                             child: DropdownButtonFormField<String>(
                               value: lectureLevel[0],
                               onChanged: (String? value) {
-                                selectedLevel = value;
+                                selectedLevel = value!;
                               },
                               items: lectureLevel.map<DropdownMenuItem<String>>(
-                                      (String level) {
-                                    return DropdownMenuItem<String>(
-                                      value: level,
-                                      child: Text(level),
-                                    );
-                                  }).toList(),
+                                  (String level) {
+                                return DropdownMenuItem<String>(
+                                  value: level,
+                                  child: Text(level),
+                                );
+                              }).toList(),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -531,39 +535,17 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
-                    print(uploadedVideos);
-                    print("Quiz : ${createQuiz}");
-                    if (checkAllFields()) {
+                    if (checkAllFields() == true) {
                       setState(
-                            () {
-                          courseVideo.add({
-                            "course": {
-                              "title": lectureTitleController.text,
-                              "subject": subjectController.text,
-                              "description": lectureDescriptionController.text,
-                              "tags": tagsController.text.split(",").map((e) {
-                                return e.trim();
-                              }).toList(),
-                              "level": selectedLevel,
-                              "duration": lectureDurationController.text,
-                              "courseModules": [
-                                {
-                                  "title": "",
-                                  "url": "",
-                                  "quiz": courseQuestion["quiz"] == null
-                                      ? {}
-                                      : {
-                                    "question": courseQuestion["quiz"]![
-                                    "question"],
-                                    "options": courseQuestion["quiz"]![
-                                    "options"],
-                                    "correctAnswer": courseQuestion[
-                                    "quiz"]!["correctAnswer"],
-                                  },
-                                },
-                              ],
-                            },
-                          });
+                        () {
+                          course["title"] = lectureTitleController.text;
+                          course["subject"] = subjectController.text;
+                          course["description"] =
+                              lectureDescriptionController.text;
+                          course["tags"] = tagsController.text.split(",");
+                          course["level"] = selectedLevel;
+                          course["duration"] = lectureDurationController.text;
+                          course["courseModules"] = courseModules;
                         },
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -576,23 +558,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                           backgroundColor: Colors.green,
                         ),
                       );
-                      print(courseVideo);
-                      Course course = Course(
-                        courseTitle: lectureTitleController.text,
-                        courseDescription: lectureDescriptionController.text,
-                        courseLoc: "",
-                        keywords: [""],
-                        difficultyLevel: selectedLevel!,
-                        duration: lectureDurationController.text,
-                        subject: subjectController.text,
-                        instructorName:
-                        await profileController.getUserFullName(),
-                        thumbnail: "thumbnail",
-                        instructorId: await profileController.getUserId(),
-                      );
-
-                      //videoController.createCourse(course, uploadedVideos);
-                      //courseVideos: courseVideos)
+                      Logger().i(courseVideo);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -605,7 +571,6 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                         ),
                       );
                     }
-                    Logger().d(course);
                   },
                   child: Container(
                     height: 50,

@@ -284,6 +284,9 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                                     text: "Jainam Barbhaya",
                                     weight: FontWeight.bold,
                                     size: 20,
+                                    color: theme.isLightMode == true
+                                        ? textColor1
+                                        : textColor2,
                                   ),
                                   const SizedBox(width: 10),
                                   GeneralAppIcon(

@@ -73,6 +73,7 @@ class _EbooksScreenState extends ConsumerState<EbooksScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         scrolledUnderElevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
         title: GeneralAppText(
