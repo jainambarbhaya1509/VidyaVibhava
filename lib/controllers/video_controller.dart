@@ -19,8 +19,8 @@ class VideoController extends GetxController {
     _videoRepo.createVideoDocument(video, lectureVideo, img);
   }
 
-  createCourse(Course course, List videoList) {
-    _videoRepo.createCourse(course, videoList);
+  createCourse(Course course, List combinedList) {
+    _videoRepo.createCourse(course, combinedList);
   }
 
   getVideos(String subject) {

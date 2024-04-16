@@ -163,7 +163,7 @@ class VideoRepository extends GetxController {
     }
   }
 
-  Future<void> createCourse(Course course, List videoList) async {
+  Future<void> createCourse(Course course, List combinedList) async {
     DocumentReference documentReference = await _db
         .collection("Courses")
         .add(course.toJson())
@@ -180,31 +180,121 @@ class VideoRepository extends GetxController {
           colorText: Colors.red);
       print(error.toString());
     });
-    List<String> idList =
-        await uploadCourseVideo(videoList, documentReference.id);
+    DocumentReference? contentDocRef;
+    for(int i=0;i<combinedList.length;i++){
+      if(combinedList[i]['type'] == "video"){
+        String id = await uploadCourseVideo(combinedList[i]["content"], documentReference.id);
+        await _db.collection("Courses").doc(documentReference.id).collection("CourseVideos").add({"videoId": id});
+        if(contentDocRef == null){
+          contentDocRef = await _db.collection("Courses").doc(documentReference.id).collection("CourseContent").add({"${combinedList[i]["IDCOUNTER"]}": "video,${id}"});
+        }else{
+          await contentDocRef.set({"${combinedList[i]["IDCOUNTER"]}": "video,${id}"}, SetOptions(merge: true));
+        }
+      }else{
+        String id = await uploadCourseQuiz(combinedList[i]["content"]);
+        await _db.collection("Courses").doc(documentReference.id).collection("CourseQuiz").add({"quizId": id});
+        if(contentDocRef == null){
+          contentDocRef = await _db.collection("Courses").doc(documentReference.id).collection("CourseContent").add({"${combinedList[i]["IDCOUNTER"]}": "quiz,${id}"});
+        }else{
+          await contentDocRef.set({"${combinedList[i]["IDCOUNTER"]}": "quiz,${id}"}, SetOptions(merge: true));
+        }
+      }
+    }
+    /*
+    //List<dynamic> combinedList = [];
+    int videoIndex = 0;
+    int quizIndex = 0;
+    int idCounter = 1;
+
+    while (videoIndex < videoList.length || quizIndex < quizList.length) {
+      //print(videoList[videoIndex]['index'].toString() == quizList[quizIndex]['quiz']['id'].toString());
+      // If both video and quiz are available and have the same index
+      if (videoIndex < videoList.length && quizIndex < quizList.length && videoList[videoIndex]['index'].toString() == quizList[quizIndex]['quiz']['id'].toString()) {
+        print("If condition enterd");
+
+        combinedList.add({"IDCOUNT":idCounter, "content" : videoList[videoIndex]});
+        videoIndex++;
+        idCounter++;
+        print("\n\n\n\n---------------Adding Quiz to database------------\n\n\n\n");
+        String id = await uploadCourseQuiz(quizList[quizIndex]);
+        await _db.collection("Courses").doc(documentReference.id).collection("CourseQuiz").add({"quizId": id});
+        await contentDocRef?.set({"${idCounter}": id}, SetOptions(merge: true));
+        combinedList.add({"IDCOUNT":idCounter, "content" : quizList[quizIndex]});
+        quizIndex++;
+        idCounter++;
+      }
+      // If only video is available
+      else if (videoIndex < videoList.length) {
+        /*String id = await uploadCourseVideo(videoList[videoIndex]["file"], documentReference.id);
+        await _db.collection("Courses").doc(documentReference.id).collection("CourseVideos").add({"videoId": id});
+        if(contentDocRef == null){
+          contentDocRef = await _db.collection("Courses").doc(documentReference.id).collection("CourseContent").add({"${idCounter}": id});
+        }else{
+          await contentDocRef.set({"${idCounter}": id}, SetOptions(merge: true));
+        }*/
+        combinedList.add({"IDCOUNT":idCounter, "content" : videoList[videoIndex]});
+        videoIndex++;
+        idCounter++;
+      }
+    }
+
+    print("Combined List: $combinedList");*/
+    /*List<Map<String, dynamic>> simplifiedList = [];
+
+    int idCounter = 1;
+    int videoIndex = 0;
+    int quizIndex = 0;
+    DocumentReference? contentDocRef;
+
+    while (videoIndex < videoList.length || quizIndex < quizList.length) {
+      if (videoIndex < videoList.length) {
+        //String id = await uploadCourseVideo(videoList[videoIndex], documentReference.id);
+        //await _db.collection("Courses").doc(documentReference.id).collection("CourseVideos").add({"videoId": id});
+        //if(contentDocRef == null){
+          //contentDocRef = await _db.collection("Courses").doc(documentReference.id).collection("CourseContent").add({"${idCounter}": id});
+        //}else{
+          //await contentDocRef.set({"${idCounter}": id}, SetOptions(merge: true));
+        //}
+
+        simplifiedList.add({'type': 'platformfile', 'index': idCounter++, 'video': videoList[videoIndex++]});
+
+      }
+      print("Length Val : ${quizList.length}");
+      if (quizIndex < quizList.length) {
+        print("Quiz Index : ${quizIndex}");
+        print("\n\n ------------------- \nIn quiz ka If Condition \n ---------------------- \n\n");
+        //String id = await uploadCourseQuiz(quizList[quizIndex]);
+        //await _db.collection("Courses").doc(documentReference.id).collection("CourseQuiz").add({"quizId": id});
+        //await _db.collection("Courses").doc(documentReference.id).collection("CourseContent").add({"${idCounter}": id});
+        //await contentDocRef?.set({"${idCounter}": id}, SetOptions(merge: true));
+        simplifiedList.add({'type': 'quiz', 'index': idCounter++, 'quizData': quizList[quizIndex]});
+        quizIndex++;
+      }
+    }
+    print("Everything successfully done");
+    print(simplifiedList);*/
+    /*List<String> idList = await uploadCourseVideo(videoList, documentReference.id);
     for (final id in idList) {
       print("Id Processing");
-      await _db
-          .collection("Courses")
-          .doc(documentReference.id)
-          .collection("CourseVideos")
-          .add({"videoId": id});
+      await _db.collection("Courses").doc(documentReference.id).collection("CourseVideos").add({"videoId": id});
       print("Id Done");
     }
-    print("Khalaas");
+
+    List<String> quizIdList = await uploadCourseQuiz(quizList, documentReference.id);
+    for (final id in idList) {
+      print("Id Processing");
+      await _db.collection("Courses").doc(documentReference.id).collection("CourseQuiz").add({"videoId": id});
+      print("Id Done");
+    }
+    print("Khalaas");*/
   }
 
-  Future<List<String>> uploadCourseVideo(List file, String? id) async {
-    late List<String> idList = [];
-
-    for (final video in file) {
+  Future<String> uploadCourseVideo(PlatformFile video, String? id) async {
       final duration = await getDuration(video);
       CourseVideo courseVideo =
           CourseVideo(videoTitle: video.name, videoLoc: "", duration: duration);
       DocumentReference documentReference =
           await _db.collection("VideoDetails").add(courseVideo.toJson());
-
-      idList.add(documentReference.id);
 
       final uploadTask = FirebaseStorage.instance
           .ref()
@@ -219,10 +309,19 @@ class VideoRepository extends GetxController {
           .collection("VideoDetails")
           .doc(documentReference.id)
           .update(updateData);
-    }
-    print(
-        "----------------------------------------------------------> Returning Id list");
-    return idList;
+
+      return documentReference.id;
+  }
+
+  Future<String> uploadCourseQuiz(Map<String, dynamic> quizMap) async {
+    print("\n\n ------------------- \nIn quiz ka Upload Function \n ---------------------- \n\n");
+    Map<String, dynamic>? quizData = quizMap['quiz'];
+    print("\n\n ------------------- \nMap Initialize Kiya ${quizMap} \n ---------------------- \n\n");
+    Quiz quiz = Quiz(question: quizMap["question"], options: quizMap["options"], correctOption: quizMap["correctAnswer"]);
+    print("\n\n ------------------- \nQuiz ka object Banaya\n ---------------------- \n\n");
+    DocumentReference documentReference = await _db.collection("Quiz").add(quiz.toJson());
+    print("\n\n ------------------- \nDocument in quiz created\n ---------------------- \n\n");
+    return documentReference.id;
   }
 
   Future<String> getDuration(PlatformFile file) async {

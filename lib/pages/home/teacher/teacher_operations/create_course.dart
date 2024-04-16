@@ -25,6 +25,7 @@ import 'package:video_player/video_player.dart';
 
 final courseProvider = Provider((ref) => course);
 
+<<<<<<< Updated upstream
 Map<String, dynamic> course = {
   "title": "",
   "subject": "",
@@ -36,6 +37,35 @@ Map<String, dynamic> course = {
 };
 List<Map<String, dynamic>> courseModules = [];
 
+=======
+final List course = [
+  [
+    {
+      "course": {
+        "title": "",
+        "subject": "",
+        "description": "",
+        "tags": [],
+        "level": "",
+        "duration": "",
+        "courseModules": [
+          {
+            "title": "",
+            "url": "",
+            "quiz": {
+              "question": "",
+              "options": [],
+              "correctAnswer": "",
+            },
+          },
+        ],
+      },
+    }
+  ]
+];
+List<Map<String, dynamic>> quizList = [];
+List<Map<String, dynamic>> videoList = [];
+>>>>>>> Stashed changes
 class CreateCourse extends ConsumerStatefulWidget {
   const CreateCourse({super.key});
 
@@ -108,6 +138,10 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
   @override
   Widget build(BuildContext context) {
     final theme = ref.watch(settingsProvider.notifier).isLightMode;
+<<<<<<< Updated upstream
+=======
+    //quizList.clear();
+>>>>>>> Stashed changes
     final profileController = Get.put(ProfileController());
     final videoController = Get.put(VideoController());
 
@@ -369,9 +403,50 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                                     211, 228, 228, 228),
                                           ),
                                         ],
+<<<<<<< Updated upstream
                                       );
                                     },
                                   ),
+=======
+                                      ),
+                                    ),
+                                    Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        const Divider(
+                                          thickness: 0.5,
+                                          indent: 20,
+                                          endIndent: 20,
+                                          color: Colors.grey,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                isDismissible: true,
+                                                context: context,
+                                                builder: (builder) {
+                                                  return CreateQuiz(
+                                                    questionIndex: index,
+                                                    quizList : quizList,
+                                                  );
+                                                });
+                                          },
+                                          child: GeneralAppIcon(
+                                            icon: Icons.add_box_rounded,
+                                            color: theme
+                                                ? Colors.grey
+                                                : Colors.white,
+                                            size: 25,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+>>>>>>> Stashed changes
                           ),
                           const SizedBox(height: 20),
                           GeneralAppText(
@@ -535,6 +610,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
+<<<<<<< Updated upstream
                     if (checkAllFields() == true) {
                       setState(
                         () {
@@ -546,8 +622,90 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                           course["level"] = selectedLevel;
                           course["duration"] = lectureDurationController.text;
                           course["courseModules"] = courseModules;
+=======
+
+                    if (checkAllFields()) {
+                      /*setState(
+                            () {
+                          courseVideo.add({
+                            "course": {
+                              "title": lectureTitleController.text,
+                              "subject": subjectController.text,
+                              "description": lectureDescriptionController.text,
+                              "tags": tagsController.text.split(",").map((e) {
+                                return e.trim();
+                              }).toList(),
+                              "level": selectedLevel,
+                              "duration": lectureDurationController.text,
+                              "courseModules": [
+                                {
+                                  "title": "",
+                                  "url": "",
+                                  "quiz": courseQuestion["quiz"] == null
+                                      ? {}
+                                      : {
+                                    "question": courseQuestion["quiz"]![
+                                    "question"],
+                                    "options": courseQuestion["quiz"]![
+                                    "options"],
+                                    "correctAnswer": courseQuestion[
+                                    "quiz"]!["correctAnswer"],
+                                  },
+                                },
+                              ],
+                            },
+                          });
+>>>>>>> Stashed changes
                         },
+                      );*/
+                      for (var i = 0; i < uploadedVideos.length; i++){
+                        videoList.add({"index":i, "file": uploadedVideos[i]});
+                      }
+                      print("Uploaded Video : ${uploadedVideos}");
+                      print("Video List : ${videoList}");
+                      print("Quiz : ${quizList}");
+                      Course course = Course(
+                        courseTitle: lectureTitleController.text,
+                        courseDescription: lectureDescriptionController.text,
+                        courseLoc: "",
+                        keywords: [""],
+                        difficultyLevel: selectedLevel!,
+                        duration: lectureDurationController.text,
+                        subject: subjectController.text,
+                        instructorName: await profileController.getUserFullName(),
+                        thumbnail: "thumbnail",
+                        instructorId: await profileController.getUserId(),
                       );
+
+                      List<dynamic> combinedList = [];
+                      int videoIndex = 0;
+                      int quizIndex = 0;
+                      int idCounter = 1;
+                      while (videoIndex < videoList.length || quizIndex < quizList.length) {
+                        print("VideoList length : ${videoList.length}");
+                        print("Video Index : ${videoIndex}");
+                        print("QuizList length : ${quizList.length}");
+                        print("Quiz Index : ${quizIndex}");
+                        //print(videoList[videoIndex]['index'].toString() == quizList[quizIndex]['quiz']['id'].toString());
+                        // If both video and quiz are available and have the same index
+                        if (videoIndex < videoList.length && quizIndex < quizList.length && videoList[videoIndex]['index'].toString() == quizList[quizIndex]['quiz']['id'].toString()) {
+                          combinedList.add({"IDCOUNTER":idCounter, "type":"video", "content":videoList[videoIndex]['file']});
+                          videoIndex++;
+                          idCounter++;
+                          combinedList.add({"IDCOUNTER":idCounter, "type":"quiz", "content":quizList[quizIndex]['quiz']});
+                          quizIndex++;
+                          idCounter++;
+                        }
+                        // If only video is available
+                        else if (videoIndex < videoList.length) {
+                          combinedList.add({"IDCOUNTER":idCounter, "type":"video", "content":videoList[videoIndex]['file']});
+                          videoIndex++;
+                          idCounter++;
+                        }
+                      }
+
+                      print("Combined List: $combinedList");
+                      videoController.createCourse(course, combinedList);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: GeneralAppText(
@@ -558,7 +716,12 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                           backgroundColor: Colors.green,
                         ),
                       );
+<<<<<<< Updated upstream
                       Logger().i(courseVideo);
+=======
+                      quizList.clear();
+                      videoList.clear();
+>>>>>>> Stashed changes
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -571,6 +734,10 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                         ),
                       );
                     }
+<<<<<<< Updated upstream
+=======
+                    //Logger().d(course);
+>>>>>>> Stashed changes
                   },
                   child: Container(
                     height: 50,

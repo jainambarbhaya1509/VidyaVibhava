@@ -12,7 +12,8 @@ List<Map<String, dynamic>> listOfQuiz = [];
 
 class CreateQuiz extends ConsumerStatefulWidget {
   final int questionIndex;
-  const CreateQuiz({super.key, required this.questionIndex});
+  final List<Map<String, dynamic>> quizList;
+  const CreateQuiz({super.key, required this.questionIndex, required this.quizList});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CreateQuizState();
@@ -28,7 +29,6 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
 
   @override
   Widget build(BuildContext context) {
-    // Logger().e(courseModules);
     String? correctAnswer = options.isNotEmpty ? options.first : null;
     return Container(
       height: 700,
@@ -152,6 +152,16 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextField(
                           controller: option4Controller,
+                          onChanged: (String val){
+                            setState(() {
+                              options = [
+                                option1Controller.text,
+                                option2Controller.text,
+                                option3Controller.text,
+                                option4Controller.text
+                              ];
+                            });
+                          },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -230,7 +240,7 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                     "options": options.toList(),
                     "correctAnswer": correctAnswer!,
                   };
-
+                  quizList.add(addQuizQuestion);
                   if (listOfQuiz
                       .where(
                           (element) => addQuizQuestion["id"] == element["id"])
@@ -238,6 +248,9 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                       .isNotEmpty) {
                     Logger().i("Question already exists");
                   } else {
+                    listOfQuiz.add(addQuizQuestion);
+                    //quizList.add(addQuizQuestion);
+<<<<<<< Updated upstream
                     Logger().i("Question added");
 
                     for (var module in courseModules) {
@@ -247,6 +260,8 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                       }
                     }
                     Logger().f(courseModules);
+=======
+>>>>>>> Stashed changes
                   }
 
                   Navigator.of(context).pop();

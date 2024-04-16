@@ -378,22 +378,20 @@ class Assignment {
   }
 }
 
-
 class Quiz {
   late String? quizId;
-  final int index;
   final List<dynamic> options;
-  final String correctOption;
+  final String question,correctOption;
 
   Quiz(
       {this.quizId,
-      required this.index,
+        required this.question,
       required this.options,
       required this.correctOption});
   Map<String, dynamic> toJson() {
     return {
-      'courseId': quizId,
-      'index': index,
+      'quizId': quizId,
+      'question' : question,
       'options': options,
       'correctOption': correctOption,
     };
@@ -404,7 +402,7 @@ class Quiz {
 
     return Quiz(
       quizId: document.id,
-      index: data["index"],
+      question: data["question"],
       options: List<String>.from(data["options"]),
       correctOption: data["correctOption"],
     );
