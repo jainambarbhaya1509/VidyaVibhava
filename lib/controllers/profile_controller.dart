@@ -72,11 +72,11 @@ class ProfileController extends GetxController {
     }
   }
 
-  getAssignmentData(){
+  getAssignmentData() {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    if(uid != null){
+    if (uid != null) {
       return _userRepo.getAssignmentByStudentId(uid);
-    }else{
+    } else {
       Get.snackbar("Error", "Login to Continue");
     }
   }

@@ -241,28 +241,25 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                     "correctAnswer": correctAnswer!,
                   };
                   quizList.add(addQuizQuestion);
-                  if (listOfQuiz
-                      .where(
-                          (element) => addQuizQuestion["id"] == element["id"])
-                      .toList()
-                      .isNotEmpty) {
-                    Logger().i("Question already exists");
-                  } else {
-                    listOfQuiz.add(addQuizQuestion);
-                    //quizList.add(addQuizQuestion);
-<<<<<<< Updated upstream
-                    Logger().i("Question added");
+                  // if (listOfQuiz
+                  //     .where(
+                  //         (element) => addQuizQuestion["id"] == element["id"])
+                  //     .toList()
+                  //     .isNotEmpty) {
+                  //   Logger().i("Question already exists");
+                  // } else {
+                  //   listOfQuiz.add(addQuizQuestion);
+                  //   //quizList.add(addQuizQuestion);
+                  //   Logger().i("Question added");
 
-                    for (var module in courseModules) {
-                      if (module["id"].toString() ==
-                          widget.questionIndex.toString()) {
-                        module["quiz"] = addQuizQuestion;
-                      }
-                    }
-                    Logger().f(courseModules);
-=======
->>>>>>> Stashed changes
-                  }
+                  //   for (var module in courseModules) {
+                  //     if (module["id"].toString() ==
+                  //         widget.questionIndex.toString()) {
+                  //       module["quiz"] = addQuizQuestion;
+                  //     }
+                  //   }
+                  //   Logger().f(courseModules);
+                  // }
 
                   Navigator.of(context).pop();
                 },

@@ -210,13 +210,13 @@ class _AssignmentDetailsState extends ConsumerState<AssignmentDetails> {
             height: 20,
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               print(uploadedFiles);
               final data = {
-                "isSubmitted":true,
-                "submittedOn":Timestamp.now(),
-                "assignmentDoc" : "",
-                "gradeAssigned":""
+                "isSubmitted": true,
+                "submittedOn": Timestamp.now(),
+                "assignmentDoc": "",
+                "gradeAssigned": ""
               };
             },
             child: Container(

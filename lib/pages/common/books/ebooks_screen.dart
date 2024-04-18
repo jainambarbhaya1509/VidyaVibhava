@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:final_project/pages/common/books/books_modal.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/saved_books.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+
+final booksData = [];
 
 class EbooksScreen extends ConsumerStatefulWidget {
   const EbooksScreen({super.key});
@@ -16,13 +19,7 @@ class EbooksScreen extends ConsumerStatefulWidget {
 }
 
 class _EbooksScreenState extends ConsumerState<EbooksScreen> {
-  List<dynamic> _bookCoverPage = [];
-  List<dynamic> _bookTitle = [];
-
   Future<List<dynamic>> fetchBookData() async {
-    List<String> imageUrls = [];
-    List<String> bookTitles = [];
-
     final response = await http.get(Uri.parse('https://gutendex.com/books/'));
 
     if (response.statusCode == 200) {
@@ -32,18 +29,23 @@ class _EbooksScreenState extends ConsumerState<EbooksScreen> {
 
       for (var item in results) {
         if (item['formats'] != null && item['formats']['image/jpeg'] != null) {
-          String imageUrl = item['formats']['image/jpeg'];
-          imageUrls.add(imageUrl);
+          Map<String, dynamic> book = {
+            'title': item['title'],
+            'imageUrl': item['formats']['image/jpeg'],
+          };
 
-          String title = item['title'];
-          bookTitles.add(title);
+          if (mounted) {
+            setState(() {
+              booksData.add(book);
+            });
+          }
         }
       }
     } else {
       throw Exception('Failed to load data');
     }
 
-    return [imageUrls, bookTitles];
+    return booksData;
   }
 
   @override
@@ -51,16 +53,12 @@ class _EbooksScreenState extends ConsumerState<EbooksScreen> {
     super.initState();
     fetchBookData().then((data) {
       if (mounted) {
-        setState(() {
-          _bookCoverPage = data.elementAt(0) as List<String>;
-          _bookTitle = data.elementAt(1) as List<String>;
-        });
+        booksData.addAll(data);
       }
     }).catchError((error) {
       if (!mounted) {
         setState(() {
-          _bookCoverPage = [];
-          _bookTitle = [];
+          booksData.clear();
         });
       }
     });
@@ -73,14 +71,28 @@ class _EbooksScreenState extends ConsumerState<EbooksScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        scrolledUnderElevation: 0,
+        forceMaterialTransparency: true,
         backgroundColor: Theme.of(context).primaryColor,
         title: GeneralAppText(
           text: 'Library',
-          size: 23,
+          size: 20,
           weight: FontWeight.bold,
         ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (builder) => const SavedBooks()));
+            },
+            child: Container(
+                margin: const EdgeInsets.only(right: 20),
+                child: GeneralAppText(
+                  text: "Collection",
+                  size: 15,
+                  weight: FontWeight.bold,
+                )),
+          )
+        ],
       ),
       body: Container(
         margin: const EdgeInsets.only(left: 10, right: 10),
@@ -109,29 +121,19 @@ class _EbooksScreenState extends ConsumerState<EbooksScreen> {
             const SizedBox(
               height: 20,
             ),
-            _bookCoverPage.isEmpty
+            booksData.isEmpty
                 ? const CircularProgressIndicator()
                 : Expanded(
                     child: RefreshIndicator(
                       displacement: 20,
                       color: primaryColor,
-                      onRefresh: () => fetchBookData().then((data) {
-                        if (mounted) {
-                          setState(() {
-                            _bookCoverPage = data.elementAt(0) as List<String>;
-                            _bookTitle = data.elementAt(1) as List<String>;
-                          });
-                        }
-                      }).catchError((error) {
-                        if (!mounted) {
-                          setState(() {
-                            _bookCoverPage = [];
-                            _bookTitle = [];
-                          });
-                        }
-                      }),
+                      onRefresh: () {
+                        booksData.clear();
+                        return fetchBookData().catchError((error) {
+                          return [];
+                        });
+                      },
                       child: GridView.builder(
-                        // physics: const NeverScrollableScrollPhysics(),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio: 3 / 4,
@@ -139,7 +141,7 @@ class _EbooksScreenState extends ConsumerState<EbooksScreen> {
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                         ),
-                        itemCount: _bookCoverPage.length,
+                        itemCount: booksData.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
@@ -147,8 +149,8 @@ class _EbooksScreenState extends ConsumerState<EbooksScreen> {
                                   context: context,
                                   builder: (context) {
                                     return BooksModal(
-                                      imageUrl: _bookCoverPage[index],
-                                      bookTitle: _bookTitle[index],
+                                      imageUrl: booksData[index]["imageUrl"],
+                                      bookTitle: booksData[index]["title"],
                                     );
                                   });
                             },
@@ -168,7 +170,7 @@ class _EbooksScreenState extends ConsumerState<EbooksScreen> {
                                     children: [
                                       Expanded(
                                         child: Image.network(
-                                          _bookCoverPage[index],
+                                          booksData[index]["imageUrl"],
                                           loadingBuilder: (BuildContext context,
                                               Widget child,
                                               ImageChunkEvent?
@@ -207,5 +209,11 @@ class _EbooksScreenState extends ConsumerState<EbooksScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    booksData.clear();
+    super.dispose();
   }
 }

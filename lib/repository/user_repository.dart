@@ -317,11 +317,12 @@ class UserRepository extends GetxController {
       await _db.collection("Assignment").add(assignment.toJson());
       //update Associated Users
       final data = {
-        "assignmentId" : assignment.assignmentId,
-        "isSubmitted":false
+        "assignmentId": assignment.assignmentId,
+        "isSubmitted": false
       };
-      final snapshot = await _db.collection("Users").where("mentorId",isEqualTo: uid).get();
-      for(final doc in snapshot.docs){
+      final snapshot =
+          await _db.collection("Users").where("mentorId", isEqualTo: uid).get();
+      for (final doc in snapshot.docs) {
         await doc.reference.collection("Assignments").add(data);
       }
       // If the assignment is added successfully, return true
@@ -342,14 +343,18 @@ class UserRepository extends GetxController {
       final userAssignmentSnapshot =
           await userDoc.reference.collection('Assignments').get();
 
-      for(final assignment in userAssignmentSnapshot.docs){
-        final AssignmentSnapshot = await _db.collection("Assignment").where("assignmentId", isEqualTo: assignment.data()["assignmentId"]).get();
-        assignmentList.addAll(AssignmentSnapshot.docs.map((e) => Assignment.fromSnapshot(e)));
+      for (final assignment in userAssignmentSnapshot.docs) {
+        final AssignmentSnapshot = await _db
+            .collection("Assignment")
+            .where("assignmentId", isEqualTo: assignment.data()["assignmentId"])
+            .get();
+        assignmentList.addAll(
+            AssignmentSnapshot.docs.map((e) => Assignment.fromSnapshot(e)));
       }
       return assignmentList;
     } else {
-    //print("In user repo else encountered");
-    return [];
+      //print("In user repo else encountered");
+      return [];
     }
   }
 }

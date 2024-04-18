@@ -182,20 +182,20 @@ class _CreateAssignmentState extends ConsumerState<CreateAssignment> {
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () async {
-                  Timestamp timestamp = Timestamp.fromDate(DateTime.parse(dueDateController.text));
+                  Timestamp timestamp = Timestamp.fromDate(
+                      DateTime.parse(dueDateController.text));
 
                   Assignment assignment = Assignment(
-                      title : assignmentTitleController.text,
+                      title: assignmentTitleController.text,
                       question: assignmentQuestionController.text,
                       dueDate: timestamp,
                       totalMarks: marksController.text);
 
-                  if(teacherController.createAssignment(assignment)){
+                  if (teacherController.createAssignment(assignment)) {
                     //Add snackbar and close the create Assignment Widget
-                  }else{
-                  //Add system error snackbar and close the create Assignment Widget
+                  } else {
+                    //Add system error snackbar and close the create Assignment Widget
                   }
-
                 },
                 child: Container(
                   alignment: Alignment.center,

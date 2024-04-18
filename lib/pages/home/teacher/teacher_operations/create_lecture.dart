@@ -42,9 +42,7 @@ class _CreateLectureState extends ConsumerState<CreateLecture> {
     );
     if (lecture == null)
       return;
-    else {
-      
-    }
+    else {}
 
     setState(() {
       this.lecture = lecture.files.first;

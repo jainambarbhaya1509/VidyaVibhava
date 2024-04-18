@@ -23,49 +23,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:logger/web.dart';
 import 'package:video_player/video_player.dart';
 
-final courseProvider = Provider((ref) => course);
-
-<<<<<<< Updated upstream
-Map<String, dynamic> course = {
-  "title": "",
-  "subject": "",
-  "description": "",
-  "tags": [],
-  "level": "",
-  "duration": "",
-  "courseModules": [],
-};
-List<Map<String, dynamic>> courseModules = [];
-
-=======
-final List course = [
-  [
-    {
-      "course": {
-        "title": "",
-        "subject": "",
-        "description": "",
-        "tags": [],
-        "level": "",
-        "duration": "",
-        "courseModules": [
-          {
-            "title": "",
-            "url": "",
-            "quiz": {
-              "question": "",
-              "options": [],
-              "correctAnswer": "",
-            },
-          },
-        ],
-      },
-    }
-  ]
-];
 List<Map<String, dynamic>> quizList = [];
 List<Map<String, dynamic>> videoList = [];
->>>>>>> Stashed changes
+
 class CreateCourse extends ConsumerStatefulWidget {
   const CreateCourse({super.key});
 
@@ -89,7 +49,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
     final result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
       type: FileType.custom,
-      allowedExtensions: ['mp4', 'avi', 'mkv', 'mov', 'mpeg'],
+      allowedExtensions: ['mp4', 'avi', 'mkv', 'mov'],
     );
 
     if (result == null || result.files.isEmpty) return;
@@ -120,7 +80,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
         // }
 
         // Logger().f(module);
-        courseModules.add(module);
+        // courseModules.add(module);
       }
     });
   }
@@ -138,14 +98,8 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
   @override
   Widget build(BuildContext context) {
     final theme = ref.watch(settingsProvider.notifier).isLightMode;
-<<<<<<< Updated upstream
-=======
-    //quizList.clear();
->>>>>>> Stashed changes
     final profileController = Get.put(ProfileController());
     final videoController = Get.put(VideoController());
-
-    final courseVideo = ref.watch(courseProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -253,7 +207,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                             height: 50,
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
+                                                  MainAxisAlignment.spaceAround,
                                               children: [
                                                 GeneralAppText(
                                                   text: "${index + 1}. ",
@@ -266,78 +220,75 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                                       final controller =
                                                           controllers![index];
                                                       showDialog(
-                                                        context: context,
-                                                        builder: (context) {
-                                                          return Dialog(
-                                                            child: Stack(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              children: [
-                                                                Container(
-                                                                    height: 200,
-                                                                    width: double
-                                                                        .infinity,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
-                                                                    ),
-                                                                    child: controller
-                                                                            .value
-                                                                            .isInitialized
-                                                                        ? VideoPlayer(
-                                                                            controller)
-                                                                        : Container()),
-                                                                GestureDetector(
-                                                                  onTap: () {
-                                                                    setState(
-                                                                        () {
-                                                                      if (controller
-                                                                          .value
-                                                                          .isPlaying) {
-                                                                        controller
-                                                                            .pause();
-                                                                      } else {
-                                                                        controller
-                                                                            .play();
-                                                                      }
-                                                                    });
-                                                                  },
-                                                                  child:
-                                                                      Container(
-                                                                    height: 50,
-                                                                    width: 50,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: theme
-                                                                          ? textColor1
-                                                                          : textColor2,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              50),
-                                                                    ),
-                                                                    child: Icon(
-                                                                      color: theme
-                                                                          ? textColor2
-                                                                          : textColor1,
-                                                                      controller
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return Dialog(
+                                                              child: Stack(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                children: [
+                                                                  Container(
+                                                                      height:
+                                                                          200,
+                                                                      width: double
+                                                                          .infinity,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10),
+                                                                      ),
+                                                                      child: controller
                                                                               .value
-                                                                              .isPlaying
-                                                                          ? Icons
-                                                                              .pause
-                                                                          : Icons
-                                                                              .play_arrow,
-                                                                      size: 30,
+                                                                              .isInitialized
+                                                                          ? VideoPlayer(
+                                                                              controller)
+                                                                          : Container()),
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      setState(
+                                                                          () {
+                                                                        if (controller
+                                                                            .value
+                                                                            .isPlaying) {
+                                                                          controller
+                                                                              .pause();
+                                                                        } else {
+                                                                          controller
+                                                                              .play();
+                                                                        }
+                                                                      });
+                                                                    },
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          50,
+                                                                      width: 50,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: theme
+                                                                            ? textColor1
+                                                                            : textColor2,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(50),
+                                                                      ),
+                                                                      child:
+                                                                          Icon(
+                                                                        color: theme
+                                                                            ? textColor2
+                                                                            : textColor1,
+                                                                        controller.value.isPlaying
+                                                                            ? Icons.pause
+                                                                            : Icons.play_arrow,
+                                                                        size:
+                                                                            30,
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          );
-                                                        },
-                                                      );
+                                                                ],
+                                                              ),
+                                                            );
+                                                          });
                                                     },
                                                     child: Container(
                                                       alignment:
@@ -357,33 +308,6 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                                     ),
                                                   ),
                                                 ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    showModalBottomSheet(
-                                                        isScrollControlled:
-                                                            true,
-                                                        isDismissible: true,
-                                                        context: context,
-                                                        builder: (builder) {
-                                                          return CreateQuiz(
-                                                            questionIndex:
-                                                                index,
-                                                          );
-                                                        });
-                                                  },
-                                                  child: GeneralAppIcon(
-                                                    icon: Icons.add_box_rounded,
-                                                    color: theme
-                                                        ? const Color.fromARGB(
-                                                            255, 54, 54, 54)
-                                                        : const Color.fromARGB(
-                                                            211, 228, 228, 228),
-                                                    size: 20,
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 20,
-                                                ),
                                                 GeneralAppIcon(
                                                   icon: Icons.delete,
                                                   size: 20,
@@ -392,61 +316,42 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                               ],
                                             ),
                                           ),
-                                          Divider(
-                                            thickness: 0.5,
-                                            indent: 10,
-                                            endIndent: 10,
-                                            color: theme
-                                                ? const Color.fromARGB(
-                                                    255, 54, 54, 54)
-                                                : const Color.fromARGB(
-                                                    211, 228, 228, 228),
+                                          Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              const Divider(
+                                                thickness: 0.5,
+                                                indent: 20,
+                                                endIndent: 20,
+                                                color: Colors.grey,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      isDismissible: true,
+                                                      context: context,
+                                                      builder: (builder) {
+                                                        return CreateQuiz(
+                                                          questionIndex: index,
+                                                          quizList: quizList,
+                                                        );
+                                                      });
+                                                },
+                                                child: GeneralAppIcon(
+                                                  icon: Icons.add_box_rounded,
+                                                  color: theme
+                                                      ? Colors.grey
+                                                      : Colors.white,
+                                                  size: 25,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
-<<<<<<< Updated upstream
                                       );
                                     },
                                   ),
-=======
-                                      ),
-                                    ),
-                                    Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        const Divider(
-                                          thickness: 0.5,
-                                          indent: 20,
-                                          endIndent: 20,
-                                          color: Colors.grey,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                isDismissible: true,
-                                                context: context,
-                                                builder: (builder) {
-                                                  return CreateQuiz(
-                                                    questionIndex: index,
-                                                    quizList : quizList,
-                                                  );
-                                                });
-                                          },
-                                          child: GeneralAppIcon(
-                                            icon: Icons.add_box_rounded,
-                                            color: theme
-                                                ? Colors.grey
-                                                : Colors.white,
-                                            size: 25,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
->>>>>>> Stashed changes
                           ),
                           const SizedBox(height: 20),
                           GeneralAppText(
@@ -610,56 +515,9 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
-<<<<<<< Updated upstream
                     if (checkAllFields() == true) {
-                      setState(
-                        () {
-                          course["title"] = lectureTitleController.text;
-                          course["subject"] = subjectController.text;
-                          course["description"] =
-                              lectureDescriptionController.text;
-                          course["tags"] = tagsController.text.split(",");
-                          course["level"] = selectedLevel;
-                          course["duration"] = lectureDurationController.text;
-                          course["courseModules"] = courseModules;
-=======
-
-                    if (checkAllFields()) {
-                      /*setState(
-                            () {
-                          courseVideo.add({
-                            "course": {
-                              "title": lectureTitleController.text,
-                              "subject": subjectController.text,
-                              "description": lectureDescriptionController.text,
-                              "tags": tagsController.text.split(",").map((e) {
-                                return e.trim();
-                              }).toList(),
-                              "level": selectedLevel,
-                              "duration": lectureDurationController.text,
-                              "courseModules": [
-                                {
-                                  "title": "",
-                                  "url": "",
-                                  "quiz": courseQuestion["quiz"] == null
-                                      ? {}
-                                      : {
-                                    "question": courseQuestion["quiz"]![
-                                    "question"],
-                                    "options": courseQuestion["quiz"]![
-                                    "options"],
-                                    "correctAnswer": courseQuestion[
-                                    "quiz"]!["correctAnswer"],
-                                  },
-                                },
-                              ],
-                            },
-                          });
->>>>>>> Stashed changes
-                        },
-                      );*/
-                      for (var i = 0; i < uploadedVideos.length; i++){
-                        videoList.add({"index":i, "file": uploadedVideos[i]});
+                      for (var i = 0; i < uploadedVideos.length; i++) {
+                        videoList.add({"index": i, "file": uploadedVideos[i]});
                       }
                       print("Uploaded Video : ${uploadedVideos}");
                       print("Video List : ${videoList}");
@@ -672,7 +530,8 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                         difficultyLevel: selectedLevel!,
                         duration: lectureDurationController.text,
                         subject: subjectController.text,
-                        instructorName: await profileController.getUserFullName(),
+                        instructorName:
+                            await profileController.getUserFullName(),
                         thumbnail: "thumbnail",
                         instructorId: await profileController.getUserId(),
                       );
@@ -681,24 +540,40 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                       int videoIndex = 0;
                       int quizIndex = 0;
                       int idCounter = 1;
-                      while (videoIndex < videoList.length || quizIndex < quizList.length) {
+                      while (videoIndex < videoList.length ||
+                          quizIndex < quizList.length) {
                         print("VideoList length : ${videoList.length}");
                         print("Video Index : ${videoIndex}");
                         print("QuizList length : ${quizList.length}");
                         print("Quiz Index : ${quizIndex}");
                         //print(videoList[videoIndex]['index'].toString() == quizList[quizIndex]['quiz']['id'].toString());
                         // If both video and quiz are available and have the same index
-                        if (videoIndex < videoList.length && quizIndex < quizList.length && videoList[videoIndex]['index'].toString() == quizList[quizIndex]['quiz']['id'].toString()) {
-                          combinedList.add({"IDCOUNTER":idCounter, "type":"video", "content":videoList[videoIndex]['file']});
+                        if (videoIndex < videoList.length &&
+                            quizIndex < quizList.length &&
+                            videoList[videoIndex]['index'].toString() ==
+                                quizList[quizIndex]['quiz']['id'].toString()) {
+                          combinedList.add({
+                            "IDCOUNTER": idCounter,
+                            "type": "video",
+                            "content": videoList[videoIndex]['file']
+                          });
                           videoIndex++;
                           idCounter++;
-                          combinedList.add({"IDCOUNTER":idCounter, "type":"quiz", "content":quizList[quizIndex]['quiz']});
+                          combinedList.add({
+                            "IDCOUNTER": idCounter,
+                            "type": "quiz",
+                            "content": quizList[quizIndex]['quiz']
+                          });
                           quizIndex++;
                           idCounter++;
                         }
                         // If only video is available
                         else if (videoIndex < videoList.length) {
-                          combinedList.add({"IDCOUNTER":idCounter, "type":"video", "content":videoList[videoIndex]['file']});
+                          combinedList.add({
+                            "IDCOUNTER": idCounter,
+                            "type": "video",
+                            "content": videoList[videoIndex]['file']
+                          });
                           videoIndex++;
                           idCounter++;
                         }
@@ -716,12 +591,8 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                           backgroundColor: Colors.green,
                         ),
                       );
-<<<<<<< Updated upstream
-                      Logger().i(courseVideo);
-=======
                       quizList.clear();
                       videoList.clear();
->>>>>>> Stashed changes
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -734,10 +605,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                         ),
                       );
                     }
-<<<<<<< Updated upstream
-=======
                     //Logger().d(course);
->>>>>>> Stashed changes
                   },
                   child: Container(
                     height: 50,

@@ -461,296 +461,296 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
                         //webview display start
                         //Webviw display end
 
-                        // videos uploaded by teacher/mentor
-                        GeneralAppText(
-                          text: "Your Videos",
-                          size: 20,
+                // videos uploaded by teacher/mentor
+                GeneralAppText(
+                  text: "Your Videos",
+                  size: 20,
+                  color: theme.isLightMode ? textColor1 : textColor2,
+                  weight: FontWeight.bold,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                uploadedVideos.isEmpty
+                    ? Container(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: theme.isLightMode ? textColor2 : textColor1,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GeneralAppText(
+                              text: "No Videos Found",
+                              size: 20,
+                              color:
+                                  theme.isLightMode ? textColor1 : textColor2,
+                              weight: FontWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GeneralAppText(
+                              text: "You have not uploaded any videos yet",
+                              size: 16,
+                              color:
+                                  theme.isLightMode ? textColor1 : textColor2,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        height: 300,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
                           color: theme.isLightMode ? textColor1 : textColor2,
-                          weight: FontWeight.bold,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        uploadedVideos.isEmpty
-                            ? Container(
-                          height: 200,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: theme.isLightMode ? textColor2 : textColor1,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              GeneralAppText(
-                                text: "No Videos Found",
-                                size: 20,
+                        child: ListView.builder(
+                          itemCount: uploadedVideos.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.all(5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              height: 60,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
                                 color:
-                                theme.isLightMode ? textColor1 : textColor2,
-                                weight: FontWeight.bold,
+                                    theme.isLightMode ? textColor2 : textColor1,
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              GeneralAppText(
-                                text: "You have not uploaded any videos yet",
-                                size: 16,
-                                color:
-                                theme.isLightMode ? textColor1 : textColor2,
-                              ),
-                            ],
-                          ),
-                        )
-                            : Container(
-                          height: 300,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: theme.isLightMode ? textColor1 : textColor2,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ListView.builder(
-                            itemCount: uploadedVideos.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: const EdgeInsets.all(5),
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 10),
-                                height: 60,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  color:
-                                  theme.isLightMode ? textColor2 : textColor1,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: GeneralAppText(
-                                        text:
-                                        "${index + 1}. ${uploadedVideos[index]}",
-                                        size: 13,
-                                        color: theme.isLightMode
-                                            ? textColor2
-                                            : textColor1,
-                                      ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: GeneralAppText(
+                                      text:
+                                          "${index + 1}. ${uploadedVideos[index]}",
+                                      size: 13,
+                                      color: theme.isLightMode
+                                          ? textColor2
+                                          : textColor1,
                                     ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    GeneralAppIcon(
-                                      icon: Icons.delete,
-                                      color:
-                                      const Color.fromARGB(255, 255, 97, 85),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GeneralAppIcon(
+                                    icon: Icons.delete,
+                                    color:
+                                        const Color.fromARGB(255, 255, 97, 85),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                        const SizedBox(
-                          height: 30,
+                      ),
+                const SizedBox(
+                  height: 30,
+                ),
+                GeneralAppText(
+                  text: "Your Courses",
+                  size: 20,
+                  color: theme.isLightMode ? textColor1 : textColor2,
+                  weight: FontWeight.bold,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                uploadedCourses.isEmpty
+                    ? Container(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: theme.isLightMode ? textColor2 : textColor1,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        GeneralAppText(
-                          text: "Your Courses",
-                          size: 20,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GeneralAppText(
+                              text: "No Courses Found",
+                              size: 20,
+                              color:
+                                  theme.isLightMode ? textColor1 : textColor2,
+                              weight: FontWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GeneralAppText(
+                              text: "You have not uploaded any courses yet",
+                              size: 16,
+                              color:
+                                  theme.isLightMode ? textColor1 : textColor2,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        height: 300,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
                           color: theme.isLightMode ? textColor1 : textColor2,
-                          weight: FontWeight.bold,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        uploadedCourses.isEmpty
-                            ? Container(
-                          height: 200,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: theme.isLightMode ? textColor2 : textColor1,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              GeneralAppText(
-                                text: "No Courses Found",
-                                size: 20,
+                        child: ListView.builder(
+                          itemCount: uploadedVideos.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.all(5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              height: 60,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
                                 color:
-                                theme.isLightMode ? textColor1 : textColor2,
-                                weight: FontWeight.bold,
+                                    theme.isLightMode ? textColor2 : textColor1,
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              const SizedBox(
-                                height: 10,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                        child: GeneralAppText(
+                                      text:
+                                          "${index + 1}. ${uploadedCourses[index]}",
+                                      size: 13,
+                                      color: theme == true
+                                          ? textColor2
+                                          : textColor1,
+                                    )),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GeneralAppIcon(
+                                    icon: Icons.delete,
+                                    color:
+                                        const Color.fromARGB(255, 255, 97, 85),
+                                  )
+                                ],
                               ),
-                              GeneralAppText(
-                                text: "You have not uploaded any courses yet",
-                                size: 16,
-                                color:
-                                theme.isLightMode ? textColor1 : textColor2,
-                              ),
-                            ],
-                          ),
-                        )
-                            : Container(
-                          height: 300,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: theme.isLightMode ? textColor1 : textColor2,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ListView.builder(
-                            itemCount: uploadedVideos.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: const EdgeInsets.all(5),
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 10),
-                                height: 60,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  color:
-                                  theme.isLightMode ? textColor2 : textColor1,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                          child: GeneralAppText(
-                                            text:
-                                            "${index + 1}. ${uploadedCourses[index]}",
-                                            size: 13,
-                                            color: theme == true
-                                                ? textColor2
-                                                : textColor1,
-                                          )),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    GeneralAppIcon(
-                                      icon: Icons.delete,
-                                      color:
-                                      const Color.fromARGB(255, 255, 97, 85),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                            );
+                          },
                         ),
-                        const SizedBox(
-                          height: 30,
+                      ),
+                const SizedBox(
+                  height: 30,
+                ),
+                // scheduled visit
+                GeneralAppText(
+                  text: "Scheduled Visits",
+                  size: 20,
+                  color: theme.isLightMode ? textColor1 : textColor2,
+                  weight: FontWeight.bold,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                scheduledVisits.isEmpty
+                    ? Container(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: theme.isLightMode ? textColor2 : textColor1,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        // scheduled visit
-                        GeneralAppText(
-                          text: "Scheduled Visits",
-                          size: 20,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GeneralAppText(
+                              text: "No Visits Found",
+                              size: 20,
+                              color:
+                                  theme.isLightMode ? textColor1 : textColor2,
+                              weight: FontWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GeneralAppText(
+                              text: "You have not scheduled any visits yet",
+                              size: 16,
+                              color:
+                                  theme.isLightMode ? textColor1 : textColor2,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        height: 300,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
                           color: theme.isLightMode ? textColor1 : textColor2,
-                          weight: FontWeight.bold,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        scheduledVisits.isEmpty
-                            ? Container(
-                          height: 200,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: theme.isLightMode ? textColor2 : textColor1,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              GeneralAppText(
-                                text: "No Visits Found",
-                                size: 20,
+                        child: ListView.builder(
+                          itemCount: uploadedVideos.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.all(5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              height: 60,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
                                 color:
-                                theme.isLightMode ? textColor1 : textColor2,
-                                weight: FontWeight.bold,
+                                    theme.isLightMode ? textColor2 : textColor1,
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              GeneralAppText(
-                                text: "You have not scheduled any visits yet",
-                                size: 16,
-                                color:
-                                theme.isLightMode ? textColor1 : textColor2,
-                              ),
-                            ],
-                          ),
-                        )
-                            : Container(
-                          height: 300,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: theme.isLightMode ? textColor1 : textColor2,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ListView.builder(
-                            itemCount: uploadedVideos.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: const EdgeInsets.all(5),
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 10),
-                                height: 60,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  color:
-                                  theme.isLightMode ? textColor2 : textColor1,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: GeneralAppText(
-                                        text:
-                                        "${index + 1}. ${scheduledVisits[index]}",
-                                        size: 13,
-                                        color: theme.isLightMode
-                                            ? textColor2
-                                            : textColor1,
-                                      ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: GeneralAppText(
+                                      text:
+                                          "${index + 1}. ${scheduledVisits[index]}",
+                                      size: 13,
+                                      color: theme.isLightMode
+                                          ? textColor2
+                                          : textColor1,
                                     ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    GeneralAppIcon(
-                                      icon: Icons.delete,
-                                      color:
-                                      const Color.fromARGB(255, 255, 97, 85),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GeneralAppIcon(
+                                    icon: Icons.delete,
+                                    color:
+                                        const Color.fromARGB(255, 255, 97, 85),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                        // assignments
-                        // only to display if user is mentor
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        GeneralAppText(
-                          text: "Assignments",
-                          size: 20,
-                          color: theme.isLightMode ? textColor1 : textColor2,
-                          weight: FontWeight.bold,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                      ),
+                // assignments
+                // only to display if user is mentor
+                const SizedBox(
+                  height: 30,
+                ),
+                GeneralAppText(
+                  text: "Assignments",
+                  size: 20,
+                  color: theme.isLightMode ? textColor1 : textColor2,
+                  weight: FontWeight.bold,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
 
                         assignments.isEmpty
                             ? Container(
@@ -861,7 +861,7 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
         var end = Offset.zero;
         var curve = Curves.ease;
         var tween =
-        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
         final offsetAnimation = animation.drive(tween);
         return SlideTransition(
           position: offsetAnimation,
@@ -879,7 +879,7 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherHomeScreen> {
         var end = Offset.zero;
         var curve = Curves.ease;
         var tween =
-        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
         final offsetAnimation = animation.drive(tween);
         return SlideTransition(
           position: offsetAnimation,

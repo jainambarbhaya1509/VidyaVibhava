@@ -7,6 +7,7 @@ import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/web.dart';
 
 class BooksModal extends ConsumerStatefulWidget {
   BooksModal({
@@ -29,7 +30,8 @@ class _BooksModalState extends ConsumerState<BooksModal> {
         ? baseFontSize - (widget.bookTitle.length * 0.1)
         : baseFontSize - (widget.bookTitle.length * 0.4);
     final appBarState = ref.read(settingsProvider.notifier);
-    final savedBooks = ref.watch(savedBooksProvider.notifier).state;
+    final savedBooks = ref.watch(savedBooksProvider);
+    Logger().e(savedBooks);
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.6,
@@ -101,19 +103,22 @@ class _BooksModalState extends ConsumerState<BooksModal> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                if (savedBooks["bookTitle"]
-                                    .contains(widget.bookTitle)) {
+                                if (savedBooks
+                                    .map((e) => e["title"])
+                                    .contains(widget.bookTitle.toString())) {
                                   setState(() {
-                                    savedBooks["bookTitle"]
-                                        .remove(widget.bookTitle);
-                                    savedBooks["imageUrl"]
-                                        .remove(widget.imageUrl);
+                                    ref.read(savedBooksProvider).removeWhere(
+                                          (element) =>
+                                              element["title"] ==
+                                              widget.bookTitle,
+                                        );
                                   });
                                 } else {
                                   setState(() {
-                                    savedBooks["bookTitle"]
-                                        .add(widget.bookTitle);
-                                    savedBooks["imageUrl"].add(widget.imageUrl);
+                                    ref.read(savedBooksProvider).add({
+                                      "title": widget.bookTitle,
+                                      "imageUrl": widget.imageUrl,
+                                    });
                                   });
                                 }
                               },
@@ -137,8 +142,10 @@ class _BooksModalState extends ConsumerState<BooksModal> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       GeneralAppIcon(
-                                        icon: savedBooks["bookTitle"]
-                                                .contains(widget.bookTitle)
+                                        icon: savedBooks
+                                                .map((e) => e["title"])
+                                                .contains(
+                                                    widget.bookTitle.toString())
                                             ? Icons.check
                                             : Icons.add_circle_outline,
                                         color: appBarState.isLightMode
@@ -150,8 +157,10 @@ class _BooksModalState extends ConsumerState<BooksModal> {
                                         width: 10,
                                       ),
                                       GeneralAppText(
-                                        text: savedBooks["bookTitle"]
-                                                .contains(widget.bookTitle)
+                                        text: savedBooks
+                                                .map((e) => e["title"])
+                                                .contains(
+                                                    widget.bookTitle.toString())
                                             ? "Saved"
                                             : "Save",
                                         size: 17,

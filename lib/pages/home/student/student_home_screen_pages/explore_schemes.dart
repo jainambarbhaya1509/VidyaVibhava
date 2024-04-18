@@ -25,13 +25,13 @@ class _ExploreSchemesState extends ConsumerState<ExploreSchemes> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Container(
-        margin: const EdgeInsets.only(top: 50, left: 15, right: 20),
+        margin: const EdgeInsets.only(top: 50, left: 15, right: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GeneralAppText(
               text: "Explore Schemes",
-              size: 23,
+              size: 20,
               weight: FontWeight.bold,
             ),
             const SizedBox(height: 20),
@@ -53,7 +53,7 @@ class _ExploreSchemesState extends ConsumerState<ExploreSchemes> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10,),
             Row(
               children: [
                 GeneralAppText(
@@ -81,7 +81,7 @@ class _ExploreSchemesState extends ConsumerState<ExploreSchemes> {
                 )
               ],
             ),
-            const SizedBox(height: 20),
+            
             Expanded(
               child: ListView.builder(
                 itemCount: 10,

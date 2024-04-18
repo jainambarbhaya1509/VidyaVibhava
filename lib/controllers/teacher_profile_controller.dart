@@ -70,9 +70,9 @@ class TeacherProfileController extends GetxController {
     }
   }
 
-  createAssignment(Assignment assignment){
+  createAssignment(Assignment assignment) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    if(uid != null){
+    if (uid != null) {
       return _userRepo.createAssignment(assignment, uid);
     }
   }

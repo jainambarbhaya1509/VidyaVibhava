@@ -1,4 +1,5 @@
 import 'package:final_project/pages/common/books/ebooks_screen.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/explore_screen.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/home_screen.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/community_screen.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/profile_screen.dart';
@@ -20,9 +21,10 @@ class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
 
   final List<Widget> body = [
     const StudentHomeScreen(),
-    const CommunityScreen(),
+    // const CommunityScreen(),
     const SearchScreen(),
-    const EbooksScreen(),
+    // const EbooksScreen(),
+    const ExploreScreen(),
     const StudentProfileScreen(),
   ];
   @override
@@ -62,21 +64,21 @@ class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
             icon: const Icon(Icons.home_rounded),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            tooltip: "Community",
-            activeIcon: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: GeneralAppIcon(
-                  icon: Icons.group_rounded,
-                  color: theme ? Colors.white : Colors.white),
-            ),
-            icon: const Icon(Icons.group_rounded),
-            label: 'Community',
-          ),
+          // BottomNavigationBarItem(
+          //   tooltip: "Community",
+          //   activeIcon: Container(
+          //     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+          //     decoration: BoxDecoration(
+          //       color: Colors.grey,
+          //       borderRadius: BorderRadius.circular(100),
+          //     ),
+          //     child: GeneralAppIcon(
+          //         icon: Icons.group_rounded,
+          //         color: theme ? Colors.white : Colors.white),
+          //   ),
+          //   icon: const Icon(Icons.group_rounded),
+          //   label: 'Community',
+          // ),
           BottomNavigationBarItem(
             tooltip: "Search",
             activeIcon: Container(
@@ -92,8 +94,23 @@ class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
             icon: const Icon(Icons.search_rounded),
             label: 'Search',
           ),
+          // BottomNavigationBarItem(
+          //   tooltip: "eLibrary",
+          //   activeIcon: Container(
+          //     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+          //     decoration: BoxDecoration(
+          //       color: Colors.grey,
+          //       borderRadius: BorderRadius.circular(100),
+          //     ),
+          //     child: GeneralAppIcon(
+          //         icon: Icons.menu_book_sharp,
+          //         color: theme ? Colors.white : Colors.white),
+          //   ),
+          //   icon: const Icon(Icons.menu_book_sharp),
+          //   label: 'EBooks',
+          // ),
           BottomNavigationBarItem(
-            tooltip: "eLibrary",
+            tooltip: "Explore",
             activeIcon: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
@@ -101,11 +118,11 @@ class _StudentHomeScreenState extends ConsumerState<StudentScreen> {
                 borderRadius: BorderRadius.circular(100),
               ),
               child: GeneralAppIcon(
-                  icon: Icons.menu_book_sharp,
+                  icon: Icons.explore_rounded,
                   color: theme ? Colors.white : Colors.white),
             ),
-            icon: const Icon(Icons.menu_book_sharp),
-            label: 'EBooks',
+            icon: const Icon(Icons.explore_rounded),
+            label: 'Explore',
           ),
           BottomNavigationBarItem(
             tooltip: "Profile",

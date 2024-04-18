@@ -79,8 +79,7 @@ class _Chat_PageState extends ConsumerState<Chat_Page> {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
     return Container(
-      padding: const EdgeInsets.only(
-          left: 14, right: 14, top: 10, bottom: 10),
+      padding: const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
       child: Align(
         alignment: ((data['senderId'] == _firebaseAuth.currentUser!.uid)
             ? Alignment.topLeft
@@ -89,13 +88,13 @@ class _Chat_PageState extends ConsumerState<Chat_Page> {
           decoration: BoxDecoration(
             borderRadius: (data['senderId'] == _firebaseAuth.currentUser!.uid)
                 ? const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-                bottomRight: Radius.circular(20))
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                    bottomRight: Radius.circular(20))
                 : const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-                bottomLeft: Radius.circular(20)),
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20)),
             color: (data['senderId'] == _firebaseAuth.currentUser!.uid
                 ? Colors.grey.shade200
                 : Colors.blue[200]),
@@ -104,10 +103,10 @@ class _Chat_PageState extends ConsumerState<Chat_Page> {
           child: SecondaryAppText(
             text: data["message"],
             size: 15,
-          ),),
+          ),
+        ),
       ),
     );
-
   }
 
   Widget _buildMessageInput(theme) {
@@ -128,7 +127,6 @@ class _Chat_PageState extends ConsumerState<Chat_Page> {
             suffixIcon: GestureDetector(
               onTap: sendMessage,
               child: GeneralAppIcon(
-                
                 icon: Icons.send,
                 color: Colors.grey,
               ),

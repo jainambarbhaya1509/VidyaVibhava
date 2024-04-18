@@ -33,9 +33,7 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
     final theme = ref.watch(settingsProvider);
     final appBarState = ref.watch(settingsProvider);
 
-    final savedBooks = ref.watch(savedBooksProvider.notifier).state;
-    final imageUrl = savedBooks["imageUrl"];
-    final bookTitle = savedBooks["bookTitle"];
+    final savedBooks = ref.watch(savedBooksProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -555,7 +553,7 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                         ),
-                        itemCount: savedBooks["imageUrl"].length,
+                        itemCount: savedBooks.length,
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () {
@@ -565,14 +563,14 @@ class _ProfileScreenState extends ConsumerState<TeacherProfileScreen>
                                 context: context,
                                 builder: (context) {
                                   return BooksModal(
-                                    imageUrl: imageUrl[index],
-                                    bookTitle: bookTitle[index],
+                                    imageUrl: savedBooks[index]['imageUrl'],
+                                    bookTitle: savedBooks[index]['title'],
                                   );
                                 },
                               );
                             },
                             child: BooksCard(
-                              imageUrl: imageUrl[index],
+                              imageUrl: savedBooks[index]['imageUrl'],
                             ),
                           );
                         },
