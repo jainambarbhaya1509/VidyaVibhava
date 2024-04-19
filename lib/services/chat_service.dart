@@ -44,4 +44,36 @@ class ChatService extends ChangeNotifier {
         .orderBy('timestamp', descending: false)
         .snapshots();
   }
+  Future<void> sendMessageinCommunity(String message) async {
+    final String currentUserId = _firebaseAuth.currentUser!.uid;
+    final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
+    final Timestamp timestamp = Timestamp.now();
+
+    Message newMessage = Message(
+        senderId: currentUserId,
+        senderEmail: currentUserEmail,
+        receiverId: "receiverId",
+        timestamp: timestamp,
+        message: message);
+
+    String chatRoomId = "communityScreen";
+
+    await _firestore
+        .collection('Chat_Room')
+        .doc(chatRoomId)
+        .collection('messages')
+        .add(newMessage.toMap());
+  }
+
+  Stream<QuerySnapshot> getCommunityMessages() {
+    String chatRoomId = "communityScreen";
+    print("Ab student Side se ${chatRoomId}");
+
+    return _firestore
+        .collection('Chat_Room')
+        .doc(chatRoomId)
+        .collection('messages')
+        .orderBy('timestamp', descending: false)
+        .snapshots();
+  }
 }

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:final_project/controllers/profile_controller.dart';
+import 'package:final_project/controllers/video_controller.dart';
 import 'package:final_project/models/models.dart';
 import 'package:final_project/pages/common/chat/chat_list.dart';
 import 'package:final_project/pages/common/chat/chintan_chat_page_2.dart';
@@ -15,6 +16,7 @@ import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/providers/lecture_data_provider.dart';
 import 'package:final_project/repository/authentication_repository.dart';
 import 'package:final_project/repository/user_repository.dart';
+import 'package:final_project/services/api_service.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
@@ -98,353 +100,521 @@ class StudentHomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
+  final videocontroller = Get.put(VideoController());
+  Map<String, dynamic> result = {"length":0};
+  bool isLoading = true;
+
+  Future<void> _performSearch(String searchBy, String query) async {
+    // Show loading indicator while fetching data
+    setState(() {
+      isLoading = true;
+    });
+
+    Map<String, dynamic> queryResultList = await videocontroller.getContentBySearch(searchBy, query);
+
+    // Hide loading indicator after fetching data
+    setState(() {
+      result = queryResultList;
+      isLoading = false;
+      print(result);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    APIService apiService = APIService();
+    TextEditingController _searchController = TextEditingController();
     final controller = Get.put(ProfileController());
     final theme = ref.read(settingsProvider.notifier).isLightMode;
-    // return FutureBuilder(
-    //   future: controller.getUserData(),
-    //   builder: (context, snapshot) {
-    //     late Student student;
-    //     try {
-    //       if (snapshot.data != null) {
-    //         student = snapshot.data as Student;
-    //       }
-    //     } on Exception catch (e) {
-    //       return const Center(child: CircularProgressIndicator());
-    //     }
-    //     if (snapshot.connectionState == ConnectionState.done) {
-    //       if (snapshot.hasData) {
-    //         final lectureData = ref.read(lectureDataProvider);
-    //         final assignment = ref.read(assignmentProvider);
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        flexibleSpace: Container(
-          color: Theme.of(context).primaryColor,
-          // padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
-          padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-          alignment: Alignment.center,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SecondaryAppText(
-                // text: "Hi, ${student.firstName}",
-                text: "Hi, Chintan",
-                size: 20,
-                weight: FontWeight.bold,
-                color: theme == true ? textColor1 : textColor2,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            _createAnimatedScreenRoute(
-                                const GeminiChatBot(), 1, 0));
-                      },
-                      child: GeneralAppIcon(
-                        color: primaryColor,
-                        icon: Icons.rocket_launch,
-                      )),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      /*Navigator.push(context,
-                                  _createAnimatedScreenRoute(const ChatScreen(), 1, 0));*/
-                      Navigator.push(
-                          context,
-                          _createAnimatedScreenRoute(
-                              const ChatActivity(), 1, 0));
-                      // Navigator.pushNamed(context, 'chatScreen');
-                    },
-                    child: GeneralAppIcon(
-                      icon: Icons.chat_bubble_outline,
-                      color: theme == true ? textColor1 : textColor2,
-                      size: 20,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 15),
-          // color: Colors.white,
-          padding: const EdgeInsets.only(top: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // Latest News
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GeneralAppText(
-                    text: "What's Latest?",
-                    size: 20,
-                    weight: FontWeight.bold,
-                  ),
-                  GeneralAppIcon(
-                    icon: Icons.navigate_next_sharp,
-                    color: primaryColor,
-                    size: 30,
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.25,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey)),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-
-              // Explore subjects
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: GeneralAppText(
-                      text: "Explore Subjects ",
-                      size: 20,
-                      weight: FontWeight.bold,
-                    ),
-                  ),
-                  GeneralAppIcon(
-                    icon: Icons.navigate_next_sharp,
-                    color: primaryColor,
-                    size: 30,
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.width * 0.23,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: subjects.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (builder) {
-                                return Container(
-                                  color: Theme.of(context).primaryColor,
-                                  width: double.infinity,
-                                  child: Column(
-                                    children: [
-                                      Stack(
-                                        alignment: Alignment.bottomCenter,
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.only(
-                                                left: 30, right: 30, top: 40),
-                                            margin: const EdgeInsets.only(
-                                                bottom: 5),
-                                            width: double.infinity,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.20,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  primaryColor.withOpacity(0.8),
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                bottomLeft: Radius.circular(50),
-                                                bottomRight:
-                                                    Radius.circular(50),
-                                              ),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                PrimaryAppText(
-                                                  text: subjects[index].name,
-                                                  size: 25,
-                                                  weight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: GeneralAppIcon(
-                                                    icon: Icons
-                                                        .keyboard_arrow_down_sharp,
-                                                    color: Colors.white,
-                                                    size: 30,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            padding: const EdgeInsets.only(
-                                              left: 20,
-                                              right: 20,
-                                            ),
-                                            child: Material(
-                                              elevation: 5,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              child: Container(
-                                                alignment: Alignment.center,
-                                                height: 60,
-                                                width: double.infinity,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: TextFormField(
-                                                  decoration: InputDecoration(
-                                                    hintStyle: const TextStyle(
-                                                      color: Colors.grey,
-                                                    ),
-                                                    hintText:
-                                                        "Search for ${subjects[index].name}",
-                                                    prefixIcon: GeneralAppIcon(
-                                                      icon: Icons.search,
-                                                      color: Colors.grey,
-                                                    ),
-                                                    border: InputBorder.none,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                GeneralAppText(
-                                                  text: "Results",
-                                                  size: 20,
-                                                  weight: FontWeight.bold,
-                                                ),
-                                                const SubjectFilterDropdown(),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            SingleChildScrollView(
-                                              child: SizedBox(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.65,
-                                                child: GridView.builder(
-                                                  gridDelegate:
-                                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                                          crossAxisCount: 2,
-                                                          childAspectRatio: 1.5,
-                                                          crossAxisSpacing: 10,
-                                                          mainAxisSpacing: 10),
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return Container(
-                                                      width: double.infinity,
-                                                      decoration: BoxDecoration(
-                                                        color: theme == true
-                                                            ? textColor1
-                                                            : textColor2,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                      ),
-                                                    );
-                                                  },
-                                                  itemCount: 10,
-                                                  shrinkWrap: true,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
+    return FutureBuilder(
+      future: controller.getUserData(),
+      builder: (context, snapshot) {
+        late Student student;
+        try {
+          if (snapshot.data != null) {
+            student = snapshot.data as Student;
+          }
+        } on Exception catch (e) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            final lectureData = ref.read(lectureDataProvider);
+            final assignment = ref.read(assignmentProvider);
+            return Scaffold(
+              backgroundColor: Theme.of(context).primaryColor,
+              appBar: AppBar(
+                automaticallyImplyLeading: true,
+                flexibleSpace: Container(
+                  color: Theme.of(context).primaryColor,
+                  // padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
+                  padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SecondaryAppText(
+                        text: "Hi, ${student.firstName}",
+                        //text: "Hi, Chintan",
+                        size: 20,
+                        weight: FontWeight.bold,
+                        color: theme == true ? textColor1 : textColor2,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    _createAnimatedScreenRoute(
+                                        const JobsScreen(), 1, 0));
                               },
-                            );
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            height: MediaQuery.of(context).size.width * 0.15,
-                            width: MediaQuery.of(context).size.width * 0.15,
-                            decoration: BoxDecoration(
+                              child: GeneralAppIcon(
+                                color: theme == true ? textColor1 : textColor2,
+                                icon: Icons.cases_outlined,
+                              )),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    _createAnimatedScreenRoute(
+                                        const GeminiChatBot(), 1, 0));
+                              },
+                              child: GeneralAppIcon(
+                                color: primaryColor,
+                                icon: Icons.rocket_launch,
+                              )),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              /*Navigator.push(context,
+                                  _createAnimatedScreenRoute(const ChatScreen(), 1, 0));*/
+                              Navigator.push(
+                                  context,
+                                  _createAnimatedScreenRoute(
+                                      const ChatActivity(), 1, 0));
+                              // Navigator.pushNamed(context, 'chatScreen');
+                            },
+                            child: GeneralAppIcon(
+                              icon: Icons.chat_bubble_outline,
                               color: theme == true ? textColor1 : textColor2,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Image(
-                              fit: BoxFit.scaleDown,
-                              image: AssetImage(
-                                subjects[index].imageUrl,
-                              ),
+                              size: 20,
                             ),
                           ),
-                        ),
-                        GeneralAppText(
-                          text: subjects[index].name,
-                          color: primaryColor,
-                          size: 13,
-                        )
-                      ],
-                    );
-                  },
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              body: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  // color: Colors.white,
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // Latest News
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GeneralAppText(
+                            text: "What's Latest?",
+                            size: 20,
+                            weight: FontWeight.bold,
+                          ),
+                          GeneralAppIcon(
+                            icon: Icons.navigate_next_sharp,
+                            color: primaryColor,
+                            size: 30,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        child: FutureBuilder(
+                            future: apiService.fetchWhatsLatestDataFromAPI(),
+                            builder: (context, snapshot) {
+                              late List<String> yourList;
+                              try {
+                                if (snapshot.data != null) {
+                                  yourList = snapshot.data!;
+                                }
+                              } on Exception catch (e) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                if (snapshot.hasData) {
+                                  return ListView.builder(
+                                    itemCount: yourList.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return ListTile(
+                                        title: Text(yourList[index]),
+                                      );
+                                    },
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Center(
+                                      child: Text(snapshot.error.toString()));
+                                } else {
+                                  return const Center(
+                                      child: Text("Something went wrong"));
+                                }
+                              } else {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                            }),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+
+                      // Explore subjects
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: GeneralAppText(
+                              text: "Explore Subjects ",
+                              size: 20,
+                              weight: FontWeight.bold,
+                            ),
+                          ),
+                          GeneralAppIcon(
+                            icon: Icons.navigate_next_sharp,
+                            color: primaryColor,
+                            size: 30,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.width * 0.23,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: subjects.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    _performSearch(subjects[index].name,_searchController.text);
+                                    showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        builder: (builder) {
+                                          return Container(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            width: double.infinity,
+                                            child: Column(
+                                              children: [
+                                                Stack(
+                                                    alignment:
+                                                        Alignment.bottomCenter,
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                left: 30,
+                                                                right: 30,
+                                                                top: 40),
+                                                        margin: const EdgeInsets
+                                                            .only(bottom: 5),
+                                                        width: double.infinity,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.22,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: primaryColor
+                                                              .withOpacity(0.9),
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .only(
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    50),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    50),
+                                                          ),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            PrimaryAppText(
+                                                              text: subjects[
+                                                                      index]
+                                                                  .name,
+                                                              size: 25,
+                                                              weight: FontWeight
+                                                                  .bold,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            GeneralAppIcon(
+                                                              icon: Icons
+                                                                  .keyboard_arrow_down_sharp,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 30,
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          left: 20,
+                                                          right: 20,
+                                                        ),
+                                                        child: Material(
+                                                          elevation: 5,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            height: 60,
+                                                            width:
+                                                                double.infinity,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            child:
+                                                                TextFormField(
+                                                              controller:
+                                                                  _searchController,
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                hintStyle: TextStyle(
+                                                                    color: Colors
+                                                                        .grey),
+                                                                hintText:
+                                                                    "Search for ${subjects[index].name}",
+                                                                prefixIcon:
+                                                                    GestureDetector(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      _performSearch(
+                                                                          subjects[index]
+                                                                              .name,
+                                                                          _searchController
+                                                                              .text);
+                                                                    });
+                                                                  },
+                                                                  child:
+                                                                      GeneralAppIcon(
+                                                                    icon: Icons
+                                                                        .search,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                  ),
+                                                                ),
+                                                                border:
+                                                                    InputBorder
+                                                                        .none,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ]),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    left: 20,
+                                                    right: 20,
+                                                  ),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      GeneralAppText(
+                                                        text: "Results",
+                                                        size: 20,
+                                                        weight: FontWeight.bold,
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      SizedBox(
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.69,
+                                                        child: GridView.builder(
+                                                          gridDelegate:
+                                                              const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,childAspectRatio:1.5,crossAxisSpacing:10,mainAxisSpacing: 10),
+                                                          itemCount:result["length"] ?? 0,
+                                                          itemBuilder:(context, index) {
+                                                            print("Length : ${result["length"]}");
+                                                            List<Video> videoList = result["video"];
+                                                            List<Course> courseList = result["course"];
+                                                            if (index < videoList.length && videoList.isNotEmpty) {
+                                                              return Container(
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        right:
+                                                                            10,
+                                                                        bottom:
+                                                                            10),
+                                                                width: double
+                                                                    .infinity,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: theme
+                                                                      ? textColor1
+                                                                      : textColor2,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                ),
+                                                                child: Image
+                                                                    .memory(
+                                                                  videoList[
+                                                                          index]
+                                                                      .thumbnailImage,
+                                                                  // Convert data to Uint8List
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
+                                                              );
+                                                            }
+                                                            else if (courseList.isNotEmpty) {
+                                                              // Render courseList items
+                                                              final adjustedIndex =
+                                                                  index -
+                                                                      videoList
+                                                                          .length;
+                                                              return Container(
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        right:
+                                                                            10,
+                                                                        bottom:
+                                                                            10),
+                                                                width: double
+                                                                    .infinity,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: theme
+                                                                      ? textColor1
+                                                                      : textColor2,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                ),
+                                                                child: Image
+                                                                    .memory(
+                                                                  courseList[
+                                                                          adjustedIndex]
+                                                                      .thumbnailImage,
+                                                                  // Convert data to Uint8List
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
+                                                              );
+                                                            }
+                                                          },
+                                                          shrinkWrap: true,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(right: 10),
+                                    height: MediaQuery.of(context).size.width *
+                                        0.15,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.15,
+                                    decoration: BoxDecoration(
+                                      color: theme == true
+                                          ? textColor1
+                                          : textColor2,
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: Image(
+                                      fit: BoxFit.scaleDown,
+                                      image: AssetImage(
+                                        subjects[index].imageUrl,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                GeneralAppText(
+                                  text: subjects[index].name,
+                                  color: primaryColor,
+                                  size: 13,
+                                )
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
 
               // courses
               Row(
@@ -482,11 +652,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                           context: context,
                           builder: (builder) {
                             return CourseDetails(
-                                courseIndex: index,
-                                courseTitle: "Course Title $index",
-                                courseDescription:
-                                    "The labyrinthine complexity of human existence intertwines with the capricious whims of fate, weaving a tapestry of stories where the mundane and the extraordinary collide, where love and loss dance a perpetual waltz amidst the cacophony of existence, each individual thread contributing to the rich fabric of the universe's eternal narrative.",
-                                courseLectures: []);
+                                courseId: index.toString(),);
                           },
                         );
                       },
@@ -502,12 +668,9 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                   },
                 ),
               ),
-              const SizedBox(
-                height: 50,
-              ),
 
               // popular lectures
-              Row(
+              /*Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GeneralAppText(
@@ -557,8 +720,10 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
               ),
               const SizedBox(
                 height: 50,
+              ),*/
+              const SizedBox(
+                height: 50,
               ),
-
               // continue learning
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -625,8 +790,8 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(color: Colors.grey)),
                                 child: Image.memory(
-                                  videoList[index]
-                                      .thumbnailImage, // Convert data to Uint8List
+                                  videoList[index].thumbnailImage,
+                                       // Convert data to Uint8List
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -696,9 +861,9 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                     isScrollControlled: true,
                                     context: context,
                                     builder: (builder) {
-                                      assignment = assignmentList?[index];
+                                      assignment = assignmentList?[index];final id = assignment!.assignmentId;
                                       return AssignmentDetails(
-                                        index: index,
+                                        assignmentId:id!,index: index,
                                         title: assignment!.title,
                                         description: assignment!.question,
                                         dueDate: DateFormat(
@@ -831,16 +996,16 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
         ),
       ),
     );
-    //       } else if (snapshot.hasError) {
-    //         return Center(child: Text(snapshot.error.toString()));
-    //       } else {
-    //         return const Center(child: Text("Something went wrong"));
-    //       }
-    //     } else {
-    //       return const Center(child: CircularProgressIndicator());
-    //     }
-    //   },
-    // );
+           } else if (snapshot.hasError) {
+             return Center(child: Text(snapshot.error.toString()));
+          } else {
+             return const Center(child: Text("Something went wrong"));
+           }
+         } else {
+           return const Center(child: CircularProgressIndicator());
+         }
+       },
+     );
   }
 
   // Animated route

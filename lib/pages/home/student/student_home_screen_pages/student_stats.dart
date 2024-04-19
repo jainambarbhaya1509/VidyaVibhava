@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:final_project/pages/home/student/student_home_screen_pages/profile_screen.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/web.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:http/http.dart' as http;
 
 class StudentStats extends ConsumerStatefulWidget {
   const StudentStats({super.key});
@@ -28,6 +31,35 @@ class _LineChartSample2State extends ConsumerState<StudentStats> {
     "History": 60,
     "Geography": 70,
   };
+  String htmlContent = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchHtmlContent();
+  }
+
+  Future<void> fetchHtmlContent() async {
+    final width = double.infinity;
+    print(width);
+    // Replace 'param1' and 'param2' with your actual parameter names and values
+    final response = await http.post(
+      Uri.parse("http://ec2-65-0-179-201.ap-south-1.compute.amazonaws.com/getStats"),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({'height': 400,'width': 490,}),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        htmlContent = response.body;
+        print(htmlContent);
+      });
+    } else {
+      throw Exception('Failed to load HTML content');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -272,16 +304,15 @@ class _LineChartSample2State extends ConsumerState<StudentStats> {
             ),
           )
         : Container(
-            height: 100,
+            height: 500,
             margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
             width: double.infinity,
-            child: WebViewWidget(
+            child: htmlContent.isNotEmpty? WebViewWidget(
               controller: WebViewController()
                 ..setJavaScriptMode(JavaScriptMode.disabled)
                 ..loadHtmlString(
-                  '<html><body><h1>Explore Schemes</h1><p>Click the button below to explore the schemes</p><button onclick="window.location.href=\'https://www.google.com\'">Explore</button></body></html>',
-                ),
-            ),
+                  htmlContent)) : Center(child:CircularProgressIndicator()),
+
           );
   }
 }

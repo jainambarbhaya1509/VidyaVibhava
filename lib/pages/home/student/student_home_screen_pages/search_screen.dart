@@ -1,6 +1,9 @@
+
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:final_project/controllers/video_controller.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/enrolled_courses.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
@@ -12,24 +15,51 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../../../../controllers/profile_controller.dart';
 import '../../../../models/backend_model.dart';
-
+final filterDialogStateProvider = StateProvider.autoDispose((ref) {
+  return FilterDialogState();
+});
+class FilterDialogState {
+  late bool videoSelected = true;
+  late String searchBy = "instructorName";
+  late String duration = "";
+}
 class SearchScreen extends ConsumerStatefulWidget {
-  final String? searchId;
   final String? instructorName;
-  const SearchScreen({super.key, this.searchId, this.instructorName});
+  const SearchScreen({super.key, this.instructorName});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SearchScreenState();
 }
-
+//late final filterDialogState;
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   TextEditingController searchQuery = TextEditingController();
   final controller = Get.put(VideoController());
+  final profileController = Get.put(ProfileController());
+  List<dynamic> result = [];
+  late bool ans;
+  late Video video;
+  late Course course;
+  late String title, description, instructorName;
+  late Uint8List image;
+  Future<void> _performSearch(bool videoSelected, String searchBy, String duration) async {
+
+    List<dynamic> queryResultList = await controller.getSearchContentBySearch(videoSelected, searchBy, duration, searchQuery.text);
+    setState(() {
+      result = queryResultList;
+      ans = videoSelected;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final theme = ref.watch(settingsProvider);
-
+    final filterDialogState = ref.watch(filterDialogStateProvider);
+    final bool videoSelected = filterDialogState.videoSelected;
+    final String searchBy = filterDialogState.searchBy;
+    final String duration = filterDialogState.duration;
+    bool isCourse = false;
+    TextEditingController toDisplayText = TextEditingController();
     if (widget.instructorName != null) {
       searchQuery.text = (widget.instructorName)!;
     }
@@ -63,7 +93,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextFormField(
-              controller: null,
+              controller: searchQuery,
               decoration: InputDecoration(
                 hintText: "search a video/course",
                 border: InputBorder.none,
@@ -77,7 +107,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 prefixIcon: GestureDetector(
                     onTap: () {
                       print("Search Clicked");
-                      _performSearch();
+                      _performSearch(videoSelected,searchBy, duration);
                     },
                     child: const Icon(Icons.search)),
               ),
@@ -88,8 +118,27 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: 2,
+              itemCount: result.length,
               itemBuilder: (context, index) {
+                if(ans){
+                  video = result[index];
+                  title = video.videoTitle;
+                  description = video.videoDescription;
+                  instructorName = video.instructorName;
+                  image = video.thumbnailImage;
+                  toDisplayText.text = "Start Learning";
+                }
+                else{
+                  course = result[index];
+                  title = course.courseTitle;
+                  description = course.courseDescription;
+                  instructorName = course.instructorName;
+                  image = course.thumbnailImage;
+                  toDisplayText.text = "Enroll Now";
+                  setState(() {
+                    isCourse = true;
+                  });
+                }
                 return GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
@@ -131,6 +180,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   decoration: BoxDecoration(
                                     color: Colors.amber,
                                     borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child : Image.memory(
+                                    image,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                                 const SizedBox(
@@ -180,15 +233,24 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              GeneralAppIcon(
-                                                icon: Icons.play_arrow_rounded,
-                                                color: theme == true
-                                                    ? textColor1
-                                                    : textColor2,
-                                                size: 30,
+                                              GestureDetector(
+                                                onTap:(){
+                                                  if(isCourse){
+                                                    EnrolledCourse enrolledCourse = EnrolledCourse(courseId: course.courseId!, lastCompleted: "", isCompleted: false, noOfVideosWatched: 0, quizScore: 0);
+                                                    profileController.enrollCourse(enrolledCourse);
+                                                    Navigator.push(context, _createAnimatedScreenRoute(const EnrolledCourses(), 1, 0));
+                                                  }
+                                                },
+                                                child: GeneralAppIcon(
+                                                  icon: Icons.play_arrow_rounded,
+                                                  color: theme == true
+                                                      ? textColor1
+                                                      : textColor2,
+                                                  size: 30,
+                                                ),
                                               ),
                                               PrimaryAppText(
-                                                text: "Start Learning",
+                                                text: toDisplayText.text,
                                                 size: 20,
                                                 color: theme == true
                                                     ? textColor1
@@ -212,7 +274,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       Container(
                                           alignment: Alignment.centerLeft,
                                           child: GeneralAppText(
-                                            text: "Title",
+                                            text: title,
                                             size: 20,
                                             weight: FontWeight.bold,
                                           )),
@@ -230,10 +292,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                         height: 10,
                                       ),
                                       GeneralAppText(
-                                        text:
-                                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia. Nullam nec purus feugiat, molestie ipsum et, eleifend nunc. Ut in nulla ut nisl ultricies lacinia.",
+                                        text: description,
                                         size: 15,
                                       ),
+
                                     ],
                                   ),
                                 )
@@ -260,6 +322,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             color: Colors.amber,
                             borderRadius: BorderRadius.circular(10),
                           ),
+                          child: Image.memory(
+                            image,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         const SizedBox(
                           width: 10,
@@ -273,14 +339,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               GeneralAppText(
-                                text: "The Brief History of Modern India",
+                                text: title,
                                 size: 16,
                                 weight: FontWeight.bold,
                                 color:
                                     theme.isLightMode ? textColor1 : textColor2,
                               ),
                               GeneralAppText(
-                                text: "Instructor",
+                                text: instructorName,
                                 size: 15,
                                 color:
                                     theme.isLightMode ? textColor1 : textColor2,
@@ -309,41 +375,22 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     );
   }
 
-  void _performSearch() {
-    print("Search Clicked");
-    setState(() {
-      _buildFutureBuilder(searchQuery.text);
-    });
-  }
-
-  Widget _buildFutureBuilder(String searchQuery) {
-    print("Entered Function");
-    return FutureBuilder(
-        future:
-            searchQuery.isNotEmpty ? controller.getVideos(searchQuery) : null,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            print("Waiting");
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text(
-                'Error: ${snapshot.error}'); // Display a loading indicator while waiting for data
-          } else if (snapshot.hasError) {
-            return Text(
-                'Error: ${snapshot.error}'); // Display an error message if fetching data fails
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasData) {
-              final videoList = snapshot.data;
-              print(videoList);
-              return Container();
-            } else {
-              print("No data");
-              return Container();
-            }
-          } else {
-            print("Else encountered");
-            return Container();
-          }
-        });
+  Route _createAnimatedScreenRoute(
+      Widget child, double startOffset, double endOffset) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => child,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(startOffset, endOffset);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+        var tween =
+        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    );
   }
 }

@@ -118,7 +118,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                             // color: Colors.lightBlueAccent,
                             child: GeneralAppText(
                               text: navigationText[index],
-                              size: 20,
+                              size: MediaQuery.sizeOf(context).width*0.046,
                               weight: FontWeight.bold,
                               color:
                                   theme.isLightMode ? textColor1 : textColor2,

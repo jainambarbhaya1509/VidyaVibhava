@@ -1,19 +1,10 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Student {
-  late String? uid;
-  final String firstName,
-      lastName,
-      dateOfBirth,
-      gender,
-      phoneNo,
-      username,
-      address,
-      zipCode,
-      city,
-      state;
+class Student {late String? uid;
+  final String firstName,lastName,dateOfBirth,gender,phoneNo,username,address,zipCode,city,state;
   late final String image, doc1, doc2;
+  late Uint8List thumbnailImage;
   late String deviceToken;
 
   Student({
@@ -356,32 +347,30 @@ class Assignment {
   final Timestamp dueDate;
   final String totalMarks;
 
-  Assignment(
-      {this.assignmentId,
-      this.creatorId,
-      required this.title,
-      required this.question,
-      required this.dueDate,
-      required this.totalMarks});
+  Assignment({this.assignmentId,
+    this.creatorId,
+    required this.title,
+    required this.question,
+    required this.dueDate,
+    required this.totalMarks});
 
   Map<String, dynamic> toJson() {
     return {
       'assignmentId': assignmentId,
-      'creatorId': creatorId,
-      'title': title,
+      'creatorId':creatorId,
+      'title':title,
       'question': question,
       'dueDate': dueDate,
       'totalMarks': totalMarks,
     };
   }
 
-  factory Assignment.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> document) {
+  factory Assignment.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
 
     return Assignment(
-      assignmentId: document.id,
-      creatorId: data["creatorId"],
+      assignmentId: data["assignmentId"],
+      creatorId : data["creatorId"],
       title: data["title"] ?? "",
       question: data["question"],
       dueDate: data["dueDate"],
@@ -390,6 +379,46 @@ class Assignment {
   }
 }
 
+class AssignmentToGrade {
+  late String? assignmentId, studentId, studentName, assignedGrade;
+  final String assignmentDoc, maxGrade;
+  final Timestamp submittedOn;
+  final bool isSubmitted;
+
+  AssignmentToGrade({
+    this.assignmentId,
+    required this.assignmentDoc,
+    required this.maxGrade,
+    required this.assignedGrade,
+    required this.submittedOn,
+    required this.isSubmitted,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'assignmentId': assignmentId,
+      'assignmentDoc': assignmentDoc,
+      'maxGrade': maxGrade,
+      'assignedGrade': assignedGrade,
+      'submittedOn': submittedOn,
+      'isSubmitted': isSubmitted,
+    };
+  }
+
+  factory AssignmentToGrade.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
+    final data = document.data()!;
+
+    return AssignmentToGrade(
+      assignmentId: data["assignmentId"] ?? "",
+      assignmentDoc: data["assignmentDoc"] ?? "",
+      maxGrade: data["maxGrade"] ?? "",
+      assignedGrade: data["assignedGrade"] ??"",
+      // Convert Firestore Timestamp to DateTime
+      submittedOn: data["submittedOn"] ?? "",
+      isSubmitted: data["isSubmitted"] ?? "",
+    );
+  }
+}
 class Quiz {
   late String? quizId;
   final List<dynamic> options;
@@ -487,5 +516,88 @@ class Visit {
       visitPurpose: data["visitPurpose"] ?? "",
       visitDescription: data["visitDescription"] ?? "",
     );
+  }
+}
+
+class Career {
+  String careerCategory;
+  String careerDescription;
+  String careerExpertEmail;
+  String careerExpertId;
+  String careerExpertName;
+  List<String> possibleCareers;
+  List<String> relatedPathway;
+
+  Career({
+    required this.careerCategory,
+    required this.careerDescription,
+    required this.careerExpertEmail,
+    required this.careerExpertId,
+    required this.careerExpertName,
+    required this.possibleCareers,
+    required this.relatedPathway,
+  });
+
+  factory Career.fromSnapshot(DocumentSnapshot snapshot) {
+    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+
+    return Career(
+      careerCategory: data['careerCategory'] ?? "",
+      careerDescription: data['careerDescription'] ?? "",
+      careerExpertEmail: data['careerExpertEmail'] ?? "",
+      careerExpertId: data['careerExpertId'] ?? "",
+      careerExpertName: data['careerExpertName'] ?? "",
+      possibleCareers: List<String>.from(data['possibleCareers']) ?? [],
+      relatedPathway: List<String>.from(data['relatedPathway']) ?? [],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'careerCategory': careerCategory,
+      'careerDescription': careerDescription,
+      'careerExpertEmail': careerExpertEmail,
+      'careerExpertId': careerExpertId,
+      'careerExpertName': careerExpertName,
+      'possibleCareers': possibleCareers,
+      'relatedPathway': relatedPathway,
+    };
+  }
+}
+
+class EnrolledCourse {
+  final String courseId, lastCompleted;
+  final bool isCompleted;
+  final int noOfVideosWatched;
+  final int quizScore;
+
+  EnrolledCourse({
+    required this.courseId,
+    required this.lastCompleted,
+    required this.isCompleted,
+    required this.noOfVideosWatched,
+    required this.quizScore,
+  });
+
+  factory EnrolledCourse.fromSnapshot(DocumentSnapshot snapshot) {
+    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+
+    return EnrolledCourse(
+      courseId: data['courseId'] ?? "",
+      lastCompleted: data['lastCompleted'] ?? "",
+      isCompleted: data['isCompleted'] ?? false,
+      noOfVideosWatched: data['noOfVideosWatched'] ?? 0,
+      quizScore: data['quizScore'] ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'courseId': courseId,
+      'lastCompleted':lastCompleted,
+      'isCompleted': isCompleted,
+      'noOfVideosWatched': noOfVideosWatched,
+      'quizScore': quizScore,
+    };
   }
 }

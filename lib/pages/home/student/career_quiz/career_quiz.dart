@@ -1,4 +1,5 @@
 import 'package:final_project/pages/home/student/career_quiz/career_quiz_result.dart';
+import 'package:final_project/services/api_service.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_text.dart';
@@ -15,7 +16,7 @@ class CareerQuiz extends ConsumerStatefulWidget {
 class _CareerQuizState extends ConsumerState<CareerQuiz> {
   int _currentPage = 0;
 
-  List<int?> selectedValues = List.filled(7 * 6, null);
+  List<int> selectedValues = List.filled(7 * 6, 2);
   final questions = [
     {
       'I like to work on cars': ['Yes', 'No']
@@ -149,7 +150,7 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
   Widget build(BuildContext context) {
     final careerQuizController =
         PageController(initialPage: _currentPage, keepPage: true);
-
+    APIService apiService = APIService();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -223,12 +224,12 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Radio<int?>(
+                                  Radio<int>(
                                     value: 1,
                                     groupValue: selectedValues[questionIndex],
                                     onChanged: (value) {
                                       setState(() {
-                                        selectedValues[questionIndex] = value;
+                                        selectedValues[questionIndex] = value!;
                                       });
                                     },
                                   ),
@@ -244,11 +245,11 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Radio<int?>(
-                                    value: 2,
+                                    value: 0,
                                     groupValue: selectedValues[questionIndex],
                                     onChanged: (value) {
                                       setState(() {
-                                        selectedValues[questionIndex] = value;
+                                        selectedValues[questionIndex] = value!;
                                       });
                                     },
                                   ),
@@ -304,10 +305,8 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
                   );
                 }
                 if (_currentPage == 6) {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CareerQuizResult()));
+                  print(selectedValues);
+                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => CareerQuizResult(selectedValues)));
                 }
               },
               child: PrimaryAppText(

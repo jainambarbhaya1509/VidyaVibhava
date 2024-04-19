@@ -28,4 +28,16 @@ class VideoController extends GetxController {
     //_videoRepo.getVideoList(subject);
     _videoRepo.fetchData(subject);
   }
+
+  getContentBySearch(String subject, String query){
+      return _videoRepo.getContentBySearch(subject, query);
+  }
+  getSearchContentBySearch(bool video, String category, String duration, String query){
+    if(query != ""){
+      return _videoRepo.getSearchContentBySearch(video, category, duration, query);
+    }else{
+      return "Please Enter a search query";
+    }
+  }
+
 }

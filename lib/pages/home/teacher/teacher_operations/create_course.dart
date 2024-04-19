@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:final_project/controllers/profile_controller.dart';
 import 'package:final_project/controllers/video_controller.dart';
@@ -40,10 +39,19 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
   final tagsController = TextEditingController();
   final subjectController = TextEditingController();
   final lectureLevel = ["Beginner", "Intermediate", "Advanced"];
-  String selectedLevel = "Beginner";
+  String? selectedLevel;
 
   List<VideoPlayerController>? controllers = [];
+
   final List uploadedVideos = [];
+
+  final createQuiz = [
+    {
+      "question": "",
+      "options": [],
+      "correctAnswer": "",
+    },
+  ];
 
   Future<void> uploadCourse() async {
     final result = await FilePicker.platform.pickFiles(
@@ -56,6 +64,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
 
     setState(() {
       uploadedVideos.addAll(result.files);
+
       controllers?.addAll(result.files.map((file) {
         return VideoPlayerController.file(File(file.path!))
           ..initialize().then((_) {
@@ -115,24 +124,25 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(25),
             child: Column(
               children: [
                 Material(
-                  elevation: 1,
+                  elevation: 3,
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
                     padding:
-                        const EdgeInsets.only(top: 30, left: 20, right: 20),
+                    const EdgeInsets.only(top: 30, left: 20, right: 20),
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height * 0.7,
                     decoration: BoxDecoration(
                       color: theme
-                          ? const Color.fromARGB(211, 228, 228, 228)
-                          : const Color.fromARGB(255, 54, 54, 54),
+                          ? Colors.white70
+                          : const Color.fromARGB(255, 62, 62, 62),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,7 +159,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                             onTap: () => uploadCourse(),
                             child: Container(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              const EdgeInsets.symmetric(horizontal: 10),
                               alignment: Alignment.center,
                               height: 50,
                               width: double.infinity,
@@ -177,37 +187,37 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                           ),
                           const SizedBox(height: 10),
                           Container(
-                            height: 300,
+                            height: 200,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: Colors.grey,
+                                color: primaryColor,
                                 width: 1,
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: uploadedVideos.isEmpty
                                 ? Container(
-                                    alignment: Alignment.center,
-                                    child: GeneralAppText(
-                                      text: "No videos uploaded",
-                                      size: 16,
-                                      color: Colors.white,
-                                    ),
-                                  )
+                              alignment: Alignment.center,
+                              child: GeneralAppText(
+                                text: "No videos uploaded",
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                            )
                                 : ListView.builder(
-                                    itemCount: uploadedVideos.length,
-                                    scrollDirection: Axis.vertical,
-                                    itemBuilder: (context, index) {
-                                      return Column(
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 10, left: 10),
-                                            height: 50,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
+                              itemCount: uploadedVideos.length,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          right: 10, left: 10),
+                                      height: 50,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                               children: [
                                                 GeneralAppText(
                                                   text: "${index + 1}. ",
@@ -289,23 +299,16 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                                               ),
                                                             );
                                                           });
-                                                    },
-                                                    child: Container(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 10),
-                                                      height: 60,
-                                                      child: GeneralAppText(
-                                                        text: uploadedVideos[
-                                                                    index]
-                                                                ?.name ??
-                                                            "",
-                                                        size: 14,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
+                                              },
+                                              child: Container(
+                                                alignment:Alignment.center,
+                                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                height: 60,
+                                                child: GeneralAppText(text: uploadedVideos[index]?.name ??"",
+                                                  size: 14,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
                                                   ),
                                                 ),
                                                 GeneralAppIcon(
@@ -465,15 +468,15 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                             child: DropdownButtonFormField<String>(
                               value: lectureLevel[0],
                               onChanged: (String? value) {
-                                selectedLevel = value!;
+                                selectedLevel = value;
                               },
                               items: lectureLevel.map<DropdownMenuItem<String>>(
-                                  (String level) {
-                                return DropdownMenuItem<String>(
-                                  value: level,
-                                  child: Text(level),
-                                );
-                              }).toList(),
+                                      (String level) {
+                                    return DropdownMenuItem<String>(
+                                      value: level,
+                                      child: Text(level),
+                                    );
+                                  }).toList(),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -515,9 +518,42 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
-                    if (checkAllFields() == true) {
-                      for (var i = 0; i < uploadedVideos.length; i++) {
-                        videoList.add({"index": i, "file": uploadedVideos[i]});
+
+                    if (checkAllFields()) {
+                      /*setState(
+                            () {
+                          courseVideo.add({
+                            "course": {
+                              "title": lectureTitleController.text,
+                              "subject": subjectController.text,
+                              "description": lectureDescriptionController.text,
+                              "tags": tagsController.text.split(",").map((e) {
+                                return e.trim();
+                              }).toList(),
+                              "level": selectedLevel,
+                              "duration": lectureDurationController.text,
+                              "courseModules": [
+                                {
+                                  "title": "",
+                                  "url": "",
+                                  "quiz": courseQuestion["quiz"] == null
+                                      ? {}
+                                      : {
+                                    "question": courseQuestion["quiz"]![
+                                    "question"],
+                                    "options": courseQuestion["quiz"]![
+                                    "options"],
+                                    "correctAnswer": courseQuestion[
+                                    "quiz"]!["correctAnswer"],
+                                  },
+                                },
+                              ],
+                            },
+                          });
+                        },
+                      );*/
+                      for (var i = 0; i < uploadedVideos.length; i++){
+                        videoList.add({"index":i, "file": uploadedVideos[i]});
                       }
                       print("Uploaded Video : ${uploadedVideos}");
                       print("Video List : ${videoList}");
@@ -530,8 +566,7 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                         difficultyLevel: selectedLevel!,
                         duration: lectureDurationController.text,
                         subject: subjectController.text,
-                        instructorName:
-                            await profileController.getUserFullName(),
+                        instructorName:await profileController.getUserFullName(),
                         thumbnail: "thumbnail",
                         instructorId: await profileController.getUserId(),
                       );

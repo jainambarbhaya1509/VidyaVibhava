@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../pages/home/student/student_home_screen_pages/search_screen.dart';
+
 final searchTypeProvider = StateProvider<bool>((ref) => _videoSelected);
 
 class FilterDialog extends ConsumerStatefulWidget {
@@ -12,69 +14,97 @@ bool _videoSelected = false;
 
 class _FilterDialogState extends ConsumerState<FilterDialog> {
   bool _courseSelected = false;
-  String _searchBy = 'Title';
-  String _duration = 'Small';
+  String _searchBy = '';
+  String _duration = '';
 
   @override
   Widget build(BuildContext context) {
+    final filterDialogState = ref.watch(filterDialogStateProvider);
+    final screenHeight = MediaQuery.of(context).size.height;
     return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildCategory('Resource Type', [
-              _buildOption('Video', _videoSelected, () {
-                setState(() {
-                  _videoSelected = !_videoSelected;
-                  _courseSelected = false; // Reset other options
-                });
-              }),
-              _buildOption('Course', _courseSelected, () {
-                setState(() {
-                  _courseSelected = !_courseSelected;
-                  _videoSelected = false; // Reset other options
-                });
-              }),
-            ]),
-            SizedBox(height: 16),
-            _buildCategory('Search By', [
-              _buildOption('Title', _searchBy == 'Title', () {
-                setState(() {
-                  _searchBy = 'Title';
-                });
-              }),
-              _buildOption('Subject', _searchBy == 'Subject', () {
-                setState(() {
-                  _searchBy = 'Subject';
-                });
-              }),
-              _buildOption('Keyword', _searchBy == 'Keyword', () {
-                setState(() {
-                  _searchBy = 'Keyword';
-                });
-              }),
-              _buildOption('Difficulty Level', _searchBy == 'Difficulty Level',
-                  () {
-                setState(() {
-                  _searchBy = 'Difficulty Level';
-                });
-              }),
-              _buildOption('Duration', _searchBy == 'Duration', () {
-                setState(() {
-                  _searchBy = 'Duration';
-                });
-              }),
-            ]),
-            SizedBox(height: 16),
-            _buildSubOption('Duration', ['Small', 'Medium', 'Large'], _duration,
-                (value) {
-              setState(() {
-                _duration = value;
-              });
-            }),
-          ],
+      child: SizedBox(
+        height: screenHeight * 0.75,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildCategory('Resource Type', [
+                  _buildOption('Video', _videoSelected, () {
+                    setState(() {
+                      _videoSelected = !_videoSelected;
+                      _courseSelected = !_videoSelected;
+                    });
+                  }),
+                  _buildOption('Course', _courseSelected, () {
+                    setState(() {
+                      _courseSelected = !_courseSelected;
+                      _videoSelected = !_courseSelected;
+                    });
+                  }),
+                ]),
+                SizedBox(height: 16),
+                _buildCategory('Search By', [
+                  _buildOption('Title', _searchBy == 'Title', () {
+                    setState(() {
+                      _searchBy = 'Title';
+                    });
+                  }),
+                  _buildOption('Subject', _searchBy == 'Subject', () {
+                    setState(() {
+                      _searchBy = 'Subject';
+                    });
+                  }),
+                  _buildOption('Keyword', _searchBy == 'Keyword', () {
+                    setState(() {
+                      _searchBy = 'Keyword';
+                    });
+                  }),
+                  _buildOption('Difficulty Level', _searchBy == 'Difficulty Level',
+                          () {
+                        setState(() {
+                          _searchBy = 'Difficulty Level';
+                        });
+                      }),
+                  _buildOption('Instructor Name', _searchBy == 'instructorName', () {
+                    setState(() {
+                      _searchBy = 'instructorName';
+                    });
+                  }),
+                ]),
+                SizedBox(height: 16),
+                _buildCategory('Duration', [
+                  _buildOption('Small', _duration == 'Small', () {
+                    setState(() {
+                      _duration = 'Small';
+                    });
+                  }),
+                  _buildOption('Medium', _duration == 'Medium', () {
+                    setState(() {
+                      _duration = 'Medium';
+                    });
+                  }),
+                  _buildOption('Large', _duration == 'Large', () {
+                    setState(() {
+                      _duration = 'Large';
+                    });
+                  }),
+                ]),
+                SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: (){
+                    filterDialogState.videoSelected = _videoSelected;
+                    filterDialogState.duration = _duration;
+                    filterDialogState.searchBy = _searchBy;
+                    Navigator.pop(context);
+                  },
+                  child: Text('Update Filter'),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -131,5 +161,20 @@ class _FilterDialogState extends ConsumerState<FilterDialog> {
         )
       ],
     );
+  }
+
+  // Function to get the selected resource type
+  String getResourceType() {
+    return _videoSelected ? 'Video' : 'Course';
+  }
+
+  // Function to get the selected search by option
+  String getSearchBy() {
+    return _searchBy;
+  }
+
+  // Function to get the selected duration
+  String getDuration() {
+    return _duration;
   }
 }

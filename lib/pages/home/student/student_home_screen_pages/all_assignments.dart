@@ -55,7 +55,7 @@ class _AllAssignmentsState extends ConsumerState<AllAssignments> {
                         description:
                             assignments[index]['description'] as String,
                         dueDate: assignments[index]['dueDate'] as String,
-                        marks: assignments[index]['marks'] as String,
+                        marks: assignments[index]['marks'] as String, assignmentId: '',
                       );
                     },
                   );

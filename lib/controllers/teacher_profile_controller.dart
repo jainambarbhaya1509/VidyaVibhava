@@ -63,7 +63,7 @@ class TeacherProfileController extends GetxController {
   }
 
   getInstructorDetailsToDisplay(String id) {
-    if (id != null) {
+    if (id != "") {
       return _userRepo.getInstructorDetailsToDisplay(id);
     } else {
       Get.snackbar("Error", "URL is empty");
@@ -74,6 +74,20 @@ class TeacherProfileController extends GetxController {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
       return _userRepo.createAssignment(assignment, uid);
+    }
+  }
+
+  getAssignmentList(){
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if(uid!=null){
+      return _userRepo.getAssignmentList(uid);
+    }
+  }
+
+  getStudentAssignmentsToGrade(String assignmentId) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if(uid!=null){
+      return await _userRepo.getStudentAssignmentList(uid, assignmentId);
     }
   }
 }

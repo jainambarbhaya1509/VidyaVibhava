@@ -369,4 +369,86 @@ class VideoRepository extends GetxController {
     print(videoList.length);
     return videoList;
   }
+
+  Future<Map<String, dynamic>> getContentBySearch(String subject, String query) async {
+    if(query!=""){
+      var snapshot = await _db.collection("VideoDetails").where("subject", isEqualTo: subject).where("keywords", arrayContains: query).get();
+      final videoList = snapshot.docs.map((e) => Video.fromSnapshot(e)).toList();
+      for(final video in videoList) {
+        video.thumbnailImage = (await FirebaseStorage.instance.refFromURL(video.thumbnail).getData())!;
+      }
+
+      snapshot = await _db.collection("Courses").where("subject", isEqualTo: subject).where("keywords", arrayContains: query).get();
+      final courseList = snapshot.docs.map((e) => Course.fromSnapshot(e)).toList();
+      for(final course in courseList) {
+        course.thumbnailImage = (await FirebaseStorage.instance.refFromURL(course.thumbnail).getData())!;
+      }
+      Map<String, dynamic> consolidatedList = {"video":videoList, "course":courseList, "length":videoList.length + courseList.length};
+      print("Consolidated List : ${consolidatedList}");
+      return consolidatedList;
+    }
+    else{
+      var snapshot = await _db.collection("VideoDetails").where("subject", isEqualTo: subject).get();
+      final videoList = snapshot.docs.map((e) => Video.fromSnapshot(e)).toList();
+      for(final video in videoList) {
+        video.thumbnailImage = (await FirebaseStorage.instance.refFromURL(video.thumbnail).getData())!;
+      }
+
+      snapshot = await _db.collection("Courses").where("subject", isEqualTo: subject).get();
+      final courseList = snapshot.docs.map((e) => Course.fromSnapshot(e)).toList();
+      for(final course in courseList) {
+        course.thumbnailImage = (await FirebaseStorage.instance.refFromURL(course.thumbnail).getData())!;
+      }
+      Map<String, dynamic> consolidatedList = {"video":videoList, "course":courseList, "length":videoList.length + courseList.length};
+      print("Consolidated List : ${consolidatedList}");
+      return consolidatedList;
+    }
+  }
+
+  Future<List<dynamic>> getSearchContentBySearch(bool video, String category, String duration, String query) async {
+    int durationStart = 0;
+    int durationEnd = 10000;
+    switch (duration) {
+      case 'Small':
+        durationEnd = 20;
+        break;
+      case 'Medium':
+        durationStart = 21;
+        durationEnd = 64;
+        break;
+      case 'Large':
+        durationStart = 65;
+        break;
+      default:
+        print("Default Encountered");
+        break;
+    }
+    print("Sending Query");
+    print(category);
+    print(query);
+    print(duration);
+    print(video);
+    if(video){
+      var snapshot = await _db.collection("VideoDetails")
+          .where(category, isEqualTo:query).get();
+          /*.where("duration", isGreaterThanOrEqualTo: durationStart)
+          .where("duration", isLessThanOrEqualTo: durationEnd).get();*/
+      final videoList = snapshot.docs.map((e) => Video.fromSnapshot(e)).toList();
+      print("Video List : ${videoList}");
+      for(final video in videoList) {
+        video.thumbnailImage = (await FirebaseStorage.instance.refFromURL(video.thumbnail).getData())!;
+      }
+      print("Returning Video List");
+      return videoList;
+    }
+    else{
+      var snapshot = await _db.collection("Courses").where(category, isEqualTo:query).get();//.where("duration", isGreaterThanOrEqualTo: durationStart).where("duration", isLessThanOrEqualTo: durationEnd).get();
+      final videoList = snapshot.docs.map((e) => Course.fromSnapshot(e)).toList();
+      print("Video List : ${videoList}");
+      for(final video in videoList) {
+        video.thumbnailImage = (await FirebaseStorage.instance.refFromURL(video.thumbnail).getData())!;
+      }
+      return videoList;
+    }
+  }
 }

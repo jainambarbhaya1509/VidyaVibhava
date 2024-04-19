@@ -4,21 +4,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends ConsumerStatefulWidget {
-  const WebViewPage({super.key});
+  final url;
+  const WebViewPage(this.url, {super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _WebViewPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _WebViewPageState(this.url);
 }
 
 class _WebViewPageState extends ConsumerState<WebViewPage> {
-  final webViewController = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..loadHtmlString(
-      '<html><body><h1>Explore Schemes</h1><p>Click the button below to explore the schemes</p><button onclick="window.location.href=\'https://www.google.com\'">Explore</button></body></html>',
-    );
-  // ..loadRequest(Uri.parse(
-  //     'https://www.google.com')); // api call for the scholarships etc..
+  late final String url;
+  final WebViewController webViewController = WebViewController();
 
+  _WebViewPageState(this.url) {
+    webViewController
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse(url));
+  }// api call for the scholarships etc..
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    webViewController.reload();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +39,11 @@ class _WebViewPageState extends ConsumerState<WebViewPage> {
         ),
       ),
       body: Container(
-        height: 100,
+        height: 1000,
         child: WebViewWidget(
-          controller: webViewController,
+          controller: webViewController
+            ..setJavaScriptMode(JavaScriptMode.unrestricted)
+            ..loadRequest(Uri.parse(url)),
         ),
       ),
     );

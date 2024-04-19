@@ -1,3 +1,4 @@
+import 'package:final_project/pages/common/chat/community_chat_screen.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
@@ -26,7 +27,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
           weight: FontWeight.bold,
         ),
       ),
-      body: Container(),
+      body: Community_Chat_Page(),
     );
   }
 }

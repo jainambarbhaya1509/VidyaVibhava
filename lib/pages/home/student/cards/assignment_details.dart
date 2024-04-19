@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:final_project/controllers/profile_controller.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/home_screen.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
@@ -9,14 +10,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:googleapis/keep/v1.dart';
 import 'package:logger/web.dart';
 
 class AssignmentDetails extends ConsumerStatefulWidget {
-  final String title, description, dueDate, marks;
+  final String title, description, dueDate, marks, assignmentId;
   final int index;
   const AssignmentDetails(
       {super.key,
+        required this.assignmentId,
       required this.index,
       required this.title,
       required this.description,
@@ -54,7 +58,9 @@ class _AssignmentDetailsState extends ConsumerState<AssignmentDetails> {
   @override
   Widget build(BuildContext context) {
     final assignment = ref.watch(assignmentProvider);
-
+    final controller = Get.put(ProfileController());
+    TextEditingController submitController = TextEditingController();
+    submitController.text = "Submit";
     return Container(
       height: MediaQuery.of(context).size.height * 0.6,
       padding: const EdgeInsets.all(15),
@@ -210,23 +216,29 @@ class _AssignmentDetailsState extends ConsumerState<AssignmentDetails> {
             height: 20,
           ),
           GestureDetector(
-            onTap: () {
+            onTap: () async {
               print(uploadedFiles);
               final data = {
                 "isSubmitted": true,
                 "submittedOn": Timestamp.now(),
-                "assignmentDoc": "",
                 "gradeAssigned": ""
               };
+
+              if(await controller.updateAssignment(widget.assignmentId, data, uploadedFiles[0])){
+                submitController.text = "Submitted";
+                // Add snackbar
+                Navigator.pop(context);
+              }
             },
             child: Container(
               alignment: Alignment.center,
               child: GeneralAppText(
-                text: "Submit",
+                text: submitController.text, // Set the text directly using the text property
                 size: 18,
                 weight: FontWeight.bold,
               ),
             ),
+
           ),
         ],
       ),

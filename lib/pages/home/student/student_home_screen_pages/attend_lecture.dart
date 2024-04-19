@@ -113,16 +113,13 @@ class _AttendLectureState extends ConsumerState<AttendLecture> {
                               height: 400,
                               width: double.infinity,
                               child: FutureBuilder<Map<String, dynamic>>(
-                                future: instructorController
-                                    .getInstructorDetailsToDisplay(
-                                        widget.video.instructorId),
+                                future: instructorController.getInstructorDetailsToDisplay(widget.video.instructorId),
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
                                     return CircularProgressIndicator(); // Display a loading indicator while waiting for data
                                   } else if (snapshot.hasError) {
-                                    return Text(
-                                        'Error: ${snapshot.error}'); // Display an error message if fetching data fails
+                                    print(widget.video.instructorId);
+                                    return Text('Error: ${snapshot.error}'); // Display an error message if fetching data fails
                                   } else {
                                     final instructorDetails = snapshot.data;
                                     if (instructorDetails != null) {
@@ -190,15 +187,10 @@ class _AttendLectureState extends ConsumerState<AttendLecture> {
                                           SizedBox(height: 10),
                                           GestureDetector(
                                             onTap: () {
-                                              Navigator.push(
+                                              /*Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SearchScreen(
-                                                            searchId: id,
-                                                            instructorName:
-                                                                name,
-                                                          )));
+                                                      builder: (context) => const SearchScreen()));*/
                                             },
                                             child: SizedBox(
                                               height: 100,

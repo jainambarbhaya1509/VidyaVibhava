@@ -1,7 +1,10 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:final_project/repository/authentication_repository.dart';
 import 'package:final_project/repository/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+
+import '../models/backend_model.dart';
 
 class ProfileController extends GetxController {
   static ProfileController get instance => Get.find();
@@ -77,6 +80,43 @@ class ProfileController extends GetxController {
     if (uid != null) {
       return _userRepo.getAssignmentByStudentId(uid);
     } else {
+      Get.snackbar("Error", "Login to Continue");
+    }
+  }
+
+  Future<bool> updateAssignment(String assignmentId, Map<String, dynamic> data, PlatformFile file) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if(uid != null){
+      return await _userRepo.updateAssignmentByStudentId(uid, assignmentId, data, file);
+    }else{
+      Get.snackbar("Error", "Login to Continue");
+      return false;
+    }
+  }
+
+  Future<void> enrollCourse(EnrolledCourse course) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if(uid != null){
+      return await _userRepo.enrollCourse(uid, course);
+    }else{
+      Get.snackbar("Error", "Login to Continue");
+    }
+  }
+
+  getEnrolledCourseDataList() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if(uid != null){
+      return await _userRepo.getEnrolledCourseDataList(uid);
+    }else{
+      Get.snackbar("Error", "Login to Continue");
+    }
+  }
+
+  getEnrolledCourseData(String courseId) async{
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if(uid != null){
+      return await _userRepo.getEnrolledCourseData(uid, courseId);
+    }else{
       Get.snackbar("Error", "Login to Continue");
     }
   }

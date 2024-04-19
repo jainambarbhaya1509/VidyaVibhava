@@ -10,28 +10,26 @@ import '../../../widgets/app_text.dart';
 import '../../../widgets/chat_bubble.dart';
 import '../../../widgets/custom_text_field.dart';
 
-class Chat_Page extends ConsumerStatefulWidget {
-  final String receiverUserEmail;
-  final String receiverUserID;
-  const Chat_Page({
-    super.key,
-    required this.receiverUserEmail,
-    required this.receiverUserID,
+class Community_Chat_Page extends ConsumerStatefulWidget {
+
+
+  const Community_Chat_Page({
+    super.key
   });
 
   @override
-  ConsumerState<Chat_Page> createState() => _Chat_PageState();
+  ConsumerState<Community_Chat_Page> createState() => _Chat_PageState();
 }
 
-class _Chat_PageState extends ConsumerState<Chat_Page> {
+class _Chat_PageState extends ConsumerState<Community_Chat_Page> {
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
-      await _chatService.sendMessage(
-          widget.receiverUserID, _messageController.text);
+      await _chatService.sendMessageinCommunity(
+          _messageController.text);
       _messageController.clear();
     }
   }
@@ -40,9 +38,6 @@ class _Chat_PageState extends ConsumerState<Chat_Page> {
   Widget build(BuildContext context) {
     final theme = ref.watch(settingsProvider);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.receiverUserEmail),
-      ),
       body: Column(
         children: [
           Expanded(
@@ -56,8 +51,7 @@ class _Chat_PageState extends ConsumerState<Chat_Page> {
 
   Widget _buildMessageList() {
     return StreamBuilder(
-      stream: _chatService.getMessages(
-          widget.receiverUserID, _firebaseAuth.currentUser!.uid),
+      stream: _chatService.getCommunityMessages(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error ${snapshot.error}');
@@ -128,7 +122,7 @@ class _Chat_PageState extends ConsumerState<Chat_Page> {
             suffixIcon: GestureDetector(
               onTap: sendMessage,
               child: GeneralAppIcon(
-                
+
                 icon: Icons.send,
                 color: Colors.grey,
               ),

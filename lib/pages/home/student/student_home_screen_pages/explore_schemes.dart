@@ -1,5 +1,6 @@
 import 'package:final_project/pages/home/student/student_home_screen_pages/web_view_page.dart';
 import 'package:final_project/providers/appbar_provider.dart';
+import 'package:final_project/services/api_service.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
@@ -16,9 +17,27 @@ class ExploreSchemes extends ConsumerStatefulWidget {
 }
 
 class _ExploreSchemesState extends ConsumerState<ExploreSchemes> {
+  TextEditingController searchQuery = TextEditingController();
   List categories = ["All", "Scholarship", "Internship", "Job"];
   String selectedCategory = "All";
+  List<dynamic> results = [];
+  APIService apiService = APIService();
+  Future<void> fetchScholarshipInfo(String query) async {
+    print("Selected Category : ${selectedCategory}");
+    List<dynamic> fetchedResults = await apiService.fetchScholarshipInfo(query, selectedCategory);
+    //setState(() { results = fetchedResults;});
 
+    /*List<dynamic> fetchedResults = [
+      {"title": "Scholarship 1", "description": "Description 1", "link":"bwdjwdjw"},
+      {"title": "Scholarship 2", "description": "Description 2", "link":"hvxjgwdguw"}
+    ];*/
+
+    // Update state with fetched results
+    setState(() {
+      results = fetchedResults;
+      print(results);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final theme = ref.watch(settingsProvider);
@@ -44,13 +63,26 @@ class _ExploreSchemesState extends ConsumerState<ExploreSchemes> {
                     : const Color.fromARGB(255, 54, 54, 54),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: TextFormField(
-                controller: null,
-                decoration: const InputDecoration(
-                  hintText: "search with a keyword",
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(left: 10),
-                ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: GestureDetector(onTap:(){fetchScholarshipInfo(searchQuery.text);},child: Icon(Icons.search, color: Colors.grey)),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: searchQuery,
+                      onFieldSubmitted: (value) {
+                        fetchScholarshipInfo(value); // Call fetch function on submit
+                      },
+                      decoration: const InputDecoration(
+                        hintText: "Search with a keyword",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(left: 10),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 10,),
@@ -84,8 +116,9 @@ class _ExploreSchemesState extends ConsumerState<ExploreSchemes> {
             
             Expanded(
               child: ListView.builder(
-                itemCount: 10,
+                itemCount: results.length,
                 itemBuilder: (context, index) {
+                  Map<String, String> result = Map<String, String>.from(results[index]);
                   return Container(
                     margin: const EdgeInsets.only(bottom: 20),
                     padding: const EdgeInsets.all(15),
@@ -99,14 +132,13 @@ class _ExploreSchemesState extends ConsumerState<ExploreSchemes> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         GeneralAppText(
-                          text: "Scholarship",
+                          text: result["title"]!,
                           size: 18,
                           weight: FontWeight.bold,
                         ),
                         const SizedBox(height: 10),
                         GeneralAppText(
-                          text:
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec odio vitae nunc.",
+                          text:result["description"]!,
                           size: 16,
                         ),
                         const SizedBox(height: 10),
@@ -115,7 +147,7 @@ class _ExploreSchemesState extends ConsumerState<ExploreSchemes> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const WebViewPage(),
+                                builder: (context) => WebViewPage(result["link"]!),
                               ),
                             );
                           },

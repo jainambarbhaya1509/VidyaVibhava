@@ -8,6 +8,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:logger/web.dart';
 
+final quizQuestionProvider = Provider((ref) => addQuizQuestion);
+
+final addQuizQuestion = {
+  "quiz": {
+    "question": "",
+    "options": [],
+    "correctAnswer": "",
+  }
+};
+
 List<Map<String, dynamic>> listOfQuiz = [];
 
 class CreateQuiz extends ConsumerStatefulWidget {
@@ -235,10 +245,12 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
               GestureDetector(
                 onTap: () {
                   Map<String, dynamic> addQuizQuestion = {
-                    "id": widget.questionIndex.toString(),
-                    "question": quizQuestionController.text,
-                    "options": options.toList(),
-                    "correctAnswer": correctAnswer!,
+                    "quiz": {
+                      "id": widget.questionIndex.toString(),
+                      "question": quizQuestionController.text,
+                      "options": options.toList(),
+                      "correctAnswer": correctAnswer!,
+                    }
                   };
                   quizList.add(addQuizQuestion);
                   // if (listOfQuiz
