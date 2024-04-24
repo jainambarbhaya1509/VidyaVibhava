@@ -10,7 +10,12 @@ import 'package:final_project/pages/home/student/cards/assignment_details.dart';
 import 'package:final_project/pages/home/student/cards/assignment_details.dart';
 import 'package:final_project/pages/home/student/cards/course_details.dart';
 import 'package:final_project/pages/home/student/cards/lecture_details.dart';
+import 'package:final_project/pages/home/student/cards/saved_videos_card.dart';
+import 'package:final_project/pages/home/student/student_home_screen_pages/all_assignments.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/jobs_screen.dart';
+import 'package:final_project/pages/home/teacher/cards/assignment_status.dart';
+import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/check_assignments.dart';
+import 'package:final_project/pages/home/teacher/teacher_operations/create_course.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/providers/lecture_data_provider.dart';
 import 'package:final_project/repository/authentication_repository.dart';
@@ -382,6 +387,8 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                         .height *
                                                     0.65,
                                                 child: GridView.builder(
+                                                  itemCount: 10,
+                                                  shrinkWrap: true,
                                                   gridDelegate:
                                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                                           crossAxisCount: 2,
@@ -390,20 +397,33 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                                           mainAxisSpacing: 10),
                                                   itemBuilder:
                                                       (context, index) {
-                                                    return Container(
-                                                      width: double.infinity,
-                                                      decoration: BoxDecoration(
-                                                        color: theme == true
-                                                            ? textColor1
-                                                            : textColor2,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          isDismissible: true,
+                                                          context: context,
+                                                          builder: (builder) {
+                                                            // return LectureDetails();
+                                                            return Container();
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: theme == true
+                                                              ? textColor1
+                                                              : textColor2,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
                                                       ),
                                                     );
                                                   },
-                                                  itemCount: 10,
-                                                  shrinkWrap: true,
                                                 ),
                                               ),
                                             ),
@@ -486,7 +506,10 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                 courseTitle: "Course Title $index",
                                 courseDescription:
                                     "The labyrinthine complexity of human existence intertwines with the capricious whims of fate, weaving a tapestry of stories where the mundane and the extraordinary collide, where love and loss dance a perpetual waltz amidst the cacophony of existence, each individual thread contributing to the rich fabric of the universe's eternal narrative.",
-                                courseLectures: []);
+                                courseLectures: [
+                                  "Course Lecture $index",
+                                  "Course Lecture $index"
+                                ]);
                           },
                         );
                       },
@@ -657,40 +680,60 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                     size: 20,
                     weight: FontWeight.bold,
                   ),
-                  GeneralAppIcon(
-                    icon: Icons.navigate_next_sharp,
-                    color: primaryColor,
-                    size: 30,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (builder) => const AllAssignments()));
+                    },
+                    child: GeneralAppIcon(
+                      icon: Icons.navigate_next_sharp,
+                      color: primaryColor,
+                      size: 30,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                height: 60,
-                // color: Colors.amber,
-                child: FutureBuilder(
-                  future: controller.getAssignmentData(),
-                  builder: (context, snapshot) {
-                    late List<Assignment>? assignmentList;
-                    late Assignment? assignment;
-                    try {
-                      if (snapshot.data != null) {
-                        assignmentList = snapshot.data as List<Assignment>?;
-                      }
-                    } on Exception catch (e) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+
+              FutureBuilder(
+                future: controller.getAssignmentData(),
+                builder: (context, snapshot) {
+                  late List<Assignment>? assignmentList;
+                  late Assignment? assignment;
+                  try {
+                    if (snapshot.data != null) {
+                      assignmentList = snapshot.data as List<Assignment>?;
                     }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: assignmentList?.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
+                  } on Exception catch (e) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      return Container(
+                        height: 260,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          // color: theme.isLightMode ? textColor1 : textColor2,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 2,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 5),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: theme ? textColor2 : textColor1,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: GestureDetector(
                                 onTap: () {
                                   showModalBottomSheet(
                                     isScrollControlled: true,
@@ -711,60 +754,77 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
                                   );
                                 },
                                 child: Container(
-                                  margin: const EdgeInsets.only(
-                                    right: 5,
-                                  ),
-                                  // height: 10,
-                                  width: 180,
+                                  padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                      // color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(color: Colors.grey)),
-                                  child: FittedBox(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          margin: const EdgeInsets.only(
-                                              left: 10, top: 10, bottom: 10),
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                              color: Colors.amber,
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Container(
-                                          margin:
-                                              const EdgeInsets.only(right: 10),
-                                          child: GeneralAppText(
-                                            text: "Assignment $index",
-                                            size: 14,
+                                    color: theme
+                                        ? const Color.fromARGB(
+                                            211, 228, 228, 228)
+                                        : const Color.fromARGB(255, 54, 54, 54),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      GeneralAppText(
+                                          text: assignment!.title, size: 16),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      GeneralAppText(
+                                          text: assignment!.question, size: 16),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: GeneralAppText(
+                                                text:
+                                                    "Marks: ${assignment!.totalMarks}",
+                                                size: 16,
+                                                weight: FontWeight.bold,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
+                                          const Spacer(),
+                                          GeneralAppText(
+                                            text: DateFormat(
+                                                    'yyyy-MM-dd HH:mm:ss')
+                                                .format((assignment!.dueDate)
+                                                    .toDate()),
+                                            size: 16,
+                                            weight: FontWeight.bold,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              );
-                            });
-                      } else if (snapshot.hasError) {
-                        print(snapshot.error.toString());
-                        return Center(child: Text(snapshot.error.toString()));
-                      } else {
-                        return const Center(
-                            child: Text("Something went wrong"));
-                      }
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      print(snapshot.error.toString());
+                      return Center(child: Text(snapshot.error.toString()));
                     } else {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(child: Text("Something went wrong"));
                     }
-                  },
-                ),
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
               ),
+
               const SizedBox(
                 height: 50,
               ),
@@ -864,7 +924,7 @@ class _HomeScreenState extends ConsumerState<StudentHomeScreen> {
   }
 }
 
-List filterType = ["All", "Videos", "Courses"];
+List filterType = ["Videos", "Courses"];
 
 class SubjectFilterDropdown extends StatefulWidget {
   const SubjectFilterDropdown({super.key});

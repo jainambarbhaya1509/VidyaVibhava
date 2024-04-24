@@ -311,7 +311,6 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
   }
 }
 
-
 class StatusDropdown extends StatefulWidget {
   const StatusDropdown({super.key});
 

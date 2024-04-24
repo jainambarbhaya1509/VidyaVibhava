@@ -15,6 +15,8 @@ final stuentPersonalInfoProvider = StateProvider<Map<String, dynamic>>((ref) {
     'gender': studentGenderController.text,
     'phone': studentPhoneController.text,
     'username': studentUsernameController.text,
+    'qualification': studentQualificationController.text,
+    'language': studentLanguageController.text,
   };
 });
 final studentSelectedGenderProvider = StateProvider<String?>((ref) => null);

@@ -6,6 +6,8 @@ import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final enrolledCourses = [];
+
 class EnrolledCourses extends ConsumerStatefulWidget {
   const EnrolledCourses({super.key});
 
@@ -42,7 +44,7 @@ class _EnrolledCoursesState extends ConsumerState<EnrolledCourses> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 2,
+                itemCount: enrolledCourses.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
@@ -52,10 +54,13 @@ class _EnrolledCoursesState extends ConsumerState<EnrolledCourses> {
                         context: context,
                         builder: (builder) {
                           return CourseDetails(
-                              courseIndex: index,
-                              courseTitle: "courseTitle",
-                              courseDescription: "courseDescription",
-                              courseLectures: []);
+                            courseIndex: index,
+                            courseTitle: enrolledCourses[index]["courseTitle"],
+                            courseDescription: enrolledCourses[index]
+                                ["courseDescription"],
+                            courseLectures: enrolledCourses[index]
+                                ["courseLectures"],
+                          );
                         },
                       );
                     },
@@ -88,10 +93,12 @@ class _EnrolledCoursesState extends ConsumerState<EnrolledCourses> {
                             width: 15,
                           ),
                           Expanded(
-                              child: GeneralAppText(
-                                  text: "The brief history of modern india",
-                                  size: 16,
-                                  weight: FontWeight.bold)),
+                            child: GeneralAppText(
+                              text: enrolledCourses[index]["courseTitle"],
+                              size: 16,
+                              weight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -103,6 +110,5 @@ class _EnrolledCoursesState extends ConsumerState<EnrolledCourses> {
         ),
       ),
     );
-    ;
   }
 }

@@ -31,7 +31,9 @@ class _StudentSignUpScreenState extends ConsumerState<StudentSignUpScreen> {
         personalInfo['dob'] == '' ||
         personalInfo['gender'] == '' ||
         personalInfo['phone'] == '' ||
-        personalInfo['username'] == '') {
+        personalInfo['username'] == '' ||
+        personalInfo['qualification'] == '' ||
+        personalInfo['language'] == '') {
       return false;
     } else {
       return true;

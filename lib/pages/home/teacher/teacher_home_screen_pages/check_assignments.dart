@@ -14,6 +14,7 @@ final assignmentListProvider = StateProvider((ref) => assignmentList);
 List assignmentList = [
   {
     "id": "0",
+    'subject': 'History',
     "title":
         "Summary on the history of india by the british empire with respect yo its impact on the economy",
     "marks": 100,
@@ -33,6 +34,7 @@ List assignmentList = [
   },
   {
     "id": "1",
+    'subject': 'History',
     "title":
         "Summary on the history of india by the british empire with respect yo its impact on the economy",
     "marks": 100,
@@ -57,6 +59,7 @@ List assignmentList = [
   },
   {
     "id": "2",
+    'subject': 'History',
     "title":
         "Summary on the history of india by the british empire with respect yo its impact on the economy",
     "marks": 100,
@@ -76,6 +79,7 @@ List assignmentList = [
   },
   {
     "id": "3",
+    'subject': 'History',
     "title":
         "Summary on the history of india by the british empire with respect yo its impact on the economy",
     "marks": 100,
@@ -95,6 +99,7 @@ List assignmentList = [
   },
   {
     "id": "4",
+    'subject': 'History',
     "title":
         "Summary on the history of india by the british empire with respect yo its impact on the economy",
     "marks": 100,
@@ -214,7 +219,17 @@ class _CheckAssignmentsState extends ConsumerState<CheckAssignments> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            GeneralAppText(
+                              text: assignmentList[index]["subject"],
+                              size: 17,
+                              weight: FontWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
                             GeneralAppText(
                                 text: assignmentList[index]["title"], size: 16),
                             const SizedBox(
@@ -230,16 +245,16 @@ class _CheckAssignmentsState extends ConsumerState<CheckAssignments> {
                                     child: GeneralAppText(
                                       text:
                                           "Marks: ${assignmentList[index]["marks"]}",
-                                      size: 16,
-                                      weight: FontWeight.bold,
+                                      size: 15,
+                                      // weight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
                                 const Spacer(),
                                 GeneralAppText(
                                   text: "${assignmentList[index]["date"]}",
-                                  size: 16,
-                                  weight: FontWeight.bold,
+                                  size: 15,
+                                  // weight: FontWeight.bold,
                                 ),
                               ],
                             ),

@@ -48,6 +48,7 @@ class _CreateAssignmentState extends ConsumerState<CreateAssignment> {
   Widget build(BuildContext context) {
     final teacherController = Get.put(TeacherProfileController());
     return Container(
+      height: MediaQuery.of(context).size.height * 0.7,
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(

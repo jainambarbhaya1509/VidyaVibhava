@@ -13,7 +13,8 @@ List<Map<String, dynamic>> listOfQuiz = [];
 class CreateQuiz extends ConsumerStatefulWidget {
   final int questionIndex;
   final List<Map<String, dynamic>> quizList;
-  const CreateQuiz({super.key, required this.questionIndex, required this.quizList});
+  const CreateQuiz(
+      {super.key, required this.questionIndex, required this.quizList});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CreateQuizState();
@@ -152,7 +153,7 @@ class _CreateQuizState extends ConsumerState<CreateQuiz> {
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextField(
                           controller: option4Controller,
-                          onChanged: (String val){
+                          onChanged: (String val) {
                             setState(() {
                               options = [
                                 option1Controller.text,

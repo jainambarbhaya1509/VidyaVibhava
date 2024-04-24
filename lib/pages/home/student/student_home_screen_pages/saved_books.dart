@@ -57,7 +57,10 @@ class _SavedBooksState extends ConsumerState<SavedBooks> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EbooksScreen()));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const EbooksScreen()));
                     },
                     child: PrimaryAppText(
                       text: "Library",

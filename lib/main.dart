@@ -4,6 +4,9 @@ import 'package:final_project/pages/home/student/career_quiz/career_quiz.dart';
 import 'package:final_project/pages/home/student/career_quiz/career_quiz_result.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/jobs_screen.dart';
 import 'package:final_project/pages/home/student/student_screen.dart';
+import 'package:final_project/pages/home/teacher/cards/create_quiz.dart';
+import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/scheduled_visits.dart';
+import 'package:final_project/pages/home/teacher/teacher_operations/create_course.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/repository/authentication_repository.dart';
 import 'package:final_project/repository/user_repository.dart';
@@ -27,7 +30,6 @@ import 'package:final_project/pages/common/user_type_screen.dart';
 import 'package:final_project/style/themes.dart';
 
 import 'firebase_options.dart';
-
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -69,9 +71,10 @@ class MyApp extends ConsumerWidget {
       title: 'Smart Education',
       theme: theme.isLightMode == true ? lightTheme : darkTheme,
       // home: showHome ? const UserTypeScreen() : const StartScreen(),
+      // home: const CreateCourse(),
+      // home: const StudentScreen(),
       // home: const TeacherScreen(),
-      home: const StudentScreen(),
-      // home: const CareerQuiz(),
+      home: const StartScreen(),
       routes: {
         'onboardingScreen': (context) => const StartScreen(),
         'usersTypeScreen': (context) => const UserTypeScreen(),

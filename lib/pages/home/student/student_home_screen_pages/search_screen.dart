@@ -145,14 +145,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                         width: 60,
                                         decoration: BoxDecoration(
                                             border: Border.all(
-                                                color: theme == true
+                                                color: theme.isLightMode
                                                     ? textColor1
                                                     : textColor2),
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         child: GeneralAppIcon(
                                           icon: Icons.bookmark_border,
-                                          color: theme == true
+                                          color: theme.isLightMode
                                               ? textColor1
                                               : textColor2,
                                           size: 30,
@@ -170,7 +170,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             border: Border.all(
-                                                color: theme == true
+                                                color: theme.isLightMode
                                                     ? textColor1
                                                     : textColor2),
                                           ),
@@ -182,7 +182,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                             children: [
                                               GeneralAppIcon(
                                                 icon: Icons.play_arrow_rounded,
-                                                color: theme == true
+                                                color: theme.isLightMode
                                                     ? textColor1
                                                     : textColor2,
                                                 size: 30,
@@ -190,7 +190,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                               PrimaryAppText(
                                                 text: "Start Learning",
                                                 size: 20,
-                                                color: theme == true
+                                                color: theme.isLightMode
                                                     ? textColor1
                                                     : textColor2,
                                               ),

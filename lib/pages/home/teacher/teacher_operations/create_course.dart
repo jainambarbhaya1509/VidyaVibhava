@@ -308,45 +308,48 @@ class _CreateCourseState extends ConsumerState<CreateCourse> {
                                                     ),
                                                   ),
                                                 ),
-                                                GeneralAppIcon(
-                                                  icon: Icons.delete,
-                                                  size: 20,
-                                                  color: Colors.redAccent,
+                                                Row(
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        showModalBottomSheet(
+                                                            isScrollControlled:
+                                                                true,
+                                                            isDismissible: true,
+                                                            context: context,
+                                                            builder: (builder) {
+                                                              return CreateQuiz(
+                                                                questionIndex:
+                                                                    index,
+                                                                quizList:
+                                                                    quizList,
+                                                              );
+                                                            });
+                                                      },
+                                                      child: GeneralAppIcon(
+                                                        icon: Icons
+                                                            .add_box_rounded,
+                                                        color: theme
+                                                            ? textColor1
+                                                            : textColor2,
+                                                        size: 25,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    GeneralAppIcon(
+                                                      icon: Icons.delete,
+                                                      size: 25,
+                                                      color: Colors.redAccent,
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
                                           ),
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              const Divider(
-                                                thickness: 0.5,
-                                                indent: 20,
-                                                endIndent: 20,
-                                                color: Colors.grey,
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      isDismissible: true,
-                                                      context: context,
-                                                      builder: (builder) {
-                                                        return CreateQuiz(
-                                                          questionIndex: index,
-                                                          quizList: quizList,
-                                                        );
-                                                      });
-                                                },
-                                                child: GeneralAppIcon(
-                                                  icon: Icons.add_box_rounded,
-                                                  color: theme
-                                                      ? Colors.grey
-                                                      : Colors.white,
-                                                  size: 25,
-                                                ),
-                                              ),
-                                            ],
+                                          const Divider(
+                                            indent: 10,
+                                            endIndent: 10,
+                                            color: Colors.grey,
                                           ),
                                         ],
                                       );

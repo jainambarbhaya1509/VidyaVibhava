@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:googleapis/keep/v1.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/web.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 final jobsData = [];
 
@@ -40,7 +41,8 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
             item['image'] != null && //
             item['location'] != null &&
             item['salaryRange'] != null &&
-            item['title'] != null) {
+            item['title'] != null &&
+            item['jobProviders'] != null) {
           Map<String, dynamic> job = {
             'company': item['company'],
             'datePosted': item['datePosted'],
@@ -50,8 +52,9 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
             'location': item['location'],
             'salaryRange': item['salaryRange'],
             'title': item['title'],
+            'jobProviders': item['jobProviders'],
           };
-
+          Logger().e(job['jobProviders'][0]['url']);
           if (mounted) {
             setState(() {
               jobsData.add(job);
@@ -188,10 +191,19 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => Container()));
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => WebViewWidget(
+                                                    controller: WebViewController()
+                                                      ..loadHtmlString(jobsData[
+                                                                  index]
+                                                              ['jobProviders']
+                                                          [0]['url']))));
                                       },
                                       child: Container(
-                                        margin: const EdgeInsets.only(right: 10),
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
                                         alignment: Alignment.centerRight,
                                         child: PrimaryAppText(
                                           color: primaryColor,

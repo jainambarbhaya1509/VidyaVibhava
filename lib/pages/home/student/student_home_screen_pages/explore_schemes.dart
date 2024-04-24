@@ -53,7 +53,9 @@ class _ExploreSchemesState extends ConsumerState<ExploreSchemes> {
                 ),
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
                 GeneralAppText(
@@ -81,7 +83,6 @@ class _ExploreSchemesState extends ConsumerState<ExploreSchemes> {
                 )
               ],
             ),
-            
             Expanded(
               child: ListView.builder(
                 itemCount: 10,

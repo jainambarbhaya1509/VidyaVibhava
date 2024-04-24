@@ -35,7 +35,7 @@ class _AssignmentDetailsState extends ConsumerState<AssignmentDetails> {
     final assignment = ref.watch(assignmentProvider);
     Logger().i(assignment);
     final files = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
+      allowMultiple: false,
       type: FileType.custom,
       allowedExtensions: ['pdf', 'doc', 'docx'],
     );
@@ -146,7 +146,7 @@ class _AssignmentDetailsState extends ConsumerState<AssignmentDetails> {
                         text: (assignment[widget.index]['documents'] as List)
                                 .isEmpty
                             ? "Upload Assignments"
-                            : "${(assignment[widget.index]['documents'] as List).length} Documents Uploaded",
+                            : "${(assignment[widget.index]['documents'] as List).length} Document Uploaded",
                         size: 15,
                         color: (assignment[widget.index]['documents'] as List)
                                 .isEmpty

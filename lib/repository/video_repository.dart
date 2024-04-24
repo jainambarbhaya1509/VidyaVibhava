@@ -181,22 +181,43 @@ class VideoRepository extends GetxController {
       print(error.toString());
     });
     DocumentReference? contentDocRef;
-    for(int i=0;i<combinedList.length;i++){
-      if(combinedList[i]['type'] == "video"){
-        String id = await uploadCourseVideo(combinedList[i]["content"], documentReference.id);
-        await _db.collection("Courses").doc(documentReference.id).collection("CourseVideos").add({"videoId": id});
-        if(contentDocRef == null){
-          contentDocRef = await _db.collection("Courses").doc(documentReference.id).collection("CourseContent").add({"${combinedList[i]["IDCOUNTER"]}": "video,${id}"});
-        }else{
-          await contentDocRef.set({"${combinedList[i]["IDCOUNTER"]}": "video,${id}"}, SetOptions(merge: true));
+    for (int i = 0; i < combinedList.length; i++) {
+      if (combinedList[i]['type'] == "video") {
+        String id = await uploadCourseVideo(
+            combinedList[i]["content"], documentReference.id);
+        await _db
+            .collection("Courses")
+            .doc(documentReference.id)
+            .collection("CourseVideos")
+            .add({"videoId": id});
+        if (contentDocRef == null) {
+          contentDocRef = await _db
+              .collection("Courses")
+              .doc(documentReference.id)
+              .collection("CourseContent")
+              .add({"${combinedList[i]["IDCOUNTER"]}": "video,${id}"});
+        } else {
+          await contentDocRef.set(
+              {"${combinedList[i]["IDCOUNTER"]}": "video,${id}"},
+              SetOptions(merge: true));
         }
-      }else{
+      } else {
         String id = await uploadCourseQuiz(combinedList[i]["content"]);
-        await _db.collection("Courses").doc(documentReference.id).collection("CourseQuiz").add({"quizId": id});
-        if(contentDocRef == null){
-          contentDocRef = await _db.collection("Courses").doc(documentReference.id).collection("CourseContent").add({"${combinedList[i]["IDCOUNTER"]}": "quiz,${id}"});
-        }else{
-          await contentDocRef.set({"${combinedList[i]["IDCOUNTER"]}": "quiz,${id}"}, SetOptions(merge: true));
+        await _db
+            .collection("Courses")
+            .doc(documentReference.id)
+            .collection("CourseQuiz")
+            .add({"quizId": id});
+        if (contentDocRef == null) {
+          contentDocRef = await _db
+              .collection("Courses")
+              .doc(documentReference.id)
+              .collection("CourseContent")
+              .add({"${combinedList[i]["IDCOUNTER"]}": "quiz,${id}"});
+        } else {
+          await contentDocRef.set(
+              {"${combinedList[i]["IDCOUNTER"]}": "quiz,${id}"},
+              SetOptions(merge: true));
         }
       }
     }
@@ -290,37 +311,45 @@ class VideoRepository extends GetxController {
   }
 
   Future<String> uploadCourseVideo(PlatformFile video, String? id) async {
-      final duration = await getDuration(video);
-      CourseVideo courseVideo =
-          CourseVideo(videoTitle: video.name, videoLoc: "", duration: duration);
-      DocumentReference documentReference =
-          await _db.collection("VideoDetails").add(courseVideo.toJson());
+    final duration = await getDuration(video);
+    CourseVideo courseVideo =
+        CourseVideo(videoTitle: video.name, videoLoc: "", duration: duration);
+    DocumentReference documentReference =
+        await _db.collection("VideoDetails").add(courseVideo.toJson());
 
-      final uploadTask = FirebaseStorage.instance
-          .ref()
-          .child('videos/course${id}/${documentReference.id}.mp4');
-      final metadata = SettableMetadata(contentType: 'video/mp4');
-      final TaskSnapshot snapshot =
-          await uploadTask.putFile(File(video.path!), metadata);
-      final String downloadUrl = await snapshot.ref.getDownloadURL();
+    final uploadTask = FirebaseStorage.instance
+        .ref()
+        .child('videos/course${id}/${documentReference.id}.mp4');
+    final metadata = SettableMetadata(contentType: 'video/mp4');
+    final TaskSnapshot snapshot =
+        await uploadTask.putFile(File(video.path!), metadata);
+    final String downloadUrl = await snapshot.ref.getDownloadURL();
 
-      Map<String, dynamic> updateData = {'videoLoc': downloadUrl};
-      await _db
-          .collection("VideoDetails")
-          .doc(documentReference.id)
-          .update(updateData);
+    Map<String, dynamic> updateData = {'videoLoc': downloadUrl};
+    await _db
+        .collection("VideoDetails")
+        .doc(documentReference.id)
+        .update(updateData);
 
-      return documentReference.id;
+    return documentReference.id;
   }
 
   Future<String> uploadCourseQuiz(Map<String, dynamic> quizMap) async {
-    print("\n\n ------------------- \nIn quiz ka Upload Function \n ---------------------- \n\n");
+    print(
+        "\n\n ------------------- \nIn quiz ka Upload Function \n ---------------------- \n\n");
     Map<String, dynamic>? quizData = quizMap['quiz'];
-    print("\n\n ------------------- \nMap Initialize Kiya ${quizMap} \n ---------------------- \n\n");
-    Quiz quiz = Quiz(question: quizMap["question"], options: quizMap["options"], correctOption: quizMap["correctAnswer"]);
-    print("\n\n ------------------- \nQuiz ka object Banaya\n ---------------------- \n\n");
-    DocumentReference documentReference = await _db.collection("Quiz").add(quiz.toJson());
-    print("\n\n ------------------- \nDocument in quiz created\n ---------------------- \n\n");
+    print(
+        "\n\n ------------------- \nMap Initialize Kiya ${quizMap} \n ---------------------- \n\n");
+    Quiz quiz = Quiz(
+        question: quizMap["question"],
+        options: quizMap["options"],
+        correctOption: quizMap["correctAnswer"]);
+    print(
+        "\n\n ------------------- \nQuiz ka object Banaya\n ---------------------- \n\n");
+    DocumentReference documentReference =
+        await _db.collection("Quiz").add(quiz.toJson());
+    print(
+        "\n\n ------------------- \nDocument in quiz created\n ---------------------- \n\n");
     return documentReference.id;
   }
 

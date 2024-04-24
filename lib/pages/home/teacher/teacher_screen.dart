@@ -1,7 +1,9 @@
 import 'package:final_project/pages/common/books/ebooks_screen.dart';
+import 'package:final_project/pages/home/student/student_screen.dart';
 import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/check_assignments.dart';
 import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/home_screen.dart';
 import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/profile_screen.dart';
+import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/student_list.dart';
 import 'package:final_project/pages/home/teacher/teacher_home_screen_pages/teacher_stats.dart';
 import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
@@ -21,7 +23,8 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherScreen> {
   final List<Widget> body = const [
     TeacherHomeScreen(),
     EbooksScreen(),
-    CheckAssignments(),
+    // CheckAssignments(),
+    StudentList(),
     TeacherProfileScreen()
   ];
   @override
@@ -76,7 +79,7 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherScreen> {
             label: 'Search',
           ),
           BottomNavigationBarItem(
-            tooltip: "Check Assignments",
+            tooltip: "Student List",
             activeIcon: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               decoration: BoxDecoration(
@@ -84,11 +87,11 @@ class _TeacherHomeScreenState extends ConsumerState<TeacherScreen> {
                 borderRadius: BorderRadius.circular(100),
               ),
               child: GeneralAppIcon(
-                  icon: Icons.check_box_rounded,
+                  icon: Icons.manage_accounts_rounded,
                   color: theme ? Colors.white : Colors.white),
             ),
-            icon: const Icon(Icons.check_box_rounded),
-            label: 'Check Assignments',
+            icon: const Icon(Icons.manage_accounts_rounded),
+            label: 'Student List',
           ),
           BottomNavigationBarItem(
             tooltip: "Profile",

@@ -32,7 +32,7 @@ class _LineChartSample2State extends ConsumerState<StudentStats> {
   @override
   Widget build(BuildContext context) {
     final theme = ref.watch(settingsProvider);
-    final graph = ref.watch(graphProvider);
+    var graph = ref.watch(graphProvider);
     return graph
         ? Container(
             margin: const EdgeInsets.only(top: 20, left: 10, right: 10),

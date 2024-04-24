@@ -238,6 +238,8 @@ class Video {
       instructorId: data["instructorId"] ?? "",
     );
   }
+
+  static fromJson(Map<String, dynamic> videoList) {}
 }
 
 class CourseVideo {
@@ -393,17 +395,17 @@ class Assignment {
 class Quiz {
   late String? quizId;
   final List<dynamic> options;
-  final String question,correctOption;
+  final String question, correctOption;
 
   Quiz(
       {this.quizId,
-        required this.question,
+      required this.question,
       required this.options,
       required this.correctOption});
   Map<String, dynamic> toJson() {
     return {
       'quizId': quizId,
-      'question' : question,
+      'question': question,
       'options': options,
       'correctOption': correctOption,
     };

@@ -2,7 +2,7 @@ import 'package:final_project/pages/common/books/books_modal.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/edit_student_profile.dart';
 import 'package:final_project/pages/home/student/cards/lecture_details.dart';
 import 'package:final_project/pages/home/student/cards/saved_books_card.dart';
-import 'package:final_project/pages/home/student/cards/saved_lecture_card.dart';
+import 'package:final_project/pages/home/student/cards/saved_videos_card.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/explore_schemes.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/student_stats.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/enrolled_courses.dart';

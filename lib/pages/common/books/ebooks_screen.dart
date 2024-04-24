@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:final_project/pages/common/books/books_modal.dart';
 import 'package:final_project/pages/home/student/student_home_screen_pages/saved_books.dart';
 import 'package:final_project/providers/appbar_provider.dart';
+import 'package:final_project/providers/role_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,7 @@ class _EbooksScreenState extends ConsumerState<EbooksScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final role = ref.watch(roleProvider.notifier).state;
     TextEditingController searchController = TextEditingController();
     final theme = ref.watch(settingsProvider);
     return Scaffold(
@@ -79,19 +81,23 @@ class _EbooksScreenState extends ConsumerState<EbooksScreen> {
           weight: FontWeight.bold,
         ),
         actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (builder) => const SavedBooks()));
-            },
-            child: Container(
-                margin: const EdgeInsets.only(right: 20),
-                child: GeneralAppText(
-                  text: "Collection",
-                  size: 15,
-                  weight: FontWeight.bold,
-                )),
-          )
+          if (role == "student") ...[
+            GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => const SavedBooks()));
+              },
+              child: Container(
+                  margin: const EdgeInsets.only(right: 20),
+                  child: GeneralAppText(
+                    text: "Collection",
+                    size: 15,
+                    weight: FontWeight.bold,
+                  )),
+            )
+          ]
         ],
       ),
       body: Container(

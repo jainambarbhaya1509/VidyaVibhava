@@ -1,8 +1,10 @@
 import 'package:final_project/controllers/sign_up_controller.dart';
 import 'package:final_project/providers/signup_providers.dart';
 import 'package:final_project/repository/authentication_repository.dart';
+import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_icon.dart';
 import 'package:final_project/widgets/app_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -103,14 +105,19 @@ class _VerifyYourselfState extends ConsumerState<CreatePassword> {
                       errorText: null),
                 ),
                 const SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: () async {
+                GestureDetector(
+                  onTap: () async {
                     controller.RegisterUser(teacherPersonalInfo["email"],
                         confirmPasswordController.text);
                     // Add your logic for creating the account here
                   },
-                  child: Text('Create Account'),
-                ),
+                  child: PrimaryAppText(
+                    text: "Set Password",
+                    size: 17,
+                    color: primaryColor,
+                    weight: FontWeight.bold,
+                  ),
+                )
               ]),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/providers/role_provider.dart';
 import 'package:final_project/providers/signup_providers.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:final_project/widgets/app_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/web.dart';
 
 // Stuent Text Controllers
 DateTime studentSelectedDate = DateTime.now();
@@ -15,6 +17,8 @@ TextEditingController studentLnameController = TextEditingController();
 TextEditingController studentGenderController = TextEditingController();
 TextEditingController studentPhoneController = TextEditingController();
 TextEditingController studentUsernameController = TextEditingController();
+TextEditingController studentQualificationController = TextEditingController();
+TextEditingController studentLanguageController = TextEditingController();
 
 // Teacher Text Controllers
 DateTime teacherSelectedDate = DateTime.now();
@@ -83,6 +87,7 @@ class _PersonalInformationSectionState
 
   @override
   Widget build(BuildContext context) {
+    final theme = ref.watch(settingsProvider);
     final role = ref.read(roleProvider);
     return Container(
       margin: const EdgeInsets.only(
@@ -221,7 +226,7 @@ class _PersonalInformationSectionState
             ),
             if (role == 'teacher') ...[
               const SizedBox(
-                height: 15,
+                height: 10,
               ),
               TextField(
                 onChanged: (value) {
@@ -251,6 +256,27 @@ class _PersonalInformationSectionState
             if (role == 'student') ...[
               const SizedBox(
                 height: 10,
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextField(
+                  onChanged: (value) {
+                    ref.read(stuentPersonalInfoProvider)['qualification'] =
+                        value;
+                  },
+                  controller: studentQualificationController,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    labelText: 'Qualification',
+                  ),
+                ),
+              ),
+              const SizedBox(width: 15),
+              const SizedBox(
+                height: 5,
               ),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 8.0),

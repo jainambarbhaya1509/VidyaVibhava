@@ -195,13 +195,13 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                     if (role == 'teacher') {
                       if (otp == verifyOtpController.text) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text('OTP Validated ! Please Click Next'),
                           ),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                         const  SnackBar(
                             content: Text('Invalid OTP'),
                           ),
                         );
@@ -210,13 +210,13 @@ class _VerifyYourselfState extends ConsumerState<VerifyYourself> {
                       if (await AuthenticationRepository.instance
                           .verifyOTP(verifyOtpController.text)) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text('OTP Validated ! Please Click Next'),
                           ),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text('Invalid OTP'),
                           ),
                         );

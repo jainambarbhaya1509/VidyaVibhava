@@ -1,4 +1,5 @@
 import 'package:final_project/pages/home/student/career_quiz/career_quiz_result.dart';
+import 'package:final_project/providers/appbar_provider.dart';
 import 'package:final_project/style/themes.dart';
 import 'package:final_project/widgets/app_bar.dart';
 import 'package:final_project/widgets/app_text.dart';
@@ -149,175 +150,191 @@ class _CareerQuizState extends ConsumerState<CareerQuiz> {
   Widget build(BuildContext context) {
     final careerQuizController =
         PageController(initialPage: _currentPage, keepPage: true);
+    final theme = ref.watch(settingsProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
+    return Scrollbar(
+      controller: ScrollController(),
+      thumbVisibility: true,
+      scrollbarOrientation: ScrollbarOrientation.right,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Theme.of(context).primaryColor,
+          flexibleSpace: const CustomAppBar(),
+        ),
         backgroundColor: Theme.of(context).primaryColor,
-        flexibleSpace: const CustomAppBar(),
-      ),
-      backgroundColor: Theme.of(context).primaryColor,
-      body: PageView.builder(
-        scrollDirection: Axis.horizontal,
-        controller: careerQuizController,
-        physics: const NeverScrollableScrollPhysics(),
-        onPageChanged: (index) {
-          setState(() {
-            _currentPage = index;
-          });
-        },
-        itemCount: 7,
-        itemBuilder: (context, index) {
-          final startIndex = index * 6;
-          final pageQuestions = questions.sublist(startIndex, startIndex + 6);
-          return SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 10, top: 50),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.only(bottom: 10),
-                    child: GeneralAppText(
-                      text: '${index + 1}/7',
-                      size: 20,
-                      weight: FontWeight.bold,
+        body: PageView.builder(
+          scrollDirection: Axis.horizontal,
+          controller: careerQuizController,
+          physics: const NeverScrollableScrollPhysics(),
+          onPageChanged: (index) {
+            setState(() {
+              _currentPage = index;
+            });
+          },
+          itemCount: 7,
+          itemBuilder: (context, index) {
+            final startIndex = index * 6;
+            final pageQuestions = questions.sublist(startIndex, startIndex + 6);
+            return SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 10, top: 30),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: GeneralAppText(
+                        text: '${index + 1}/7',
+                        size: 20,
+                        weight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  ...pageQuestions.asMap().entries.map((entry) {
-                    final questionText = entry.value.keys.first;
-                    final options = entry.value.values.first;
-                    final questionIndex = startIndex + entry.key;
-                    return Container(
-                      height: 190,
-                      margin: const EdgeInsets.only(
-                        left: 10,
-                        right: 10,
-                        bottom: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: primaryColor.withOpacity(0.8),
-                          width: 1,
+                    ...pageQuestions.asMap().entries.map((entry) {
+                      final questionText = entry.value.keys.first;
+                      final options = entry.value.values.first;
+                      final questionIndex = startIndex + entry.key;
+                      return Container(
+                        height: 190,
+                        margin: const EdgeInsets.only(
+                          left: 10,
+                          right: 10,
+                          bottom: 10,
                         ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.only(
-                                left: 10, top: 10, bottom: 10),
-                            child: GeneralAppText(
-                              text: questionText,
-                              size: 15,
-                              weight: FontWeight.bold,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: theme.isLightMode
+                              ? const Color.fromARGB(211, 228, 228, 228)
+                              : const Color.fromARGB(255, 54, 54, 54),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  left: 10, top: 10, bottom: 10),
+                              child: GeneralAppText(
+                                text: questionText,
+                                size: 15,
+                                weight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Radio<int?>(
-                                    value: 1,
-                                    groupValue: selectedValues[questionIndex],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedValues[questionIndex] = value;
-                                      });
-                                    },
-                                  ),
-                                  GeneralAppText(
-                                    text: options[0],
-                                    size: 15,
-                                    weight: FontWeight.bold,
-                                  ),
-                                ],
-                              ),
-                              // const SizedBox(he: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Radio<int?>(
-                                    value: 2,
-                                    groupValue: selectedValues[questionIndex],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedValues[questionIndex] = value;
-                                      });
-                                    },
-                                  ),
-                                  GeneralAppText(
-                                    text: options[1],
-                                    size: 15,
-                                    weight: FontWeight.bold,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                            Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Radio<int?>(
+                                      value: 1,
+                                      groupValue: selectedValues[questionIndex],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedValues[questionIndex] = value;
+                                        });
+                                      },
+                                    ),
+                                    GeneralAppText(
+                                      text: options[0],
+                                      size: 15,
+                                      weight: FontWeight.bold,
+                                    ),
+                                  ],
+                                ),
+                                // const SizedBox(he: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Radio<int?>(
+                                      value: 2,
+                                      groupValue: selectedValues[questionIndex],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedValues[questionIndex] = value;
+                                        });
+                                      },
+                                    ),
+                                    GeneralAppText(
+                                      text: options[1],
+                                      size: 15,
+                                      weight: FontWeight.bold,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+        bottomNavigationBar: Container(
+          color: Theme.of(context).primaryColor,
+          margin: const EdgeInsets.all(20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () {
+                  if (_currentPage > 0) {
+                    careerQuizController.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                    );
+                  }
+                },
+                child: PrimaryAppText(
+                  text: 'Back',
+                  size: 20,
+                  weight: FontWeight.bold,
+                  color: _currentPage > 0
+                      ? primaryColor
+                      : Colors.grey.withOpacity(0.5),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  if (selectedValues
+                      .sublist(_currentPage * 6, _currentPage * 6 + 6)
+                      .contains(null)) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select all options'),
+                        duration: Duration(seconds: 2),
                       ),
                     );
-                  }),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-      bottomNavigationBar: Container(
-        color: Theme.of(context).primaryColor,
-        margin: const EdgeInsets.all(20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: () {
-                if (_currentPage > 0) {
-                  careerQuizController.previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                  );
-                }
-              },
-              child: PrimaryAppText(
-                text: 'Back',
-                size: 20,
-                weight: FontWeight.bold,
-                color: _currentPage > 0
-                    ? primaryColor
-                    : Colors.grey.withOpacity(0.5),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                if (_currentPage < 6) {
-                  careerQuizController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                  );
-                }
-                if (_currentPage == 6) {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CareerQuizResult()));
-                }
-              },
-              child: PrimaryAppText(
-                text: _currentPage == 6 ? 'Submit' : 'Next',
-                size: 20,
-                color: _currentPage == 6 ? Colors.green : primaryColor,
-                weight: FontWeight.bold,
-              ),
-            )
-          ],
+                    return;
+                  }
+                  if (_currentPage < 6) {
+                    careerQuizController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                    );
+                  }
+                  if (_currentPage == 6) {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CareerQuizResult()));
+                  }
+                },
+                child: PrimaryAppText(
+                  text: _currentPage == 6 ? 'Submit' : 'Next',
+                  size: 20,
+                  color: _currentPage == 6 ? Colors.green : primaryColor,
+                  weight: FontWeight.bold,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

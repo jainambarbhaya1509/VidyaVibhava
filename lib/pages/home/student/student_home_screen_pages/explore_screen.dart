@@ -15,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:googleapis/keep/v1.dart';
 
 class ExploreScreen extends ConsumerStatefulWidget {
   const ExploreScreen({super.key});
@@ -118,7 +119,9 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                             // color: Colors.lightBlueAccent,
                             child: GeneralAppText(
                               text: navigationText[index],
-                              size: 20,
+                              size: navigationText[index].length > 10
+                                  ? MediaQuery.sizeOf(context).width / 20
+                                  : 20,
                               weight: FontWeight.bold,
                               color:
                                   theme.isLightMode ? textColor1 : textColor2,

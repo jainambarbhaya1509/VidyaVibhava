@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:final_project/repository/authentication_repository.dart';
 import 'package:final_project/repository/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
